@@ -31,13 +31,14 @@ public class Main {
         return token.toLowerCase();
     }
 
-    private static HashMap<String, String> getDataset() {
+    private static HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files
-                .walk(Paths.get("Phase01_Full-Text Search/src/main/resources/Software Books Dataset/"))) {
-            paths.filter(Files::isRegularFile).forEach(path -> {
-                String[] file = getFileNameAndContent(path);
-                fileText.put(file[0], file[1]);
+                .walk(Paths.get(path))) {
+            paths.filter(Files::isRegularFile).forEach(p -> {
+                String[] file = getFileNameAndContent(p);
+                int indexFilename = 0, indexContent = 1;
+                fileText.put(file[indexFilename], file[indexContent]);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,7 +92,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        HashMap<String, String> books = getDataset();
+        HashMap<String, String> books = getDataset(
+                "./src/main/resources/Software Books Dataset/");
 
         HashMap<String, ArrayList<String>> dictionary = createDictionay(books);
         System.out.println(dictionary.get("goal"));
