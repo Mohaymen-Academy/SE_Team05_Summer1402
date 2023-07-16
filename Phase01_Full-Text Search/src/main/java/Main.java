@@ -1,15 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class Main {
@@ -71,14 +67,15 @@ public class Main {
 
             // HashMap<String, Integer> counts=getTokensCounts(tokens);
             for (String token : tokens) {
-                if (!dict.containsKey(token)) {
+                String normalized = stemString(token); // stemming occurs here.
+                if (!dict.containsKey(normalized)) {
                     HashSet<String> bookList = new HashSet<>();
                     bookList.add(title);
-                    dict.put(token, bookList);
+                    dict.put(normalized, bookList);
                 } else {
-                    var bookList = dict.get(token);
+                    var bookList = dict.get(normalized);
                     bookList.add(title);
-                    // dictionary.replace(token, bookList);
+                    // dictionary.replace(norm, bookList);
                 }
             }
 
@@ -97,7 +94,7 @@ public class Main {
         HashMap<String, String> books = getDataset();
 
         HashMap<String, ArrayList<String>> dictionary = createDictionay(books);
-        System.out.println(dictionary.get("Goal"));
+        System.out.println(dictionary.get("goal"));
         // HashMap<String, HashMap<String, Integer>> booksWithTokens;
 
     }
