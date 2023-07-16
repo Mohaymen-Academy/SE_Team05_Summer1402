@@ -27,7 +27,7 @@ public class Main {
         return text.split("[ \\t\\n\\r]+");
     }
 
-    private static String stemString(String token) {
+    private static String normalize(String token) {
         return token.toLowerCase();
     }
 
@@ -59,6 +59,18 @@ public class Main {
     // return counter;
     // }
 
+    private static void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
+        if (!dict.containsKey(word)) {
+            HashSet<String> bookList = new HashSet<>();
+            bookList.add(title);
+            dict.put(word, bookList);
+        } else {
+            var bookList = dict.get(word);
+            bookList.add(title);
+            // dictionary.replace(norm, bookList);
+        }
+    }
+
     private static HashMap<String, ArrayList<String>> createDictionay(HashMap<String, String> books) {
         HashMap<String, HashSet<String>> dict = new HashMap<>();
 
@@ -68,27 +80,23 @@ public class Main {
 
             // HashMap<String, Integer> counts=getTokensCounts(tokens);
             for (String token : tokens) {
-                String normalized = stemString(token); // stemming occurs here.
-                if (!dict.containsKey(normalized)) {
-                    HashSet<String> bookList = new HashSet<>();
-                    bookList.add(title);
-                    dict.put(normalized, bookList);
-                } else {
-                    var bookList = dict.get(normalized);
-                    bookList.add(title);
-                    // dictionary.replace(norm, bookList);
-                }
+                String normalized = normalize(token);
+                addToDictionary(dict, title, normalized);
             }
 
         }
         HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
 
         for (String key : dict.keySet()) {
-            ArrayList<String> bookList = new ArrayList<>();
-            bookList.addAll(dict.get(key));
-            dictionary.put(key, bookList);
+            dictionary.put(key, toArrayList(dict.get(key)));
         }
         return dictionary;
+    }
+
+    private static <T> ArrayList<T> toArrayList(HashSet<T> set) {
+        ArrayList<T> list = new ArrayList<>();
+        list.addAll(set);
+        return list;
     }
 
     public static void main(String[] args) {
@@ -97,7 +105,6 @@ public class Main {
 
         HashMap<String, ArrayList<String>> dictionary = createDictionay(books);
         System.out.println(dictionary.get("goal"));
-        // HashMap<String, HashMap<String, Integer>> booksWithTokens;
 
     }
 }
