@@ -99,12 +99,39 @@ public class Main {
         return list;
     }
 
+    private static void removeDuplicates(ArrayList<String> list) {
+
+    }
+
     public static void main(String[] args) {
         HashMap<String, String> books = getDataset(
                 "./src/main/resources/Software Books Dataset/");
 
         HashMap<String, ArrayList<String>> dictionary = createDictionay(books);
-        System.out.println(dictionary.get("goal"));
+        String query = "goal +get";
+        String[] parts = query.split(" +");
+        ArrayList<String> result = new ArrayList<>();
+        for (String part : parts) {
+            ArrayList<String> searchResult;
+            switch (part.charAt(0)) {
+                case '+':
+                    searchResult = dictionary.get(part.substring(1));
+
+                    result.removeAll(searchResult);
+                    result.addAll(searchResult);
+                    break;
+                case '-':
+                    searchResult = dictionary.get(part.substring(1));
+                    result.removeAll(searchResult);
+                    break;
+
+                default:
+                    searchResult = dictionary.get(part);
+                    result.retainAll(searchResult);
+                    break;
+            }
+        }
+        System.out.println(result);
 
     }
 }
