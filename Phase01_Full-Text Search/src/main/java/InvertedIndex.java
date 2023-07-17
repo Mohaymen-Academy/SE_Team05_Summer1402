@@ -1,3 +1,4 @@
+import opennlp.tools.stemmer.PorterStemmer;
 import opennlp.tools.tokenize.SimpleTokenizer;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InvertedIndex {
-    private static HashMap<String, ArrayList<String>> _dictionary;
-    private static HashMap<String, String> _books;
+    private HashMap<String, ArrayList<String>> _dictionary;
+    private HashMap<String, String> _books;
 
     public InvertedIndex(String folderPath) {
         populateBooks(folderPath);
@@ -21,7 +22,12 @@ public class InvertedIndex {
         return tokenizer.tokenize(text);
     }
     public static String normalize(String token) {
-        return token.toLowerCase();
+        PorterStemmer stemmer=new PorterStemmer();
+        token=token.toLowerCase();
+        String stemmed=stemmer.stem(token);
+        if(stemmed.equals("O"))
+            return token;
+        return stemmed;
     }
 
     private void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
