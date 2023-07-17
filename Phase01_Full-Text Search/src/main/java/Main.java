@@ -7,19 +7,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
-    private static String[] getFileNameAndContent(Path path) {
-        File file = new File(path.toUri());
-        String fileName = null, fileContent = null;
-        try {
-            Scanner scanner = new Scanner(file);
-            fileName = path.getFileName().toString().split("\\.")[0];
-            fileContent = scanner.useDelimiter("\\Z").next();
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return new String[]{fileName, fileContent};
-    }
+
 
     private static String[] tokenize(String text) {
         return text.split("[ \\t\\n\\r]+");
@@ -29,21 +17,7 @@ public class Main {
         return token.toLowerCase();
     }
 
-    private static HashMap<String, String> getDataset(String path) {
-        HashMap<String, String> fileText = new HashMap<>();
-        try (Stream<Path> paths = Files
-                .walk(Paths.get(path))) {
-            paths.filter(Files::isRegularFile).forEach(p -> {
-                String[] file = getFileNameAndContent(p);
-                int indexFilename = 0, indexContent = 1;
-                fileText.put(file[indexFilename], file[indexContent]);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return fileText;
-    }
 
     // private static HashMap<String, Integer> getTokensCounts(String[] tokens) {
     // HashMap<String, Integer> counter = new HashMap<>();
@@ -166,7 +140,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        HashMap<String, String> books = getDataset(
+        HashMap<String, String> books = FileReader.getDataset(
                 "./src/main/resources/Software Books Dataset/");
 
         HashMap<String, ArrayList<String>> dictionary = createDictionary(books);
