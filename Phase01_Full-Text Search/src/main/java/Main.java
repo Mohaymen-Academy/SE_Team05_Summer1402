@@ -95,12 +95,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        InvertedIndex.populateBooks("./src/main/resources/Software Books Dataset/");
-        InvertedIndex.createDictionary();
+        InvertedIndex invertedIndex = new InvertedIndex("./src/main/resources/Software Books Dataset/");
+        HashMap<String, ArrayList<String>> dictionary = invertedIndex.getDictionary();
         String query = "goal -compiler +java +design";
         long startTime = System.nanoTime();
         HashMap<String, ArrayList<String>> queries = parseQueries(query);
-        ArrayList<String> result =runQueries(queries,InvertedIndex.getDictionary());
+        ArrayList<String> result =runQueries(queries,dictionary);
         printQueryResult(result,startTime);
     }
 }
