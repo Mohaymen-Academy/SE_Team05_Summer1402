@@ -1,4 +1,7 @@
+import opennlp.tools.tokenize.SimpleTokenizer;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -12,9 +15,9 @@ public class InvertedIndex {
     }
 
     private String[] tokenize(String text) {
-        return text.split("[ \\t\\n\\r]+");
+        SimpleTokenizer tokenizer=SimpleTokenizer.INSTANCE;
+        return tokenizer.tokenize(text);
     }
-
     public static String normalize(String token) {
         return token.toLowerCase();
     }
