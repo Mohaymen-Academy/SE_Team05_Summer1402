@@ -1,10 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.*;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -66,7 +61,7 @@ public class Main {
         return result;
     }
 
-    private static HashMap<String, ArrayList<String>> separateQueries(String query) {
+    private static HashMap<String, ArrayList<String>> parseQueries(String query) {
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {{
             put("AND", new ArrayList<String>());
             put("OR", new ArrayList<String>());
@@ -77,15 +72,15 @@ public class Main {
             switch (part.charAt(0)) {
                 case '+':
                     var or = queries.get("OR");
-                    or.add(part.substring(1));
+                    or.add(InvertedIndex.normalize(part.substring(1)));
                     break;
                 case '-':
                     var not = queries.get("NOT");
-                    not.add(part.substring(1));
+                    not.add(InvertedIndex.normalize(part.substring(1)));
                     break;
                 default:
                     var and = queries.get("AND");
-                    and.add(part);
+                    and.add(InvertedIndex.normalize(part));
                     break;
             }
         }
@@ -104,7 +99,7 @@ public class Main {
         InvertedIndex.createDictionary();
         String query = "goal -compiler +java +design";
         long startTime = System.nanoTime();
-        HashMap<String, ArrayList<String>> queries = separateQueries(query);
+        HashMap<String, ArrayList<String>> queries = parseQueries(query);
         ArrayList<String> result =runQueries(queries,InvertedIndex.getDictionary());
         printQueryResult(result,startTime);
     }

@@ -7,7 +7,7 @@ public class InvertedIndex {
         return text.split("[ \\t\\n\\r]+");
     }
 
-    private static String normalize(String token) {
+    public static String normalize(String token) {
         return token.toLowerCase();
     }
 
