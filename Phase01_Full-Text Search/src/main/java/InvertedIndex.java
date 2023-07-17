@@ -40,14 +40,13 @@ public class InvertedIndex {
         for (String title : _books.keySet()) {
             String content = _books.get(title);
             String[] tokens = tokenize(content);
-
             for (String token : tokens) {
                 String normalized = normalize(token);
                 addToDictionary(dict, title, normalized);
             }
         }
-        HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
 
+        HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
         for (String key : dict.keySet())
             dictionary.put(key, toArrayList(dict.get(key)));
         _dictionary = dictionary;

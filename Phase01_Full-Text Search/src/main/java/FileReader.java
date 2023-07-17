@@ -11,8 +11,7 @@ import java.util.stream.Stream;
 public class FileReader {
     public static HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
-        try (Stream<Path> paths = Files
-                .walk(Paths.get(path))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
                 String[] file = getFileNameAndContent(p);
                 int indexFilename = 0, indexContent = 1;
@@ -24,6 +23,7 @@ public class FileReader {
 
         return fileText;
     }
+
     private static String[] getFileNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;
