@@ -67,14 +67,26 @@ public class Main {
         return result;
     }
 
+    private static void getInput(HashMap<String, ArrayList<String>> dictionary) {
+        Scanner scanner = new Scanner(System.in);
+        String query, buffer;
+        do {
+            System.out.print("Search: ");
+            query = scanner.nextLine();
+            long startTime = System.nanoTime();
+            HashMap<String, ArrayList<String>> queries = parseQueries(query);
+            ArrayList<String> result = runQueries(queries, dictionary);
+            printQueryResult(result, startTime);
+            System.out.println("Do you want to exit program? [y/n]");
+            buffer = scanner.nextLine().toLowerCase();
+        } while (!buffer.equals("y") && !buffer.equals("yes"));
+        scanner.close();
+    }
+
     public static void main(String[] args) {
         InvertedIndex invertedIndex = new InvertedIndex("./src/main/resources/Software Books Dataset/");
         HashMap<String, ArrayList<String>> dictionary = invertedIndex.getDictionary();
         
-        String query = "goal -compiler +java +design";
-        long startTime = System.nanoTime();
-        HashMap<String, ArrayList<String>> queries = parseQueries(query);
-        ArrayList<String> result = runQueries(queries, dictionary);
-        printQueryResult(result, startTime);
+        getInput(dictionary);
     }
 }
