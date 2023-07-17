@@ -9,13 +9,7 @@ import java.util.stream.Stream;
 public class Main {
 
 
-    private static String[] tokenize(String text) {
-        return text.split("[ \\t\\n\\r]+");
-    }
 
-    private static String normalize(String token) {
-        return token.toLowerCase();
-    }
 
 
 
@@ -31,43 +25,9 @@ public class Main {
     // return counter;
     // }
 
-    private static void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
-        if (!dict.containsKey(word)) {
-            HashSet<String> bookList = new HashSet<>();
-            bookList.add(title);
-            dict.put(word, bookList);
-        } else {
-            var bookList = dict.get(word);
-            bookList.add(title);
-            // dictionary.replace(norm, bookList);
-        }
-    }
 
-    private static HashMap<String, ArrayList<String>> createDictionary(HashMap<String, String> books) {
-        HashMap<String, HashSet<String>> dict = new HashMap<>();
 
-        for (String title : books.keySet()) {
-            String content = books.get(title);
-            String[] tokens = tokenize(content);
 
-            // HashMap<String, Integer> counts=getTokensCounts(tokens);
-            for (String token : tokens) {
-                String normalized = normalize(token);
-                addToDictionary(dict, title, normalized);
-            }
-
-        }
-        HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
-
-        for (String key : dict.keySet()) {
-            dictionary.put(key, toArrayList(dict.get(key)));
-        }
-        return dictionary;
-    }
-
-    private static <T> ArrayList<T> toArrayList(HashSet<T> set) {
-        return new ArrayList<>(set);
-    }
 
     private static <T> void removeDuplicates(ArrayList<T> list) {
         Set<T> set = new HashSet<>(list);
@@ -140,15 +100,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        HashMap<String, String> books = FileReader.getDataset(
-                "./src/main/resources/Software Books Dataset/");
-
-        HashMap<String, ArrayList<String>> dictionary = createDictionary(books);
+        InvertedIndex.populateBooks("./src/main/resources/Software Books Dataset/");
+        InvertedIndex.createDictionary();
         String query = "goal -compiler +java +design";
-
         long startTime = System.nanoTime();
         HashMap<String, ArrayList<String>> queries = separateQueries(query);
-        ArrayList<String> result =runQueries(queries,dictionary);
+        ArrayList<String> result =runQueries(queries,InvertedIndex.getDictionary());
         printQueryResult(result,startTime);
     }
 }
