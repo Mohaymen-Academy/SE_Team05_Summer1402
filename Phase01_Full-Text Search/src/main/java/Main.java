@@ -1,5 +1,7 @@
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
     private static HashMap<String, ArrayList<String>> parseQueries(String query) {
@@ -86,7 +88,7 @@ public class Main {
     public static void main(String[] args) {
         InvertedIndex invertedIndex = new InvertedIndex("./src/main/resources/Software Books Dataset/");
         HashMap<String, ArrayList<String>> dictionary = invertedIndex.getDictionary();
-        
+
         getInput(dictionary);
     }
 }

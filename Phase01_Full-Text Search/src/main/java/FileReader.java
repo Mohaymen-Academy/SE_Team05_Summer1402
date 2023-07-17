@@ -27,22 +27,19 @@ public class FileReader {
     }
 
     public static ArrayList<String> getStopWords(String path) {
-        ArrayList<String> stopWords=new ArrayList<>();
+        ArrayList<String> stopWords = new ArrayList<>();
         try {
-            FileInputStream fis=new FileInputStream(path);
-            Scanner sc=new Scanner(fis);
-            while(sc.hasNextLine())
-            {
-                stopWords.add(sc.nextLine());
-            }
-            sc.close();
-        }
-        catch(IOException e)
-        {
+            FileInputStream fis = new FileInputStream(path);
+            Scanner scanner = new Scanner(fis);
+            while (scanner.hasNextLine())
+                stopWords.add(scanner.nextLine());
+            scanner.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return stopWords;
     }
+
     private static String[] getFileNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;

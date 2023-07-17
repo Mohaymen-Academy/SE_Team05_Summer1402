@@ -2,7 +2,6 @@ import opennlp.tools.stemmer.PorterStemmer;
 import opennlp.tools.tokenize.SimpleTokenizer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -18,15 +17,15 @@ public class InvertedIndex {
     }
 
     private String[] tokenize(String text) {
-        SimpleTokenizer tokenizer=SimpleTokenizer.INSTANCE;
+        SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
         return tokenizer.tokenize(text);
     }
+
     public static String normalize(String token) {
-        PorterStemmer stemmer=new PorterStemmer();
-        token=token.toLowerCase();
-        String stemmed=stemmer.stem(token);
-        if(stemmed.equals("O"))
-            return token;
+        PorterStemmer stemmer = new PorterStemmer();
+        token = token.toLowerCase();
+        String stemmed = stemmer.stem(token);
+        if (stemmed.equals("O")) return token;
         return stemmed;
     }
 
@@ -44,16 +43,16 @@ public class InvertedIndex {
     private void populateBooks(String folderPath) {
         _books = FileReader.getDataset(folderPath);
     }
-    private ArrayList<String> filterTokens(String[] tokens){
-        ArrayList<String> filteredTokens=new ArrayList<>();
-        ArrayList<String> stopWords=FileReader.getStopWords("./src/main/resources/stopwords.txt");
+
+    private ArrayList<String> filterTokens(String[] tokens) {
+        ArrayList<String> filteredTokens = new ArrayList<>();
+        ArrayList<String> stopWords = FileReader.getStopWords("./src/main/resources/stopwords.txt");
         String stopWordsPattern = "[" + String.join("", stopWords) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
             Matcher matcher = pattern.matcher(token);
             String filtered = matcher.replaceAll("");
-            if (!filtered.isBlank())
-                filteredTokens.add(filtered);
+            if (!filtered.isBlank()) filteredTokens.add(filtered);
         }
         return filteredTokens;
     }
@@ -64,7 +63,7 @@ public class InvertedIndex {
         for (String title : _books.keySet()) {
             String content = _books.get(title);
             String[] tokens = tokenize(content);
-            ArrayList<String> filteredTokens=filterTokens(tokens);
+            ArrayList<String> filteredTokens = filterTokens(tokens);
             for (String filteredToken : filteredTokens) {
                 String normalized = normalize(filteredToken);
                 addToDictionary(dict, title, normalized);
