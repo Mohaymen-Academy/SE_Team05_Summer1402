@@ -7,8 +7,7 @@ public class Dictionary {
 
 
     public Dictionary() {
-        InvertedIndex _invertedIndex = new InvertedIndex();
-        dictionary = _invertedIndex.createDataStructure();
+        dictionary = new InvertedIndex().createDataStructure();
     }
     public ArrayList<String> Search(String query) {
         QueryHandler queryHandler = new QueryHandler();
