@@ -17,17 +17,6 @@ public class InvertedIndex {
 //        createDataStructure();
     }
 
-    private String[] tokenize(String text) {
-        SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
-        return tokenizer.tokenize(text);
-    }
-
-    public static String normalize(String token) {
-        PorterStemmer stemmer = new PorterStemmer();
-        token = token.toLowerCase();
-        return stemmer.stem(token);
-    }
-
     private void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
         if (!dict.containsKey(word)) {
             HashSet<String> bookList = new HashSet<>();
@@ -61,10 +50,10 @@ public class InvertedIndex {
 
         for (String title : books.keySet()) {
             String content = books.get(title);
-            String[] tokens = tokenize(content);
+            String[] tokens = NLP.tokenize(content);
             ArrayList<String> filteredTokens = filterTokens(tokens);
             for (String filteredToken : filteredTokens) {
-                String normalized = normalize(filteredToken);
+                String normalized = NLP.normalize(filteredToken);
                 addToDictionary(dict, title, normalized);
             }
         }

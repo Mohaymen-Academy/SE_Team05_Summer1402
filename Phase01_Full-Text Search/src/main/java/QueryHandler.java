@@ -15,15 +15,15 @@ public class QueryHandler {
             switch (part.charAt(0)) {
                 case '+':
                     ArrayList<String> or = queries.get("OR");
-                    or.add(InvertedIndex.normalize(part.substring(1)));
+                    or.add(NLP.normalize(part.substring(1)));
                     break;
                 case '-':
                     ArrayList<String> not = queries.get("NOT");
-                    not.add(InvertedIndex.normalize(part.substring(1)));
+                    not.add(NLP.normalize(part.substring(1)));
                     break;
                 default:
                     ArrayList<String> and = queries.get("AND");
-                    and.add(InvertedIndex.normalize(part));
+                    and.add(NLP.normalize(part));
                     break;
             }
         }
