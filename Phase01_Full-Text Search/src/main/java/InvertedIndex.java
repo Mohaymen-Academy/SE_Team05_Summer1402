@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class InvertedIndex {
+
+
     private HashMap<String, String> books;
 
     public InvertedIndex() {
@@ -28,8 +30,8 @@ public class InvertedIndex {
     public HashMap<String, ArrayList<String>> createDataStructure() {
         HashMap<String, HashSet<String>> dict = new HashMap<>();
 
-        for (String title : books.keySet()) {
-            String content = books.get(title);
+        for (String title : getBooks().keySet()) {
+            String content = getBooks().get(title);
             String[] tokens = NLP.tokenize(content);
             ArrayList<String> filteredTokens = NLP.filterTokens(tokens);
             for (String filteredToken : filteredTokens) {
@@ -42,5 +44,8 @@ public class InvertedIndex {
         for (String key : dict.keySet())
             dictionary.put(key, Util.toArrayList(dict.get(key)));
         return dictionary;
+    }
+    protected HashMap<String, String> getBooks() {
+        return books;
     }
 }
