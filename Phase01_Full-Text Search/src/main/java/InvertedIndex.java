@@ -39,12 +39,12 @@ public class InvertedIndex {
     }
 
     private void populateBooks(String folderPath) {
-        _books = FileReader.getDataset(folderPath);
+        _books = new FileReader().getDataset(folderPath);
     }
 
     private ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        ArrayList<String> stopWords = FileReader.getStopWords("./src/main/resources/stopwords.txt");
+        ArrayList<String> stopWords = new FileReader().getStopWords("./src/main/resources/stopwords.txt");
         String stopWordsPattern = "[" + String.join("", stopWords) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {

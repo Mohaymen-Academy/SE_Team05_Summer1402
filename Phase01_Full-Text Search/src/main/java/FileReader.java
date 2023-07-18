@@ -11,13 +11,21 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class FileReader {
-    public static HashMap<String, String> getDataset(String path) {
+    private class Book{
+        private String _bookName;
+        private String _bookContent;
+
+        public Book(String bookName, String bookContent) {
+            this._bookName = bookName;
+            this._bookContent = bookContent;
+        }
+    }
+    public HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
-                String[] file = getFileNameAndContent(p);
-                int indexFilename = 0, indexContent = 1;
-                fileText.put(file[indexFilename], file[indexContent]);
+               Book book = getBookNameAndContent(p);
+                fileText.put(book._bookName, book._bookContent);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,7 +34,7 @@ public class FileReader {
         return fileText;
     }
 
-    public static ArrayList<String> getStopWords(String path) {
+    public ArrayList<String> getStopWords(String path) {
         ArrayList<String> stopWords = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(path);
@@ -40,7 +48,7 @@ public class FileReader {
         return stopWords;
     }
 
-    private static String[] getFileNameAndContent(Path path) {
+    private Book getBookNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;
         try {
@@ -51,6 +59,6 @@ public class FileReader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new String[]{fileName, fileContent};
+        return new Book(fileName, fileContent);
     }
 }
