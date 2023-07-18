@@ -8,12 +8,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InvertedIndex {
-    private final FolderPath folderPath;
+//    private final FolderPath folderPath;
     private HashMap<String, String> books;
 
-    public InvertedIndex(FolderPath folderPath) {
-        this.folderPath =folderPath;
-        populateBooks(folderPath.getDataPath());
+//    public InvertedIndex(FolderPath folderPath) {
+////        this.folderPath =folderPath;
+//        populateBooks(folderPath.getDataPath());
+////        createDataStructure();
+//    }
+
+    public InvertedIndex() {
+//        this.folderPath =folderPath;
+        populateBooks();
 //        createDataStructure();
     }
 
@@ -28,21 +34,9 @@ public class InvertedIndex {
         }
     }
 
-    private void populateBooks(String folderPath) {
+    private void populateBooks() {
+        String folderPath = FolderPath.getInstance().getDataPath();
         books = new FileReader().getDataset(folderPath);
-    }
-
-    private ArrayList<String> filterTokens(String[] tokens) {
-        ArrayList<String> filteredTokens = new ArrayList<>();
-        ArrayList<String> stopWords = new FileReader().getStopWords(folderPath.getStopwordsPath());
-        String stopWordsPattern = "[" + String.join("", stopWords) + "]";
-        Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
-        for (String token : tokens) {
-            Matcher matcher = pattern.matcher(token);
-            String filtered = matcher.replaceAll("");
-            if (!filtered.isBlank()) filteredTokens.add(filtered);
-        }
-        return filteredTokens;
     }
 
     public HashMap<String, ArrayList<String>> createDataStructure() {
@@ -51,7 +45,7 @@ public class InvertedIndex {
         for (String title : books.keySet()) {
             String content = books.get(title);
             String[] tokens = NLP.tokenize(content);
-            ArrayList<String> filteredTokens = filterTokens(tokens);
+            ArrayList<String> filteredTokens = NLP.filterTokens(tokens);
             for (String filteredToken : filteredTokens) {
                 String normalized = NLP.normalize(filteredToken);
                 addToDictionary(dict, title, normalized);

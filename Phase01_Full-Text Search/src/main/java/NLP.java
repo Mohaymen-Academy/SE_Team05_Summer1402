@@ -17,16 +17,16 @@ public class NLP {
         return stemmer.stem(token);
     }
 
-//    private ArrayList<String> filterTokens(String[] tokens) {
-//        ArrayList<String> filteredTokens = new ArrayList<>();
-//        ArrayList<String> stopWords = new FileReader().getStopWords(folderPath.getStopwordsPath());
-//        String stopWordsPattern = "[" + String.join("", stopWords) + "]";
-//        Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
-//        for (String token : tokens) {
-//            Matcher matcher = pattern.matcher(token);
-//            String filtered = matcher.replaceAll("");
-//            if (!filtered.isBlank()) filteredTokens.add(filtered);
-//        }
-//        return filteredTokens;
-//    }
+    public static ArrayList<String> filterTokens(String[] tokens) {
+        ArrayList<String> filteredTokens = new ArrayList<>();
+        ArrayList<String> stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopwordsPath());
+        String stopWordsPattern = "[" + String.join("", stopWords) + "]";
+        Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
+        for (String token : tokens) {
+            Matcher matcher = pattern.matcher(token);
+            String filtered = matcher.replaceAll("");
+            if (!filtered.isBlank()) filteredTokens.add(filtered);
+        }
+        return filteredTokens;
+    }
 }

@@ -10,8 +10,8 @@ public class Dictionary {
         return queryHandler.runQueries(queries, dictionary);
     }
 
-    public Dictionary(FolderPath folderPath) {
-        InvertedIndex _invertedIndex = new InvertedIndex(folderPath);
+    public Dictionary() {
+        InvertedIndex _invertedIndex = new InvertedIndex();
         dictionary = _invertedIndex.createDataStructure();
     }
 }

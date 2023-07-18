@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Application {
-    private FolderPath _folderPath;
-    public Application(FolderPath folderPath) {
-        _folderPath=folderPath;
-    }
+//    private FolderPath _folderPath;
+//    public Application(FolderPath folderPath) {
+//        _folderPath=folderPath;
+//    }
     public void run(){
-        Dictionary dictionary=new Dictionary(_folderPath);
+        Dictionary dictionary=new Dictionary();
         getInput(dictionary);
     }
     private void printQueryResult(ArrayList<String> result, long startTime) {
