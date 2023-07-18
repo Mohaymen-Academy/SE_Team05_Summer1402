@@ -8,12 +8,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InvertedIndex {
-    private HashMap<String, ArrayList<String>> _dictionary;
+    private FolderPath _folderPath;
     private HashMap<String, String> _books;
 
-    public InvertedIndex(String folderPath) {
-        populateBooks(folderPath);
-        createDictionary();
+    public InvertedIndex(FolderPath folderPath) {
+        this._folderPath =folderPath;
+        populateBooks(folderPath.getDataPath());
+        createDataStructure();
     }
 
     private String[] tokenize(String text) {
@@ -44,7 +45,7 @@ public class InvertedIndex {
 
     private ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        ArrayList<String> stopWords = new FileReader().getStopWords("./src/main/resources/stopwords.txt");
+        ArrayList<String> stopWords = new FileReader().getStopWords(_folderPath.getStopwordsPath());
         String stopWordsPattern = "[" + String.join("", stopWords) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
@@ -55,7 +56,7 @@ public class InvertedIndex {
         return filteredTokens;
     }
 
-    private void createDictionary() {
+    public HashMap<String, ArrayList<String>> createDataStructure() {
         HashMap<String, HashSet<String>> dict = new HashMap<>();
 
         for (String title : _books.keySet()) {
@@ -71,14 +72,11 @@ public class InvertedIndex {
         HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
         for (String key : dict.keySet())
             dictionary.put(key, toArrayList(dict.get(key)));
-        _dictionary = dictionary;
+        return dictionary;
     }
 
-    private static <T> ArrayList<T> toArrayList(HashSet<T> set) {
+    private <T> ArrayList<T> toArrayList(HashSet<T> set) {
         return new ArrayList<>(set);
     }
 
-    public HashMap<String, ArrayList<String>> getDictionary() {
-        return _dictionary;
-    }
 }
