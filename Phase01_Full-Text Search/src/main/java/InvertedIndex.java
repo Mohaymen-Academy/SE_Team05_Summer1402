@@ -8,11 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InvertedIndex {
-    private FolderPath _folderPath;
-    private HashMap<String, String> _books;
+    private FolderPath folderPath;
+    private HashMap<String, String> books;
 
     public InvertedIndex(FolderPath folderPath) {
-        this._folderPath =folderPath;
+        this.folderPath =folderPath;
         populateBooks(folderPath.getDataPath());
         createDataStructure();
     }
@@ -40,12 +40,12 @@ public class InvertedIndex {
     }
 
     private void populateBooks(String folderPath) {
-        _books = new FileReader().getDataset(folderPath);
+        books = new FileReader().getDataset(folderPath);
     }
 
     private ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        ArrayList<String> stopWords = new FileReader().getStopWords(_folderPath.getStopwordsPath());
+        ArrayList<String> stopWords = new FileReader().getStopWords(folderPath.getStopwordsPath());
         String stopWordsPattern = "[" + String.join("", stopWords) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
@@ -59,8 +59,8 @@ public class InvertedIndex {
     public HashMap<String, ArrayList<String>> createDataStructure() {
         HashMap<String, HashSet<String>> dict = new HashMap<>();
 
-        for (String title : _books.keySet()) {
-            String content = _books.get(title);
+        for (String title : books.keySet()) {
+            String content = books.get(title);
             String[] tokens = tokenize(content);
             ArrayList<String> filteredTokens = filterTokens(tokens);
             for (String filteredToken : filteredTokens) {
