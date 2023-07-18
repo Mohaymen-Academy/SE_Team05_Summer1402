@@ -14,7 +14,7 @@ public class InvertedIndex {
     public InvertedIndex(FolderPath folderPath) {
         this.folderPath =folderPath;
         populateBooks(folderPath.getDataPath());
-        createDataStructure();
+//        createDataStructure();
     }
 
     private String[] tokenize(String text) {
@@ -71,12 +71,7 @@ public class InvertedIndex {
 
         HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
         for (String key : dict.keySet())
-            dictionary.put(key, toArrayList(dict.get(key)));
+            dictionary.put(key, Util.toArrayList(dict.get(key)));
         return dictionary;
     }
-
-    private <T> ArrayList<T> toArrayList(HashSet<T> set) {
-        return new ArrayList<>(set);
-    }
-
 }
