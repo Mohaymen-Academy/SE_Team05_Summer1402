@@ -1,26 +1,17 @@
-import opennlp.tools.stemmer.PorterStemmer;
-import opennlp.tools.tokenize.SimpleTokenizer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class InvertedIndex {
-//    private final FolderPath folderPath;
     private HashMap<String, String> books;
 
-//    public InvertedIndex(FolderPath folderPath) {
-////        this.folderPath =folderPath;
-//        populateBooks(folderPath.getDataPath());
-////        createDataStructure();
-//    }
-
     public InvertedIndex() {
-//        this.folderPath =folderPath;
         populateBooks();
-//        createDataStructure();
+    }
+
+    private void populateBooks() {
+        String folderPath = FolderPath.getInstance().getDataPath();
+        books = new FileReader().getDataset(folderPath);
     }
 
     private void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
@@ -32,11 +23,6 @@ public class InvertedIndex {
             HashSet<String> bookList = dict.get(word);
             bookList.add(title);
         }
-    }
-
-    private void populateBooks() {
-        String folderPath = FolderPath.getInstance().getDataPath();
-        books = new FileReader().getDataset(folderPath);
     }
 
     public HashMap<String, ArrayList<String>> createDataStructure() {

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryHandler {
-
     public HashMap<String, ArrayList<String>> parseQueries(String query) {
+
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {{
             put("AND", new ArrayList<>());
             put("OR", new ArrayList<>());
@@ -56,6 +56,7 @@ public class QueryHandler {
         }
         return result;
     }
+
     private ArrayList<String> find(HashMap<String, ArrayList<String>> dictionary, String q) {
         ArrayList<String> result = dictionary.get(q);
         if (result == null) return new ArrayList<>();
