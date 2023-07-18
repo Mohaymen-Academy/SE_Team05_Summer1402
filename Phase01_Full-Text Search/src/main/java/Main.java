@@ -1,7 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        FolderPath folderPath = new FolderPath("./src/main/resources/Software Books Dataset/",
-                "./src/main/resources/stopwords.txt");
+        final String datasetFolderPath ="./src/main/resources/Software Books Dataset/";
+        final String stopWordsFilePath="./src/main/resources/stopwords.txt";
+        FolderPath folderPath = new FolderPath(datasetFolderPath,stopWordsFilePath);
         new Application(folderPath).run();
     }
 }
