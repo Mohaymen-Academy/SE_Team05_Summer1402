@@ -8,16 +8,6 @@ public class Dictionary {
         dictionary = new InvertedIndex().createDataStructure();
     }
 
-    Dictionary setTokenizer(ITokenizer newTokenizer) {
-        NLP.setTokenizer(newTokenizer);
-        return this;
-    }
-
-    Dictionary setNormalizer(INormalizer newNormalizer) {
-        NLP.setNormalizer(newNormalizer);
-        return this;
-    }
-
     public ArrayList<String> Search(String query) {
         QueryHandler queryHandler = new QueryHandler();
         HashMap<String, ArrayList<String>> queries = queryHandler.parseQueries(query);

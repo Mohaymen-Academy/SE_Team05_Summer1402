@@ -3,9 +3,30 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Application {
-    public void run() {
-        Dictionary dictionary = new Dictionary();
+    private Dictionary dictionary;
+
+    public Application() {
+        this.dictionary = new Dictionary();
+    }
+
+    public void runInConsole() {
         getInput(dictionary);
+    }
+    public ArrayList<String> Search(String query) {
+        return dictionary.Search(query);
+    }
+    Application setTokenizer(ITokenizer newTokenizer) {
+        NLP.setTokenizer(newTokenizer);
+        return this;
+    }
+
+    Application setNormalizer(INormalizer newNormalizer) {
+        NLP.setNormalizer(newNormalizer);
+        return this;
+    }
+    Application setStopWords(ArrayList<String> newStopWords) {
+        NLP.setStopWords(newStopWords);
+        return this;
     }
 
     private void printQueryResult(ArrayList<String> result, long startTime) {

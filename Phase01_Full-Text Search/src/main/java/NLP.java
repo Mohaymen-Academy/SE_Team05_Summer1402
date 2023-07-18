@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 public class NLP {
     private static INormalizer normalizer = new Normalizer();
     private static ITokenizer tokenizer = new Tokenizer();
+    private static ArrayList<String> stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopwordsPath());
 
     public static INormalizer getNormalizer() {
         return normalizer;
@@ -21,10 +22,12 @@ public class NLP {
     public static void setTokenizer(ITokenizer tokenizer) {
         NLP.tokenizer = tokenizer;
     }
+    public static void setStopWords(ArrayList<String> stopWords) {
+        NLP.stopWords = stopWords;
+    }
 
     public static ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        ArrayList<String> stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopwordsPath());
         String stopWordsPattern = "[" + String.join("", stopWords) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
