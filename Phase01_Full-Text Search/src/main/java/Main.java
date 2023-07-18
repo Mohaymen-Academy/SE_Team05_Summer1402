@@ -71,17 +71,17 @@ public class Main {
 
     private static void getInput(HashMap<String, ArrayList<String>> dictionary) {
         Scanner scanner = new Scanner(System.in);
-        String query, buffer;
-        do {
+        String query;
+        while (true) {
+            System.out.println("Type \"!\" if you want to exit the program.");
             System.out.print("Search: ");
             query = scanner.nextLine();
+            if (query.equals("!")) break;
             long startTime = System.nanoTime();
             HashMap<String, ArrayList<String>> queries = parseQueries(query);
             ArrayList<String> result = runQueries(queries, dictionary);
             printQueryResult(result, startTime);
-            System.out.println("Do you want to exit program? [y/n]");
-            buffer = scanner.nextLine().toLowerCase();
-        } while (!buffer.equals("y") && !buffer.equals("yes"));
+        }
         scanner.close();
     }
 
