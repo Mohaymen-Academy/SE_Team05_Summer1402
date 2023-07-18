@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Application {
     private Dictionary dictionary;
 
+    // TODO: 7/18/2023 Dictionary must be newed after setting new attributes
     public Application() {
         this.dictionary = new Dictionary();
     }
