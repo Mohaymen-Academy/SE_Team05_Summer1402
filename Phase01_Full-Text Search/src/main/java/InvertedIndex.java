@@ -31,10 +31,10 @@ public class InvertedIndex {
 
         for (String title : getBooks().keySet()) {
             String content = getBooks().get(title);
-            String[] tokens = NLP.tokenize(content);// tokenizer
+            String[] tokens = NLP.getTokenizer().tokenize(content);
             ArrayList<String> filteredTokens = NLP.filterTokens(tokens);// TODO: inject stopwords,normalizer
             for (String filteredToken : filteredTokens) {
-                String normalized = NLP.getNormalizer().normalize(filteredToken);// normalizer
+                String normalized = NLP.getNormalizer().normalize(filteredToken);
                 addToDataStructure(dict, title, normalized);
             }
         }

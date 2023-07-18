@@ -8,9 +8,12 @@ public class Dictionary {
         dictionary = new InvertedIndex().createDataStructure();
     }
 
+    Dictionary setTokenizer(ITokenizer newTokenizer) {
+        NLP.setTokenizer(newTokenizer);
+        return this;
+    }
 
-
-    Dictionary setNormalizer(INormalizer newNormalizer){
+    Dictionary setNormalizer(INormalizer newNormalizer) {
         NLP.setNormalizer(newNormalizer);
         return this;
     }

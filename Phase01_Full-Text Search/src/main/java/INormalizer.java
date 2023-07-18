@@ -1,3 +1,3 @@
 public interface INormalizer {
-    public String normalize(String token);
+    String normalize(String token);
 }

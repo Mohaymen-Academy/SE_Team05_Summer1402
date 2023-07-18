@@ -1,23 +1,26 @@
-import opennlp.tools.stemmer.PorterStemmer;
-import opennlp.tools.tokenize.SimpleTokenizer;
-
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NLP {
-    private static INormalizer normalizer=new Normalizer();
+    private static INormalizer normalizer = new Normalizer();
+    private static ITokenizer tokenizer = new Tokenizer();
+
     public static INormalizer getNormalizer() {
         return normalizer;
     }
+
     public static void setNormalizer(INormalizer normalizer) {
         NLP.normalizer = normalizer;
     }
-    public static String[] tokenize(String text) {
-        SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
-        return tokenizer.tokenize(text);
+
+    public static ITokenizer getTokenizer() {
+        return tokenizer;
     }
 
+    public static void setTokenizer(ITokenizer tokenizer) {
+        NLP.tokenizer = tokenizer;
+    }
 
     public static ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
