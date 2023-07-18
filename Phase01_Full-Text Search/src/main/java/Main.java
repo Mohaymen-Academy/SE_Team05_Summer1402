@@ -31,11 +31,6 @@ public class Main {
         return queries;
     }
 
-    private static void printQueryResult(ArrayList<String> result, long startTime) {
-        System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
-        System.out.println(result);
-    }
-
     private static ArrayList<String> runQueries(HashMap<String, ArrayList<String>> queries, HashMap<String, ArrayList<String>> dictionary) {
         ArrayList<String> result = new ArrayList<>();
         boolean firstPart = true;
@@ -67,6 +62,11 @@ public class Main {
         ArrayList<String> result = dictionary.get(q);
         if (result == null) return new ArrayList<>();
         return result;
+    }
+
+    private static void printQueryResult(ArrayList<String> result, long startTime) {
+        System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
+        System.out.println(result);
     }
 
     private static void getInput(HashMap<String, ArrayList<String>> dictionary) {

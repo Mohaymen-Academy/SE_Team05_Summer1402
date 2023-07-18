@@ -24,9 +24,7 @@ public class InvertedIndex {
     public static String normalize(String token) {
         PorterStemmer stemmer = new PorterStemmer();
         token = token.toLowerCase();
-        String stemmed = stemmer.stem(token);
-        if (stemmed.equals("O")) return token;
-        return stemmed;
+        return stemmer.stem(token);
     }
 
     private void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
