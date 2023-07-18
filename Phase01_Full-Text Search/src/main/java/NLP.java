@@ -6,16 +6,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NLP {
+    private static INormalizer normalizer=new Normalizer();
+    public static INormalizer getNormalizer() {
+        return normalizer;
+    }
+    public static void setNormalizer(INormalizer normalizer) {
+        NLP.normalizer = normalizer;
+    }
     public static String[] tokenize(String text) {
         SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
         return tokenizer.tokenize(text);
     }
 
-    public static String normalize(String token) {
-        PorterStemmer stemmer = new PorterStemmer();
-        token = token.toLowerCase();
-        return stemmer.stem(token);
-    }
 
     public static ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
@@ -25,7 +27,8 @@ public class NLP {
         for (String token : tokens) {
             Matcher matcher = pattern.matcher(token);
             String filtered = matcher.replaceAll("");
-            if (!filtered.isBlank()) filteredTokens.add(filtered);
+            if (!filtered.isBlank())
+                filteredTokens.add(filtered);
         }
         return filteredTokens;
     }

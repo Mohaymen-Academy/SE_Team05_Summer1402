@@ -4,7 +4,6 @@ import java.util.HashSet;
 
 public class InvertedIndex {
 
-
     private HashMap<String, String> books;
 
     public InvertedIndex() {
@@ -16,7 +15,7 @@ public class InvertedIndex {
         books = new FileReader().getDataset(folderPath);
     }
 
-    private void addToDictionary(HashMap<String, HashSet<String>> dict, String title, String word) {
+    private void addToDataStructure(HashMap<String, HashSet<String>> dict, String title, String word) {
         if (!dict.containsKey(word)) {
             HashSet<String> bookList = new HashSet<>();
             bookList.add(title);
@@ -32,19 +31,20 @@ public class InvertedIndex {
 
         for (String title : getBooks().keySet()) {
             String content = getBooks().get(title);
-            String[] tokens = NLP.tokenize(content);
-            ArrayList<String> filteredTokens = NLP.filterTokens(tokens);
+            String[] tokens = NLP.tokenize(content);// tokenizer
+            ArrayList<String> filteredTokens = NLP.filterTokens(tokens);// TODO: inject stopwords,normalizer
             for (String filteredToken : filteredTokens) {
-                String normalized = NLP.normalize(filteredToken);
-                addToDictionary(dict, title, normalized);
+                String normalized = NLP.getNormalizer().normalize(filteredToken);// normalizer
+                addToDataStructure(dict, title, normalized);
             }
         }
-
+        // TODO: HashSet to ArrayList
         HashMap<String, ArrayList<String>> dictionary = new HashMap<>();
         for (String key : dict.keySet())
             dictionary.put(key, Util.toArrayList(dict.get(key)));
         return dictionary;
     }
+
     protected HashMap<String, String> getBooks() {
         return books;
     }
