@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InvertedIndex {
-    private FolderPath folderPath;
+    private final FolderPath folderPath;
     private HashMap<String, String> books;
 
     public InvertedIndex(FolderPath folderPath) {
