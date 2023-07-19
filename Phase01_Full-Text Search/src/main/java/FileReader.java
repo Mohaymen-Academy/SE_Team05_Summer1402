@@ -49,7 +49,7 @@ public class FileReader {
         return fileText;
     }
 
-    public ArrayList<String> getStopWords(String path) {
+    public String[] getStopWords(String path) {
         ArrayList<String> stopWords = new ArrayList<>();
         try {
             FileInputStream fis = new FileInputStream(path);
@@ -60,6 +60,6 @@ public class FileReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stopWords;
+        return stopWords.toArray(String[]::new);
     }
 }

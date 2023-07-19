@@ -34,7 +34,7 @@ public class Application {
         return this;
     }
 
-    public Application setStopWords(ArrayList<String> newStopWords) {
+    public Application setStopWords(String[] newStopWords) {
         NLP.setStopWords(newStopWords);
         return this;
     }
