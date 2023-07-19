@@ -22,12 +22,12 @@ public class Application {
         return dictionary.Search(query);
     }
 
-    public Application setTokenizer(ITokenizer newTokenizer) {
+    public Application setTokenizer(Tokenizer newTokenizer) {
         NLP.setTokenizer(newTokenizer);
         return this;
     }
 
-    public Application setNormalizer(INormalizer newNormalizer) {
+    public Application setNormalizer(Normalizer newNormalizer) {
         NLP.setNormalizer(newNormalizer);
         return this;
     }

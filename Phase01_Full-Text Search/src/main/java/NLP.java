@@ -3,23 +3,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NLP {
-    private static INormalizer normalizer = new Normalizer();
-    private static ITokenizer tokenizer = new Tokenizer();
+    private static Normalizer normalizer = new DefaultNormalizer();
+    private static Tokenizer tokenizer = new DefaultTokenizer();
     private static String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopWordsPath());
 
-    public static INormalizer getNormalizer() {
+    public static Normalizer getNormalizer() {
         return normalizer;
     }
 
-    public static void setNormalizer(INormalizer normalizer) {
+    public static void setNormalizer(Normalizer normalizer) {
         NLP.normalizer = normalizer;
     }
 
-    public static ITokenizer getTokenizer() {
+    public static Tokenizer getTokenizer() {
         return tokenizer;
     }
 
-    public static void setTokenizer(ITokenizer tokenizer) {
+    public static void setTokenizer(Tokenizer tokenizer) {
         NLP.tokenizer = tokenizer;
     }
 
