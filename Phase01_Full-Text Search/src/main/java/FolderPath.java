@@ -1,6 +1,5 @@
 public class FolderPath {
     private static FolderPath folderPath = null;
-
     private String dataPath;
     private String stopwordsPath;
 
@@ -17,6 +16,10 @@ public class FolderPath {
 
     public String getDataPath() {
         return dataPath;
+    }
+
+    public void setDataPath(String dataPath) {
+        this.dataPath = dataPath;
     }
 
     public String getStopwordsPath() {

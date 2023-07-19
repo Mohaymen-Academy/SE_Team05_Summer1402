@@ -38,7 +38,10 @@ public class Application {
         NLP.setStopWords(newStopWords);
         return this;
     }
-
+    public Application setDataPathFolder(String newDataPathFolder) {
+        FolderPath.getInstance().setDataPath(newDataPathFolder);
+        return this;
+    }
     private void printQueryResult(ArrayList<String> result, long startTime) {
         System.out.println(
                 MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
