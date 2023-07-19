@@ -36,31 +36,55 @@ public class QueryHandler {
 
     public ArrayList<String> runQueries(HashMap<String, ArrayList<String>> queries,
                                         HashMap<String, ArrayList<String>> dictionary) {
-        ArrayList<String> result = new ArrayList<>();
+
+        ArrayList<String> result = getANDQueries(queries.get("AND"), dictionary);;
+
+        ArrayList<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
+        if (queries.get("AND").isEmpty()) result = unionPlusResult;
+        else if (!queries.get("OR").isEmpty()) result.retainAll(unionPlusResult);
+
+        getNOTQueries(queries.get("NOT"), dictionary, result);
+
+        return result;
+    }
+
+    private void getNOTQueries(ArrayList<String> queries,
+                               HashMap<String, ArrayList<String>> dictionary,
+                               ArrayList<String> result) {
+        ArrayList<String> searchResult;
+        for (String q : queries) {
+            searchResult = find(dictionary, q);
+            result.removeAll(searchResult);
+        }
+    }
+
+    private ArrayList<String> getORQueries(ArrayList<String> queries,
+                                           HashMap<String, ArrayList<String>> dictionary) {
+        ArrayList<String> searchResult;
+        ArrayList<String> unionPlusResult = new ArrayList<>();
+        for (String q : queries) {
+            searchResult = find(dictionary, q);
+            unionPlusResult.removeAll(searchResult);
+            unionPlusResult.addAll(searchResult);
+        }
+        return unionPlusResult;
+    }
+
+    private ArrayList<String> getANDQueries(ArrayList<String> queries,
+                                            HashMap<String, ArrayList<String>> dictionary) {
         boolean firstPart = true;
-        for (String q : queries.get("AND")) {
-            ArrayList<String> searchResult = find(dictionary, q);
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> searchResult;
+        for (String q : queries) {
+            searchResult = find(dictionary, q);
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
             } else result.retainAll(searchResult);
         }
-
-        ArrayList<String> unionPlusResult = new ArrayList<>();
-        for (String q : queries.get("OR")) {
-            ArrayList<String> searchResult = find(dictionary, q);
-            unionPlusResult.removeAll(searchResult);
-            unionPlusResult.addAll(searchResult);
-        }
-        if (queries.get("OR").size() > 0) result.retainAll(unionPlusResult);
-
-
-        for (String q : queries.get("NOT")) {
-            ArrayList<String> searchResult = find(dictionary, q);
-            result.removeAll(searchResult);
-        }
         return result;
     }
+
 
     private ArrayList<String> find(HashMap<String, ArrayList<String>> dictionary, String q) {
         ArrayList<String> result = dictionary.get(q);
