@@ -26,11 +26,10 @@ public class InvertedIndex {
         }
     }
 
-    public HashMap<String, ArrayList<String>> create() {
+    public HashMap<String, HashSet<String>> create() {
         HashMap<String, String[]> tokenizedWords = tokenizeBookWords();
         HashMap<String, ArrayList<String>> filteredWords = filterBookWords(tokenizedWords);
-        HashMap<String, HashSet<String>> dictHashSet = normalizeBookWords(filteredWords);
-        return Util.convertHashMapSetToHashMapList(dictHashSet);
+        return normalizeBookWords(filteredWords);
     }
 
     private HashMap<String, String[]> tokenizeBookWords(){

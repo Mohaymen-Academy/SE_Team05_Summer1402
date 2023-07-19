@@ -18,7 +18,8 @@ public class Application {
     }
 
     public ArrayList<String> Search(String query) {
-        if (dictionary == null) init();
+        if (dictionary == null)
+            init();
         return dictionary.Search(query);
     }
 
@@ -57,7 +58,7 @@ public class Application {
             String query = scanner.nextLine();
             if (query.equals("!")) break;
             watch.start();
-            ArrayList<String> result = dictionary.Search(query);
+            ArrayList<String> result = Search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();

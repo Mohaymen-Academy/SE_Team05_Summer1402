@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class QueryHandler {
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
@@ -34,61 +35,81 @@ public class QueryHandler {
         }
     }
 
-    public ArrayList<String> runQueries(HashMap<String, ArrayList<String>> queries,
-                                        HashMap<String, ArrayList<String>> dictionary) {
+    public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries,
+                                        HashMap<String, HashSet<String>> dictionary) {
 
-        ArrayList<String> result = getANDQueries(queries.get("AND"), dictionary);;
+        HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);;
 
-        ArrayList<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
+        HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
         if (queries.get("AND").isEmpty()) result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty()) result.retainAll(unionPlusResult);
+        else if (!queries.get("OR").isEmpty()) result=intersect(result,unionPlusResult);//result.retainAll(unionPlusResult);
 
         getNOTQueries(queries.get("NOT"), dictionary, result);
 
         return result;
     }
-
+    private HashSet<String> intersect(HashSet<String> A,HashSet<String> B){
+        HashSet<String> result=new HashSet<>();
+        for (String s : A) {
+            if (B.contains(s))result.add(s);
+        }
+        return result;
+    }
+    private HashSet<String> union(HashSet<String> A,HashSet<String> B){
+        HashSet<String> result=new HashSet<>();
+        result.addAll(A);
+        result.addAll(B);
+        return result;
+    }
+    private HashSet<String> minus(HashSet<String> A,HashSet<String> B){
+        HashSet<String> result=new HashSet<>();
+        for (String s : A) {
+            if(!B.contains(s))
+                result.add(s);
+        }
+        return result;
+    }
     private void getNOTQueries(ArrayList<String> queries,
-                               HashMap<String, ArrayList<String>> dictionary,
-                               ArrayList<String> result) {
-        ArrayList<String> searchResult;
+                               HashMap<String, HashSet<String>> dictionary,
+                               HashSet<String> result) {
         for (String q : queries) {
-            searchResult = find(dictionary, q);
+            HashSet<String> searchResult = find(dictionary, q);
+//            result=minus(result,searchResult);
             result.removeAll(searchResult);
         }
     }
 
-    private ArrayList<String> getORQueries(ArrayList<String> queries,
-                                           HashMap<String, ArrayList<String>> dictionary) {
-        ArrayList<String> searchResult;
-        ArrayList<String> unionPlusResult = new ArrayList<>();
+    private HashSet<String> getORQueries(ArrayList<String> queries,
+                                           HashMap<String, HashSet<String>> dictionary) {
+        HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
-            searchResult = find(dictionary, q);
-            unionPlusResult.removeAll(searchResult);
-            unionPlusResult.addAll(searchResult);
+            HashSet<String> searchResult = find(dictionary, q);
+            unionPlusResult=union(unionPlusResult,searchResult);
+//            unionPlusResult.removeAll(searchResult);
+//            unionPlusResult.addAll(searchResult);
         }
         return unionPlusResult;
     }
 
-    private ArrayList<String> getANDQueries(ArrayList<String> queries,
-                                            HashMap<String, ArrayList<String>> dictionary) {
+    private HashSet<String> getANDQueries(ArrayList<String> queries,
+                                            HashMap<String, HashSet<String>> dictionary) {
         boolean firstPart = true;
-        ArrayList<String> result = new ArrayList<>();
-        ArrayList<String> searchResult;
+        HashSet<String> result = new HashSet<>();
+        HashSet<String> searchResult;
         for (String q : queries) {
             searchResult = find(dictionary, q);
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
-            } else result.retainAll(searchResult);
+            } else result=intersect(result,searchResult); //result.retainAll(searchResult);
         }
         return result;
     }
 
 
-    private ArrayList<String> find(HashMap<String, ArrayList<String>> dictionary, String q) {
-        ArrayList<String> result = dictionary.get(q);
-        if (result == null) return new ArrayList<>();
+    private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
+        HashSet<String> result = dictionary.get(q);
+        if (result == null) return new HashSet<>();
         return result;
     }
 }
