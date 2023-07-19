@@ -17,6 +17,13 @@ public class Application {
         return this;
     }
 
+    public Application addByFolder(String newDataPathFolder) {
+        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
+        for (var title : docs.keySet())
+            this.add(title, docs.get(title));
+        return this;
+    }
+
     public Application setTokenizer(Tokenizer newTokenizer) {
         NLP.setTokenizer(newTokenizer);
         return this;
@@ -30,19 +37,6 @@ public class Application {
     public Application setStopWords(String[] newStopWords) {
         NLP.setStopWords(newStopWords);
         return this;
-    }
-
-    public Application addByFolder(String newDataPathFolder) {
-        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
-        for (var title : docs.keySet())
-            this.add(title, docs.get(title));
-        return this;
-    }
-
-    private void printQueryResult(ArrayList<String> result, long duration) {
-        System.out.println(
-                MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
-        System.out.println(result);
     }
 
     public void runInConsole() {
@@ -60,5 +54,11 @@ public class Application {
             watch.reset();
         }
         scanner.close();
+    }
+
+    private void printQueryResult(ArrayList<String> result, long duration) {
+        System.out.println(
+                MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
+        System.out.println(result);
     }
 }
