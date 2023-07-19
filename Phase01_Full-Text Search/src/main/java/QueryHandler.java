@@ -42,41 +42,20 @@ public class QueryHandler {
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
         if (queries.get("AND").isEmpty()) result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty()) result=intersect(result,unionPlusResult);//result.retainAll(unionPlusResult);
+        else if (!queries.get("OR").isEmpty()) result=Util.intersect(result,unionPlusResult);
 
-        getNOTQueries(queries.get("NOT"), dictionary, result);
+        return getNOTQueries(queries.get("NOT"), dictionary, result);
+    }
 
-        return result;
-    }
-    private HashSet<String> intersect(HashSet<String> A,HashSet<String> B){
-        HashSet<String> result=new HashSet<>();
-        for (String s : A) {
-            if (B.contains(s))result.add(s);
-        }
-        return result;
-    }
-    private HashSet<String> union(HashSet<String> A,HashSet<String> B){
-        HashSet<String> result=new HashSet<>();
-        result.addAll(A);
-        result.addAll(B);
-        return result;
-    }
-    private HashSet<String> minus(HashSet<String> A,HashSet<String> B){
-        HashSet<String> result=new HashSet<>();
-        for (String s : A) {
-            if(!B.contains(s))
-                result.add(s);
-        }
-        return result;
-    }
-    private void getNOTQueries(ArrayList<String> queries,
-                               HashMap<String, HashSet<String>> dictionary,
-                               HashSet<String> result) {
+
+    private HashSet<String> getNOTQueries(ArrayList<String> queries,
+                                          HashMap<String, HashSet<String>> dictionary,
+                                          HashSet<String> result) {
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-//            result=minus(result,searchResult);
-            result.removeAll(searchResult);
+            result=Util.minus(result,searchResult);
         }
+        return result;
     }
 
     private HashSet<String> getORQueries(ArrayList<String> queries,
@@ -84,9 +63,7 @@ public class QueryHandler {
         HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-            unionPlusResult=union(unionPlusResult,searchResult);
-//            unionPlusResult.removeAll(searchResult);
-//            unionPlusResult.addAll(searchResult);
+            unionPlusResult=Util.union(unionPlusResult,searchResult);
         }
         return unionPlusResult;
     }
@@ -101,14 +78,14 @@ public class QueryHandler {
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
-            } else result=intersect(result,searchResult); //result.retainAll(searchResult);
+            } else result=Util.intersect(result,searchResult);
         }
         return result;
     }
 
 
     private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
-        HashSet<String> result = dictionary.get(q);
+        HashSet<String> result = (HashSet<String>) dictionary.get(q).clone();
         if (result == null) return new HashSet<>();
         return result;
     }

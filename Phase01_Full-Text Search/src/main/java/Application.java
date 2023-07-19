@@ -18,8 +18,7 @@ public class Application {
     }
 
     public ArrayList<String> Search(String query) {
-        if (dictionary == null)
-            init();
+        if (dictionary == null) init();
         return dictionary.Search(query);
     }
 
