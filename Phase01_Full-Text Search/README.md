@@ -1,22 +1,20 @@
 # About
-This project is a mini text search library which you give your data, and it searches anything you want fast. 
+This project is a mini "Full Text Search" library which receives your data, and searches through it fast. 
 
 # Usage
+1. Create an object from Application class
+2. Configure the parameters or leave them as default:
+   1. Set your normalizer by creating a class implementing Normalizer interface and set the object in setNormalizer method.
+   2. Set your tokenizer by creating a class implementing Tokenizer interface and set the object in setTokenizer method.
+   3. Set your stop-words by setStopWords method.
+   4. Set your dataset folder path by addByFolder method (Set your folder path after setting attributes).
+3. Run init method to create dictionary for you.
+4. Use search method to search your query in data set.
 
-1. create an object from Application class
-2. configure the parameters or leave as default:
-   1. set your dataset folder path by setDataPathFolder method.
-   2. set your normalizer by creating a class implementing Normalizer interface and set the object in setNormalizer method.
-   3. set your tokenizer by creating a class implementing Tokenizer interface and set the object in setTokenizer method.
-   4. set your stop-words by setStopWords method.
-3. run init method to create dictionary for you.
-4. use search method to search your query in data set.
-
-    sample query:
+    Sample query:
 
     `get help +illness +disease -cough`
 5. you can also use runInConsole to input queries from console.
-
 # Example
 
 ```java

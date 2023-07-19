@@ -6,17 +6,14 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Application {
-    private Dictionary dictionary = new Dictionary();
-
-    public void runInConsole() {
-        getInput(dictionary);
-    }
+    private final Dictionary dictionary = new Dictionary();
 
     public ArrayList<String> Search(String query) {
         return dictionary.Search(query);
     }
-    public Application add(String title, String content){
-        this.dictionary.add(new Doc(title,content));
+
+    public Application add(String title, String content) {
+        this.dictionary.add(new Doc(title, content));
         return this;
     }
 
@@ -37,9 +34,8 @@ public class Application {
 
     public Application addByFolder(String newDataPathFolder) {
         HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
-        for(var title : docs.keySet()){
-            this.add(title,docs.get(title));
-        }
+        for (var title : docs.keySet())
+            this.add(title, docs.get(title));
         return this;
     }
 
@@ -49,7 +45,7 @@ public class Application {
         System.out.println(result);
     }
 
-    private void getInput(Dictionary dictionary) {
+    public void runInConsole() {
         Scanner scanner = new Scanner(System.in);
         StopWatch watch = new StopWatch();
         while (true) {

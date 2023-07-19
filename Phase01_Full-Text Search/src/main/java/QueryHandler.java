@@ -36,13 +36,14 @@ public class QueryHandler {
     }
 
     public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries,
-                                        HashMap<String, HashSet<String>> dictionary) {
+                                      HashMap<String, HashSet<String>> dictionary) {
 
-        HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);;
+        HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);
+        ;
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
         if (queries.get("AND").isEmpty()) result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty()) result=Util.intersect(result,unionPlusResult);
+        else if (!queries.get("OR").isEmpty()) result = Util.intersect(result, unionPlusResult);
 
         return getNOTQueries(queries.get("NOT"), dictionary, result);
     }
@@ -53,23 +54,23 @@ public class QueryHandler {
                                           HashSet<String> result) {
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-            result=Util.minus(result,searchResult);
+            result = Util.minus(result, searchResult);
         }
         return result;
     }
 
     private HashSet<String> getORQueries(ArrayList<String> queries,
-                                           HashMap<String, HashSet<String>> dictionary) {
+                                         HashMap<String, HashSet<String>> dictionary) {
         HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-            unionPlusResult=Util.union(unionPlusResult,searchResult);
+            unionPlusResult = Util.union(unionPlusResult, searchResult);
         }
         return unionPlusResult;
     }
 
     private HashSet<String> getANDQueries(ArrayList<String> queries,
-                                            HashMap<String, HashSet<String>> dictionary) {
+                                          HashMap<String, HashSet<String>> dictionary) {
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
         HashSet<String> searchResult;
@@ -78,17 +79,16 @@ public class QueryHandler {
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
-            } else result=Util.intersect(result,searchResult);
+            } else result = Util.intersect(result, searchResult);
         }
         return result;
     }
 
 
     private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
-        var search=dictionary.get(q);
-        if (search == null) {
+        HashSet<String> search = dictionary.get(q);
+        if (search == null)
             return new HashSet<>();
-        }
         HashSet<String> result = (HashSet<String>) search.clone();
         if (result == null) return new HashSet<>();
         return result;

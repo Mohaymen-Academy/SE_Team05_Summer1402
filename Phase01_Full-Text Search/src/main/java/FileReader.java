@@ -11,8 +11,6 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class FileReader {
-
-
     private Doc getFileNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;
