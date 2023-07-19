@@ -13,6 +13,13 @@ public class Application {
         return this;
     }
 
+    public Application addByFolder(String newDataPathFolder) {
+        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
+        for (String title : docs.keySet())
+            this.add(title, docs.get(title));
+        return this;
+    }
+
     public Application setTokenizer(Tokenizer newTokenizer) {
         NLP.setTokenizer(newTokenizer);
         return this;
@@ -25,13 +32,6 @@ public class Application {
 
     public Application setStopWords(String[] newStopWords) {
         NLP.setStopWords(newStopWords);
-        return this;
-    }
-
-    public Application addByFolder(String newDataPathFolder) {
-        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
-        for (var title : docs.keySet())
-            this.add(title, docs.get(title));
         return this;
     }
 }
