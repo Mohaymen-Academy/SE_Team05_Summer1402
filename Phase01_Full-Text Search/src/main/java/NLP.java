@@ -28,7 +28,7 @@ public class NLP {
 
     public static ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        String stopWordsPattern = "[" + String.join("", stopWords) + "]";
+        String stopWordsPattern = "^[" + String.join("", stopWords) + "]$";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
             Matcher matcher = pattern.matcher(token);
