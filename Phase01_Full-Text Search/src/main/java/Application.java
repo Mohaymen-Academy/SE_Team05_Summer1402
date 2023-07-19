@@ -6,9 +6,7 @@ public class Application {
     private Dictionary dictionary = null;
 
     public void runInConsole() {
-        if (dictionary == null) {
-            init();
-        }
+        if (dictionary == null) init();
         getInput(dictionary);
     }
 
@@ -18,9 +16,7 @@ public class Application {
     }
 
     public ArrayList<String> Search(String query) {
-        if (dictionary == null) {
-            init();
-        }
+        if (dictionary == null) init();
         return dictionary.Search(query);
     }
 
@@ -38,10 +34,12 @@ public class Application {
         NLP.setStopWords(newStopWords);
         return this;
     }
+
     public Application setDataPathFolder(String newDataPathFolder) {
         FolderPath.getInstance().setDataPath(newDataPathFolder);
         return this;
     }
+
     private void printQueryResult(ArrayList<String> result, long startTime) {
         System.out.println(
                 MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
