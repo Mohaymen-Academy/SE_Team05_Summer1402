@@ -15,7 +15,7 @@ public class Dictionary {
         invertedIndex.addDoc(doc, dictionary);
     }
 
-    public ArrayList<String> Search(String query) {
+    public ArrayList<String> search(String query) {
         if (query.isBlank()) return new ArrayList<>();
         QueryHandler queryHandler = new QueryHandler();
         HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
