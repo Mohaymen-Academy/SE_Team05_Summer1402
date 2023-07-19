@@ -1,11 +1,11 @@
 public class FolderPath {
     private static FolderPath folderPath = null;
     private String dataPath;
-    private final String stopwordsPath;
+    private final String stopWordsPath;
 
     private FolderPath() {
         dataPath = "./src/main/resources/Software Books Dataset/";
-        stopwordsPath = "./src/main/resources/stopwords.txt";
+        stopWordsPath = "./src/main/resources/stopWords.txt";
     }
 
     public static FolderPath getInstance() {
@@ -21,7 +21,7 @@ public class FolderPath {
         this.dataPath = dataPath;
     }
 
-    public String getStopwordsPath() {
-        return stopwordsPath;
+    public String getStopWordsPath() {
+        return stopWordsPath;
     }
 }

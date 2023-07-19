@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class NLP {
     private static INormalizer normalizer = new Normalizer();
     private static ITokenizer tokenizer = new Tokenizer();
-    private static String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopwordsPath());
+    private static String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopWordsPath());
 
     public static INormalizer getNormalizer() {
         return normalizer;
@@ -22,6 +22,7 @@ public class NLP {
     public static void setTokenizer(ITokenizer tokenizer) {
         NLP.tokenizer = tokenizer;
     }
+
     public static void setStopWords(String[] stopWords) {
         NLP.stopWords = stopWords;
     }

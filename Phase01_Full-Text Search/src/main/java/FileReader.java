@@ -11,17 +11,10 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class FileReader {
-    private static class Book {
-        private final String _bookName;
-        private final String _bookContent;
-
-        public Book(String bookName, String bookContent) {
-            this._bookName = bookName;
-            this._bookContent = bookContent;
-        }
+    private record DataFile(String dataFileName, String dataFileContent) {
     }
 
-    private Book getBookNameAndContent(Path path) {
+    private DataFile getFileNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;
         try {
@@ -32,15 +25,15 @@ public class FileReader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new Book(fileName, fileContent);
+        return new DataFile(fileName, fileContent);
     }
 
     public HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
-                Book book = getBookNameAndContent(p);
-                fileText.put(book._bookName, book._bookContent);
+                DataFile file = getFileNameAndContent(p);
+                fileText.put(file.dataFileName, file.dataFileContent);
             });
         } catch (IOException e) {
             e.printStackTrace();

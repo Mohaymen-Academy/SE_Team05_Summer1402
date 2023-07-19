@@ -50,13 +50,12 @@ public class Application {
 
     private void getInput(Dictionary dictionary) {
         Scanner scanner = new Scanner(System.in);
-        StopWatch watch=new StopWatch();
+        StopWatch watch = new StopWatch();
         while (true) {
             System.out.println("Type \"!\" if you want to exit the program.");
             System.out.print("Search: ");
             String query = scanner.nextLine();
-            if (query.equals("!"))
-                break;
+            if (query.equals("!")) break;
             watch.start();
             ArrayList<String> result = dictionary.Search(query);
             watch.stop();

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QueryHandler {
-    public HashMap<String, ArrayList<String>> parseQueries(String query) {
+    public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
 
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {{
             put("AND", new ArrayList<>());
@@ -11,26 +11,31 @@ public class QueryHandler {
         }};
 
         String[] parts = query.split(" +");
-        for (String part : parts) {
-            switch (part.charAt(0)) {
-                case '+':
-                    ArrayList<String> or = queries.get("OR");
-                    or.add(NLP.getNormalizer().normalize(part.substring(1)));
-                    break;
-                case '-':
-                    ArrayList<String> not = queries.get("NOT");
-                    not.add(NLP.getNormalizer().normalize(part.substring(1)));
-                    break;
-                default:
-                    ArrayList<String> and = queries.get("AND");
-                    and.add(NLP.getNormalizer().normalize(part));
-                    break;
-            }
-        }
+        normalizeQueries(parts, queries);
         return queries;
     }
 
-    public ArrayList<String> runQueries(HashMap<String, ArrayList<String>> queries, HashMap<String, ArrayList<String>> dictionary) {
+    private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
+        for (String query : queries) {
+            switch (query.charAt(0)) {
+                case '+' -> {
+                    ArrayList<String> or = queryList.get("OR");
+                    or.add(NLP.getNormalizer().normalize(query.substring(1)));
+                }
+                case '-' -> {
+                    ArrayList<String> not = queryList.get("NOT");
+                    not.add(NLP.getNormalizer().normalize(query.substring(1)));
+                }
+                default -> {
+                    ArrayList<String> and = queryList.get("AND");
+                    and.add(NLP.getNormalizer().normalize(query));
+                }
+            }
+        }
+    }
+
+    public ArrayList<String> runQueries(HashMap<String, ArrayList<String>> queries,
+                                        HashMap<String, ArrayList<String>> dictionary) {
         ArrayList<String> result = new ArrayList<>();
         boolean firstPart = true;
         for (String q : queries.get("AND")) {

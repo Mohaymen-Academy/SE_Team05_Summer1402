@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class InvertedIndex {
 
-    private HashMap<String, String> books;
+    private HashMap<String, String> files;
 
     public InvertedIndex() {
         populateBooks();
@@ -12,10 +12,10 @@ public class InvertedIndex {
 
     private void populateBooks() {
         String folderPath = FolderPath.getInstance().getDataPath();
-        books = new FileReader().getDataset(folderPath);
+        files = new FileReader().getDataset(folderPath);
     }
 
-    private void addToDataStructure(HashMap<String, HashSet<String>> dict, String title, String word) {
+    private void add(HashMap<String, HashSet<String>> dict, String title, String word) {
         if (!dict.containsKey(word)) {
             HashSet<String> bookList = new HashSet<>();
             bookList.add(title);
@@ -26,47 +26,46 @@ public class InvertedIndex {
         }
     }
 
-    public HashMap<String, ArrayList<String>> createDataStructure() {
-
-        HashMap<String, String[]> tokenizedWords = tokenizedBookWords();
-        HashMap<String, ArrayList<String>> filteredWords = filteredBookWords(tokenizedWords);
-        HashMap<String, HashSet<String>> dictHashSet = normalizedBookWords(filteredWords);
+    public HashMap<String, ArrayList<String>> create() {
+        HashMap<String, String[]> tokenizedWords = tokenizeBookWords();
+        HashMap<String, ArrayList<String>> filteredWords = filterBookWords(tokenizedWords);
+        HashMap<String, HashSet<String>> dictHashSet = normalizeBookWords(filteredWords);
         return Util.convertHashMapSetToHashMapList(dictHashSet);
     }
 
-    private HashMap<String, String[]> tokenizedBookWords(){
+    private HashMap<String, String[]> tokenizeBookWords(){
         HashMap<String, String[]> words = new HashMap<>();
         String[] tokens;
-        for (String title : getBooks().keySet()) {
-            String content = getBooks().get(title);
+        for (String title : getFiles().keySet()) {
+            String content = getFiles().get(title);
             tokens = NLP.getTokenizer().tokenize(content);
             words.put(title, tokens);
         }
         return words;
     }
 
-    private HashMap<String, ArrayList<String>> filteredBookWords(HashMap<String, String[]> words){
+    private HashMap<String, ArrayList<String>> filterBookWords(HashMap<String, String[]> words){
         HashMap<String, ArrayList<String>> filteredWords = new HashMap<>();
-        for (String title : getBooks().keySet()) {
+        for (String title : getFiles().keySet()) {
             ArrayList<String> filteredTokens = NLP.filterTokens(words.get(title));
             filteredWords.put(title, filteredTokens);
         }
         return filteredWords;
     }
 
-    private HashMap<String, HashSet<String>> normalizedBookWords(HashMap<String, ArrayList<String>> filteredWords){
+    private HashMap<String, HashSet<String>> normalizeBookWords(HashMap<String, ArrayList<String>> filteredWords){
         HashMap<String, HashSet<String>> dict = new HashMap<>();
 
-        for (String title : getBooks().keySet()) {
+        for (String title : getFiles().keySet()) {
             for (String filteredToken : filteredWords.get(title)) {
                 String normalized = NLP.getNormalizer().normalize(filteredToken);
-                addToDataStructure(dict, title, normalized);
+                add(dict, title, normalized);
             }
         }
         return dict;
     }
 
-    protected HashMap<String, String> getBooks() {
-        return books;
+    protected HashMap<String, String> getFiles() {
+        return files;
     }
 }
