@@ -85,7 +85,11 @@ public class QueryHandler {
 
 
     private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
-        HashSet<String> result = (HashSet<String>) dictionary.get(q).clone();
+        var search=dictionary.get(q);
+        if (search == null) {
+            return new HashSet<>();
+        }
+        HashSet<String> result = (HashSet<String>) search.clone();
         if (result == null) return new HashSet<>();
         return result;
     }

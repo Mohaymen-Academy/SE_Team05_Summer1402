@@ -11,10 +11,9 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class FileReader {
-    private record DataFile(String dataFileName, String dataFileContent) {
-    }
 
-    private DataFile getFileNameAndContent(Path path) {
+
+    private Doc getFileNameAndContent(Path path) {
         File file = new File(path.toUri());
         String fileName = null, fileContent = null;
         try {
@@ -25,15 +24,15 @@ public class FileReader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new DataFile(fileName, fileContent);
+        return new Doc(fileName, fileContent);
     }
 
     public HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
-                DataFile file = getFileNameAndContent(p);
-                fileText.put(file.dataFileName, file.dataFileContent);
+                Doc file = getFileNameAndContent(p);
+                fileText.put(file.title(), file.content());
             });
         } catch (IOException e) {
             e.printStackTrace();

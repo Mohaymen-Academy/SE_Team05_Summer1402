@@ -2,24 +2,22 @@ import org.apache.commons.lang3.time.StopWatch;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Application {
-    private Dictionary dictionary = null;
+    private Dictionary dictionary = new Dictionary();
 
     public void runInConsole() {
-        if (dictionary == null) init();
         getInput(dictionary);
     }
 
-    public Application init() {
-        this.dictionary = new Dictionary();
-        return this;
-    }
-
     public ArrayList<String> Search(String query) {
-        if (dictionary == null) init();
         return dictionary.Search(query);
+    }
+    public Application add(String title, String content){
+        this.dictionary.add(new Doc(title,content));
+        return this;
     }
 
     public Application setTokenizer(Tokenizer newTokenizer) {
@@ -37,8 +35,11 @@ public class Application {
         return this;
     }
 
-    public Application setDataPathFolder(String newDataPathFolder) {
-        FolderPath.getInstance().setDataPath(newDataPathFolder);
+    public Application addByFolder(String newDataPathFolder) {
+        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
+        for(var title : docs.keySet()){
+            this.add(title,docs.get(title));
+        }
         return this;
     }
 

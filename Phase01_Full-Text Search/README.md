@@ -23,11 +23,11 @@ This project is a mini text search library which you give your data, and it sear
 public class Main {
    public static void main(String[] args) {
       new Application()
-              .setDataPathFolder("./src/main/resources/Software Books Dataset/")
               .setNormalizer(new MyNormalizer())
               .setTokenizer(new MyTokenizer())
               .setStopWords(new String[]{"f"})
-              .init()
+              .addByFolder("./src/main/resources/Software Books Dataset/")
+              .add("Ali","goal have get compile")
               .runInConsole();
    }
 }

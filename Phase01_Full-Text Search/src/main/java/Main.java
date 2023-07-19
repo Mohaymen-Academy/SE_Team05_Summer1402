@@ -1,5 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        new Application().init().runInConsole();
+        new Application()
+                .addByFolder("./src/main/resources/Software Books Dataset/")
+                .runInConsole();
     }
 }
