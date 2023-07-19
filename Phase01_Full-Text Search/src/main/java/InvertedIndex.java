@@ -31,7 +31,6 @@ public class InvertedIndex {
         HashMap<String, String[]> tokenizedWords = tokenizedBookWords();
         HashMap<String, ArrayList<String>> filteredWords = filteredBookWords(tokenizedWords);
         HashMap<String, HashSet<String>> dictHashSet = normalizedBookWords(filteredWords);
-        // TODO: HashSet to ArrayList
         return Util.convertHashMapSetToHashMapList(dictHashSet);
     }
 
@@ -49,7 +48,7 @@ public class InvertedIndex {
     private HashMap<String, ArrayList<String>> filteredBookWords(HashMap<String, String[]> words){
         HashMap<String, ArrayList<String>> filteredWords = new HashMap<>();
         for (String title : getBooks().keySet()) {
-            ArrayList<String> filteredTokens = NLP.filterTokens(words.get(title));// TODO: inject stopwords,normalizer
+            ArrayList<String> filteredTokens = NLP.filterTokens(words.get(title));
             filteredWords.put(title, filteredTokens);
         }
         return filteredWords;
