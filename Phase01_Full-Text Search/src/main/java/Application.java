@@ -3,35 +3,45 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Application {
-    private Dictionary dictionary;
-
-    // TODO: 7/18/2023 Dictionary must be newed after setting new attributes
-    public Application() {
-        this.dictionary = new Dictionary();
-    }
+    private Dictionary dictionary = null;
 
     public void runInConsole() {
+        if (dictionary == null) {
+            init();
+        }
         getInput(dictionary);
     }
+
+    public Application init() {
+        this.dictionary = new Dictionary();
+        return this;
+    }
+
     public ArrayList<String> Search(String query) {
+        if (dictionary == null) {
+            init();
+        }
         return dictionary.Search(query);
     }
-    Application setTokenizer(ITokenizer newTokenizer) {
+
+    public Application setTokenizer(ITokenizer newTokenizer) {
         NLP.setTokenizer(newTokenizer);
         return this;
     }
 
-    Application setNormalizer(INormalizer newNormalizer) {
+    public Application setNormalizer(INormalizer newNormalizer) {
         NLP.setNormalizer(newNormalizer);
         return this;
     }
-    Application setStopWords(ArrayList<String> newStopWords) {
+
+    public Application setStopWords(ArrayList<String> newStopWords) {
         NLP.setStopWords(newStopWords);
         return this;
     }
 
     private void printQueryResult(ArrayList<String> result, long startTime) {
-        System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
+        System.out.println(
+                MessageFormat.format("{0} records found in {1}ns!", result.size(), System.nanoTime() - startTime));
         System.out.println(result);
     }
 
@@ -41,8 +51,9 @@ public class Application {
             System.out.println("Type \"!\" if you want to exit the program.");
             System.out.print("Search: ");
             String query = scanner.nextLine();
-            if (query.equals("!")) break;
-            long startTime = System.nanoTime();//TODO: separate stopwatch
+            if (query.equals("!"))
+                break;
+            long startTime = System.nanoTime();// TODO: separate stopwatch
             var result = dictionary.Search(query);
             printQueryResult(result, startTime);
         }
