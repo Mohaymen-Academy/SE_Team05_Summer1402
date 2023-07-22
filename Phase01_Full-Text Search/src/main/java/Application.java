@@ -1,4 +1,3 @@
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +6,10 @@ import java.util.HashSet;
 public class Application {
     private final InvertedIndex invertedIndex;
     private final QueryHandler queryHandler;
-    public Application(){
-        invertedIndex=new InvertedIndex();
-        queryHandler=new QueryHandler(invertedIndex.getLanguageProcessor().getNormalizer());
+
+    public Application() {
+        invertedIndex = new InvertedIndex();
+        queryHandler = new QueryHandler(invertedIndex.getLanguageProcessor().getNormalizer());
     }
 
     public ArrayList<String> search(String query) {
@@ -46,6 +46,7 @@ public class Application {
         invertedIndex.getLanguageProcessor().setStopWords(newStopWords);
         return this;
     }
+
     public Application setStopWordsByFile(String stopWordsFolder) {
         String stopWords = new FileReader().getFileContent(Paths.get(stopWordsFolder));
         setStopWords(stopWords.split("\\n+"));

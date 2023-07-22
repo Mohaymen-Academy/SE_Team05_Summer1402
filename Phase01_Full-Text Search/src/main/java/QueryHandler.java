@@ -1,10 +1,20 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class QueryHandler {
     private Normalizer normalizer;
 
     public QueryHandler(Normalizer normalizer) {
         this.normalizer = normalizer;
+    }
+
+    public void setNormalizer(Normalizer normalizer) {
+        this.normalizer = normalizer;
+    }
+
+    private Normalizer getNormalizer() {
+        return normalizer;
     }
 
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
@@ -21,9 +31,6 @@ public class QueryHandler {
         return queries;
     }
 
-    public void setNormalizer(Normalizer normalizer) {
-        this.normalizer = normalizer;
-    }
 
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
         // check if query is blank (query is trimmed, so only first object needs to be checked)
@@ -32,62 +39,38 @@ public class QueryHandler {
             switch (query.charAt(0)) {
                 case '+' -> {
                     ArrayList<String> or = queryList.get("OR");
-                    or.add(normalizer.normalize(query.substring(1)));
+                    or.add(getNormalizer().normalize(query.substring(1)));
                 }
                 case '-' -> {
                     ArrayList<String> not = queryList.get("NOT");
-                    not.add(normalizer.normalize(query.substring(1)));
+                    not.add(getNormalizer().normalize(query.substring(1)));
                 }
                 default -> {
                     ArrayList<String> and = queryList.get("AND");
-                    and.add(normalizer.normalize(query));
+                    and.add(getNormalizer().normalize(query));
                 }
             }
         }
     }
 
     public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries, InvertedIndex invertedIndex) {
+        HashSet<String> result = getANDQueries(queries.get("AND"), invertedIndex);
 
-        HashMap<String, HashSet<String>> dictionary = invertedIndex.getDictionary();
+        HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), invertedIndex);
+        if (queries.get("AND").isEmpty()) result = unionPlusResult;
+        else if (!queries.get("OR").isEmpty()) result.retainAll(unionPlusResult);
 
-        HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);
+        result.removeAll(getNOTQueries(queries.get("NOT"), invertedIndex));
 
-        HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
-        if (queries.get("AND").isEmpty())
-            result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty())
-            result.retainAll(unionPlusResult);
-
-        return getNOTQueries(queries.get("NOT"), dictionary, result);
-    }
-
-    private HashSet<String> getNOTQueries(ArrayList<String> queries,
-                                          HashMap<String, HashSet<String>> dictionary,
-                                          HashSet<String> result) {
-        for (String q : queries) {
-            HashSet<String> searchResult = find(dictionary, q);
-            result.removeAll(searchResult);
-        }
         return result;
     }
 
-    private HashSet<String> getORQueries(ArrayList<String> queries,
-                                         HashMap<String, HashSet<String>> dictionary) {
-        HashSet<String> unionPlusResult = new HashSet<>();
-        for (String q : queries) {
-            HashSet<String> searchResult = find(dictionary, q);
-            unionPlusResult.addAll(searchResult);
-        }
-        return unionPlusResult;
-    }
-
-    private HashSet<String> getANDQueries(ArrayList<String> queries,
-                                          HashMap<String, HashSet<String>> dictionary) {
+    private HashSet<String> getANDQueries(ArrayList<String> queries, InvertedIndex invertedIndex) {
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
         HashSet<String> searchResult;
         for (String q : queries) {
-            searchResult = find(dictionary, q);
+            searchResult = find(invertedIndex, q);
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
@@ -97,13 +80,25 @@ public class QueryHandler {
         return result;
     }
 
-    private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
-        HashSet<String> search = dictionary.get(q);
-        if (search == null)
-            return new HashSet<>();
-        HashSet<String> result = (HashSet<String>) search.clone();
-        if (result == null)
-            return new HashSet<>();
-        return result;
+    private HashSet<String> getNOTQueries(ArrayList<String> queries, InvertedIndex invertedIndex) {
+        HashSet<String> searchResult = new HashSet<>();
+        for (String q : queries)
+            searchResult.addAll(find(invertedIndex, q));
+        return searchResult;
+    }
+
+    private HashSet<String> getORQueries(ArrayList<String> queries, InvertedIndex invertedIndex) {
+        HashSet<String> unionPlusResult = new HashSet<>();
+        for (String q : queries) {
+            HashSet<String> searchResult = find(invertedIndex, q);
+            unionPlusResult.addAll(searchResult);
+        }
+        return unionPlusResult;
+    }
+
+    private HashSet<String> find(InvertedIndex invertedIndex, String q) {
+        HashSet<String> search = invertedIndex.getDictionary().get(q);
+        if (search == null) return new HashSet<>();
+        return new HashSet<>(search);
     }
 }

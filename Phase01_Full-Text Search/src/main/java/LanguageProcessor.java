@@ -6,10 +6,11 @@ public class LanguageProcessor {
     private Normalizer normalizer;
     private Tokenizer tokenizer;
     private String[] stopWords;
-    public LanguageProcessor(){
-        normalizer=new PorterStemmerNormalizer();
-        tokenizer=new opennlpSimpleTokenizer();
-        stopWords=new String[]{",","."};
+
+    public LanguageProcessor() {
+        normalizer = new PorterStemmerNormalizer();
+        tokenizer = new opennlpSimpleTokenizer();
+        stopWords = new String[]{",", "."};
     }
 
     public Normalizer getNormalizer() {
@@ -32,9 +33,13 @@ public class LanguageProcessor {
         this.stopWords = stopWords;
     }
 
+    public String[] getStopWords() {
+        return stopWords;
+    }
+
     public ArrayList<String> filterTokens(ArrayList<String> tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
-        String stopWordsPattern = "^[" + String.join("", stopWords) + "]$";
+        String stopWordsPattern = "^[" + String.join("", getStopWords()) + "]$";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
         for (String token : tokens) {
             Matcher matcher = pattern.matcher(token);
@@ -44,9 +49,11 @@ public class LanguageProcessor {
         }
         return filteredTokens;
     }
+
     public ArrayList<String> tokenize(String content) {
         return getTokenizer().tokenize(content);
     }
+
     public ArrayList<String> normalize(ArrayList<String> words) {
         ArrayList<String> normalizedWords = new ArrayList<>();
         for (String word : words) {

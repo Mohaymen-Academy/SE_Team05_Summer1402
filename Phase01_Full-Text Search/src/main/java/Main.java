@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Application application = new Application()
+                .setStopWords(new String[]{",", "."})
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(application);
