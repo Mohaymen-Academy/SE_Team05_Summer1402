@@ -18,6 +18,14 @@ public class InvertedIndex {
         insertWords(normalizedWords, document.title());
     }
 
+    // TODO: 7/22/2023 remove document?
+    public void addDoc(String title, String content) {
+        String[] tokenizedWords = languageProcessor.tokenize(content);
+        ArrayList<String> filteredWords = languageProcessor.filterTokens(tokenizedWords);
+        ArrayList<String> normalizedWords = languageProcessor.normalize(filteredWords);
+        insertWords(normalizedWords, title);
+    }
+
     public LanguageProcessor getLanguageProcessor() {
         return languageProcessor;
     }

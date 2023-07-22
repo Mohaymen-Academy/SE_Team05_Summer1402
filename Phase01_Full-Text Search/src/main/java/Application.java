@@ -16,7 +16,9 @@ public class Application {
         return Util.toArrayList(result);
     }
 
+    // TODO: 7/22/2023 remove document?
     public Application addDoc(String title, String content) {
+//        this.invertedIndex.addDoc(new Document(title, content));
         this.invertedIndex.addDoc(new Document(title, content));
         return this;
     }

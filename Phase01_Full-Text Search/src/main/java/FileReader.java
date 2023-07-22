@@ -16,8 +16,7 @@ public class FileReader {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
-                Document file = getFileNameAndContent(p);
-                fileText.put(file.title(), file.content());
+                fileText.put(getFileName(p), getFileContent(p));
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,17 +38,21 @@ public class FileReader {
         }
         return stopWords.toArray(String[]::new);
     }
-    private Document getFileNameAndContent(Path path) {
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString().split("\\.")[0];
+    }
+
+    private String getFileContent(Path path) {
         File file = new File(path.toUri());
-        String fileName = null, fileContent = null;
+        String fileContent = null;
         try {
             Scanner scanner = new Scanner(file);
-            fileName = path.getFileName().toString().split("\\.")[0];
             fileContent = scanner.useDelimiter("\\Z").next();
             scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return new Document(fileName, fileContent);
+        return fileContent;
     }
 }
