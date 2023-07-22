@@ -7,19 +7,21 @@ public class InvertedIndex {
     private final HashMap<String, HashSet<String>> dictionary;
 
     public InvertedIndex() {
-        languageProcessor =new LanguageProcessor();
-        dictionary=new HashMap<>();
+        languageProcessor = new LanguageProcessor();
+        dictionary = new HashMap<>();
     }
 
     public void addDoc(Document document) {
         String[] tokenizedWords = languageProcessor.tokenize(document.content());
         ArrayList<String> filteredWords = languageProcessor.filterTokens(tokenizedWords);
-        var normalizedWords = languageProcessor.normalize(filteredWords);
+        ArrayList<String> normalizedWords = languageProcessor.normalize(filteredWords);
         insertWords(normalizedWords, document.title());
     }
+
     public LanguageProcessor getLanguageProcessor() {
         return languageProcessor;
     }
+
     public HashMap<String, HashSet<String>> getDictionary() {
         return dictionary;
     }

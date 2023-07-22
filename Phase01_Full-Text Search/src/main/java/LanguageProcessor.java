@@ -7,7 +7,7 @@ public class LanguageProcessor {
     private Tokenizer tokenizer;
     private String[] stopWords;
     public LanguageProcessor(){
-        normalizer=new DefaultNormalizer();
+        normalizer=new PorterStemmerNormalizer();
         tokenizer=new DefaultTokenizer();
         stopWords=new String[]{",","."};
     }
