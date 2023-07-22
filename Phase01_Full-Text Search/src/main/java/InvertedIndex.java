@@ -29,9 +29,9 @@ public class InvertedIndex {
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
         for (String word : processedWords) {
             if (!dictionary.containsKey(word)) {
-                HashSet<String> bookList = new HashSet<>();
-                bookList.add(title);
-                dictionary.put(word, bookList);
+                HashSet<String> fileList = new HashSet<>();
+                fileList.add(title);
+                dictionary.put(word, fileList);
             } else {
                 HashSet<String> bookList = dictionary.get(word);
                 bookList.add(title);
