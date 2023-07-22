@@ -15,7 +15,7 @@ public class InvertedIndex {
         ArrayList<String> tokenizedWords = languageProcessor.tokenize(document.content());
         ArrayList<String> filteredWords = languageProcessor.filterTokens(tokenizedWords);
         ArrayList<String> normalizedWords = languageProcessor.normalize(filteredWords);
-        insertWords(normalizedWords, document.title());
+        insertProcessedWords(normalizedWords, document.title());
     }
 
     public LanguageProcessor getLanguageProcessor() {
@@ -26,8 +26,8 @@ public class InvertedIndex {
         return dictionary;
     }
 
-    private void insertWords(ArrayList<String> words, String title) {
-        for (String word : words) {
+    private void insertProcessedWords(ArrayList<String> processedWords, String title) {
+        for (String word : processedWords) {
             if (!dictionary.containsKey(word)) {
                 HashSet<String> bookList = new HashSet<>();
                 bookList.add(title);
