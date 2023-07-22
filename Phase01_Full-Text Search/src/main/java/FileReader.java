@@ -11,25 +11,12 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class FileReader {
-    private Doc getFileNameAndContent(Path path) {
-        File file = new File(path.toUri());
-        String fileName = null, fileContent = null;
-        try {
-            Scanner scanner = new Scanner(file);
-            fileName = path.getFileName().toString().split("\\.")[0];
-            fileContent = scanner.useDelimiter("\\Z").next();
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return new Doc(fileName, fileContent);
-    }
 
     public HashMap<String, String> getDataset(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {
-                Doc file = getFileNameAndContent(p);
+                Document file = getFileNameAndContent(p);
                 fileText.put(file.title(), file.content());
             });
         } catch (IOException e) {
@@ -51,5 +38,18 @@ public class FileReader {
             e.printStackTrace();
         }
         return stopWords.toArray(String[]::new);
+    }
+    private Document getFileNameAndContent(Path path) {
+        File file = new File(path.toUri());
+        String fileName = null, fileContent = null;
+        try {
+            Scanner scanner = new Scanner(file);
+            fileName = path.getFileName().toString().split("\\.")[0];
+            fileContent = scanner.useDelimiter("\\Z").next();
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new Document(fileName, fileContent);
     }
 }

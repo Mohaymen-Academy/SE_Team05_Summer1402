@@ -3,26 +3,28 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class QueryHandler {
-    public void setNormalizer(Normalizer normalizer) {
-        this.normalizer = normalizer;
-    }
-
     private Normalizer normalizer;
+
     public QueryHandler(Normalizer normalizer) {
         this.normalizer = normalizer;
     }
 
-
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
-        HashMap<String, ArrayList<String>> queries = new HashMap<>() {{
-            put("AND", new ArrayList<>());
-            put("OR", new ArrayList<>());
-            put("NOT", new ArrayList<>());
-        }};
+        HashMap<String, ArrayList<String>> queries = new HashMap<>() {
+            {
+                put("AND", new ArrayList<>());
+                put("OR", new ArrayList<>());
+                put("NOT", new ArrayList<>());
+            }
+        };
 
-        String[] parts = query.split(" +");
+        String[] parts = query.split("\\s+");
         normalizeQueries(parts, queries);
         return queries;
+    }
+
+    public void setNormalizer(Normalizer normalizer) {
+        this.normalizer = normalizer;
     }
 
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
@@ -45,21 +47,22 @@ public class QueryHandler {
     }
 
     public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries,
-                                      HashMap<String, HashSet<String>> dictionary) {
+            HashMap<String, HashSet<String>> dictionary) {
 
         HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
-        if (queries.get("AND").isEmpty()) result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty()) result = Util.intersect(result, unionPlusResult);
+        if (queries.get("AND").isEmpty())
+            result = unionPlusResult;
+        else if (!queries.get("OR").isEmpty())
+            result = Util.intersect(result, unionPlusResult);
 
         return getNOTQueries(queries.get("NOT"), dictionary, result);
     }
 
-
     private HashSet<String> getNOTQueries(ArrayList<String> queries,
-                                          HashMap<String, HashSet<String>> dictionary,
-                                          HashSet<String> result) {
+            HashMap<String, HashSet<String>> dictionary,
+            HashSet<String> result) {
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
             result = Util.minus(result, searchResult);
@@ -68,7 +71,7 @@ public class QueryHandler {
     }
 
     private HashSet<String> getORQueries(ArrayList<String> queries,
-                                         HashMap<String, HashSet<String>> dictionary) {
+            HashMap<String, HashSet<String>> dictionary) {
         HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
@@ -78,7 +81,7 @@ public class QueryHandler {
     }
 
     private HashSet<String> getANDQueries(ArrayList<String> queries,
-                                          HashMap<String, HashSet<String>> dictionary) {
+            HashMap<String, HashSet<String>> dictionary) {
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
         HashSet<String> searchResult;
@@ -87,18 +90,19 @@ public class QueryHandler {
             if (firstPart) {
                 result = searchResult;
                 firstPart = false;
-            } else result = Util.intersect(result, searchResult);
+            } else
+                result = Util.intersect(result, searchResult);
         }
         return result;
     }
-
 
     private HashSet<String> find(HashMap<String, HashSet<String>> dictionary, String q) {
         HashSet<String> search = dictionary.get(q);
         if (search == null)
             return new HashSet<>();
         HashSet<String> result = (HashSet<String>) search.clone();
-        if (result == null) return new HashSet<>();
+        if (result == null)
+            return new HashSet<>();
         return result;
     }
 }

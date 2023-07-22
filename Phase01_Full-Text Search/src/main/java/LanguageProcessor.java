@@ -2,10 +2,15 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class NLP {
-    private Normalizer normalizer = new DefaultNormalizer();
-    private Tokenizer tokenizer = new DefaultTokenizer();
+public class LanguageProcessor {
+    private Normalizer normalizer;
+    private Tokenizer tokenizer;
     private String[] stopWords;
+    public LanguageProcessor(){
+        normalizer=new DefaultNormalizer();
+        tokenizer=new DefaultTokenizer();
+        stopWords=new String[]{",","."};
+    }
 
     public Normalizer getNormalizer() {
         return normalizer;
@@ -38,5 +43,16 @@ public class NLP {
                 filteredTokens.add(filtered);
         }
         return filteredTokens;
+    }
+    public String[] tokenize(String content) {
+        return getTokenizer().tokenize(content);
+    }
+    public ArrayList<String> normalize(ArrayList<String> words) {
+        ArrayList<String> normalizedWords = new ArrayList<>();
+        for (String filteredToken : words) {
+            String normalized = normalizer.normalize(filteredToken);
+            normalizedWords.add(normalized);
+        }
+        return normalizedWords;
     }
 }
