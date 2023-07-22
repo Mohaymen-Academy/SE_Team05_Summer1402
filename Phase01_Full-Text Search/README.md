@@ -27,7 +27,7 @@ public class Main {
       new Application()
               .setNormalizer(new MyNormalizer())
               .setTokenizer(new MyTokenizer())
-              .setStopWords(new String[]{"f"})
+              .setStopWordsByFile("./src/main/resources/stopWords.txt")
               .addDocsByFolder("./src/main/resources/Software Books Dataset/")
               .addDoc("Ali", "goal have get compile")
               .runInConsole();
