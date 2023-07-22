@@ -66,7 +66,7 @@ public class QueryHandler {
                                           HashSet<String> result) {
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-            result = Util.minus(result, searchResult);
+            result.removeAll(searchResult);
         }
         return result;
     }
