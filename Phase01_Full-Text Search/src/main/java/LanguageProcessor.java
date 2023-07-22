@@ -49,8 +49,8 @@ public class LanguageProcessor {
     }
     public ArrayList<String> normalize(ArrayList<String> words) {
         ArrayList<String> normalizedWords = new ArrayList<>();
-        for (String filteredToken : words) {
-            String normalized = normalizer.normalize(filteredToken);
+        for (String word : words) {
+            String normalized = normalizer.normalize(word);
             normalizedWords.add(normalized);
         }
         return normalizedWords;
