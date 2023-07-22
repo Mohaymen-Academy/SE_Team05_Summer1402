@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class FileReader {
 
-    public HashMap<String, String> getDataset(String path) {
+    public HashMap<String, String> getFiles(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
             paths.filter(Files::isRegularFile).forEach(p -> {

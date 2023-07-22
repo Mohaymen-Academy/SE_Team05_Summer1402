@@ -24,7 +24,7 @@ public class Application {
     }
 
     public Application addDocsByFolder(String newDataPathFolder) {
-        HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
+        HashMap<String, String> docs = new FileReader().getFiles(newDataPathFolder);
         for (String title : docs.keySet())
             this.addDoc(title, docs.get(title));
         return this;
