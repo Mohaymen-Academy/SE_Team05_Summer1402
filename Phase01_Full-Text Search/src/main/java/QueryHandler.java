@@ -49,8 +49,9 @@ public class QueryHandler {
         }
     }
 
-    public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries,
-            HashMap<String, HashSet<String>> dictionary) {
+    public HashSet<String> runQueries(HashMap<String, ArrayList<String>> queries, InvertedIndex invertedIndex) {
+
+        HashMap<String, HashSet<String>> dictionary = invertedIndex.getDictionary();
 
         HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);
 
@@ -64,8 +65,8 @@ public class QueryHandler {
     }
 
     private HashSet<String> getNOTQueries(ArrayList<String> queries,
-            HashMap<String, HashSet<String>> dictionary,
-            HashSet<String> result) {
+                                          HashMap<String, HashSet<String>> dictionary,
+                                          HashSet<String> result) {
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
             result = Util.minus(result, searchResult);
@@ -74,7 +75,7 @@ public class QueryHandler {
     }
 
     private HashSet<String> getORQueries(ArrayList<String> queries,
-            HashMap<String, HashSet<String>> dictionary) {
+                                         HashMap<String, HashSet<String>> dictionary) {
         HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
@@ -84,7 +85,7 @@ public class QueryHandler {
     }
 
     private HashSet<String> getANDQueries(ArrayList<String> queries,
-            HashMap<String, HashSet<String>> dictionary) {
+                                          HashMap<String, HashSet<String>> dictionary) {
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
         HashSet<String> searchResult;

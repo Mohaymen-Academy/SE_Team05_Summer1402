@@ -14,7 +14,7 @@ public class Application {
 
     public ArrayList<String> search(String query) {
         HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
-        HashSet<String> result = queryHandler.runQueries(queries, invertedIndex.getDictionary());
+        HashSet<String> result = queryHandler.runQueries(queries, invertedIndex);
         return Util.toArrayList(result);
     }
 
