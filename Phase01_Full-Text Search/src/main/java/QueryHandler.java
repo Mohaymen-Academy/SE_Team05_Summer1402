@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class QueryHandler {
     private Normalizer normalizer;
@@ -59,7 +56,7 @@ public class QueryHandler {
         if (queries.get("AND").isEmpty())
             result = unionPlusResult;
         else if (!queries.get("OR").isEmpty())
-            result = Util.intersect(result, unionPlusResult);
+            result.retainAll(unionPlusResult);
 
         return getNOTQueries(queries.get("NOT"), dictionary, result);
     }
@@ -95,7 +92,7 @@ public class QueryHandler {
                 result = searchResult;
                 firstPart = false;
             } else
-                result = Util.intersect(result, searchResult);
+                result.retainAll(searchResult);
         }
         return result;
     }
