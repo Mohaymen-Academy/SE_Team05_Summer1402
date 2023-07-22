@@ -3,31 +3,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NLP {
-    private static Normalizer normalizer = new DefaultNormalizer();
-    private static Tokenizer tokenizer = new DefaultTokenizer();
-    private static String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopWordsPath());
+    private Normalizer normalizer = new DefaultNormalizer();
+    private Tokenizer tokenizer = new DefaultTokenizer();
+    private String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopWordsPath());
 
-    public static Normalizer getNormalizer() {
+    public Normalizer getNormalizer() {
         return normalizer;
     }
 
-    public static void setNormalizer(Normalizer normalizer) {
-        NLP.normalizer = normalizer;
+    public void setNormalizer(Normalizer normalizer) {
+        this.normalizer = normalizer;
     }
 
-    public static Tokenizer getTokenizer() {
+    public Tokenizer getTokenizer() {
         return tokenizer;
     }
 
-    public static void setTokenizer(Tokenizer tokenizer) {
-        NLP.tokenizer = tokenizer;
+    public void setTokenizer(Tokenizer tokenizer) {
+        this.tokenizer = tokenizer;
     }
 
-    public static void setStopWords(String[] stopWords) {
-        NLP.stopWords = stopWords;
+    public void setStopWords(String[] stopWords) {
+        this.stopWords = stopWords;
     }
 
-    public static ArrayList<String> filterTokens(String[] tokens) {
+    public ArrayList<String> filterTokens(String[] tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
         String stopWordsPattern = "^[" + String.join("", stopWords) + "]$";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);

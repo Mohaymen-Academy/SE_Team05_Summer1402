@@ -24,8 +24,8 @@ public class Main {
               .setNormalizer(new MyNormalizer())
               .setTokenizer(new MyTokenizer())
               .setStopWords(new String[]{"f"})
-              .addByFolder("./src/main/resources/Software Books Dataset/")
-              .add("Ali","goal have get compile")
+              .addDocsByFolder("./src/main/resources/Software Books Dataset/")
+              .addDoc("Ali", "goal have get compile")
               .runInConsole();
    }
 }

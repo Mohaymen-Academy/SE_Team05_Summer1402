@@ -7,10 +7,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Application application = new Application()
-                .addByFolder("./src/main/resources/Software Books Dataset/");
+                .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(application);
     }
-
 
     private static void runInConsole(Application application) {
         Scanner scanner = new Scanner(System.in);

@@ -3,8 +3,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class QueryHandler {
-    public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
+    public void setNormalizer(Normalizer normalizer) {
+        this.normalizer = normalizer;
+    }
 
+    private Normalizer normalizer;
+    public QueryHandler(Normalizer normalizer) {
+        this.normalizer = normalizer;
+    }
+
+
+    public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {{
             put("AND", new ArrayList<>());
             put("OR", new ArrayList<>());
@@ -21,15 +30,15 @@ public class QueryHandler {
             switch (query.charAt(0)) {
                 case '+' -> {
                     ArrayList<String> or = queryList.get("OR");
-                    or.add(NLP.getNormalizer().normalize(query.substring(1)));
+                    or.add(normalizer.normalize(query.substring(1)));
                 }
                 case '-' -> {
                     ArrayList<String> not = queryList.get("NOT");
-                    not.add(NLP.getNormalizer().normalize(query.substring(1)));
+                    not.add(normalizer.normalize(query.substring(1)));
                 }
                 default -> {
                     ArrayList<String> and = queryList.get("AND");
-                    and.add(NLP.getNormalizer().normalize(query));
+                    and.add(normalizer.normalize(query));
                 }
             }
         }
@@ -39,7 +48,6 @@ public class QueryHandler {
                                       HashMap<String, HashSet<String>> dictionary) {
 
         HashSet<String> result = getANDQueries(queries.get("AND"), dictionary);
-        ;
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), dictionary);
         if (queries.get("AND").isEmpty()) result = unionPlusResult;

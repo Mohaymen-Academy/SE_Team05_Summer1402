@@ -1,37 +1,44 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Application {
-    private final Dictionary dictionary = new Dictionary();
+    private final InvertedIndex invertedIndex =new InvertedIndex();
+    private QueryHandler queryHandler = new QueryHandler(invertedIndex.getNlp().getNormalizer());
 
     public ArrayList<String> search(String query) {
-        return dictionary.search(query);
+        if (query.isBlank()) return new ArrayList<>();
+        HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
+        HashSet<String> result = queryHandler.runQueries(queries, invertedIndex.getDictionary());
+        return Util.toArrayList(result);
     }
 
-    public Application add(String title, String content) {
-        this.dictionary.add(new Doc(title, content));
+    public Application addDoc(String title, String content) {
+        this.invertedIndex.addDoc(new Doc(title, content));
         return this;
     }
 
-    public Application addByFolder(String newDataPathFolder) {
+    public Application addDocsByFolder(String newDataPathFolder) {
         HashMap<String, String> docs = new FileReader().getDataset(newDataPathFolder);
         for (String title : docs.keySet())
-            this.add(title, docs.get(title));
+            this.addDoc(title, docs.get(title));
         return this;
     }
 
     public Application setTokenizer(Tokenizer newTokenizer) {
-        NLP.setTokenizer(newTokenizer);
+        invertedIndex.getNlp().setTokenizer(newTokenizer);
         return this;
     }
 
     public Application setNormalizer(Normalizer newNormalizer) {
-        NLP.setNormalizer(newNormalizer);
+        invertedIndex.getNlp().setNormalizer(newNormalizer);
+        // TODO: 7/22/2023  
+        queryHandler.setNormalizer(newNormalizer);
         return this;
     }
 
     public Application setStopWords(String[] newStopWords) {
-        NLP.setStopWords(newStopWords);
+        invertedIndex.getNlp().setStopWords(newStopWords);
         return this;
     }
 }
