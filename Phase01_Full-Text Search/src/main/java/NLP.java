@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class NLP {
     private Normalizer normalizer = new DefaultNormalizer();
     private Tokenizer tokenizer = new DefaultTokenizer();
-    private String[] stopWords = new FileReader().getStopWords(FolderPath.getInstance().getStopWordsPath());
+    private String[] stopWords;
 
     public Normalizer getNormalizer() {
         return normalizer;

@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class Application {
     private final InvertedIndex invertedIndex =new InvertedIndex();
-    private QueryHandler queryHandler = new QueryHandler(invertedIndex.getNlp().getNormalizer());
+    private final QueryHandler queryHandler = new QueryHandler(invertedIndex.getNlp().getNormalizer());
 
     public ArrayList<String> search(String query) {
         if (query.isBlank()) return new ArrayList<>();
@@ -39,6 +39,11 @@ public class Application {
 
     public Application setStopWords(String[] newStopWords) {
         invertedIndex.getNlp().setStopWords(newStopWords);
+        return this;
+    }
+    public Application setStopWordsByFile(String stopwordFolder) {
+        String[] stopWords = new FileReader().getStopWords(stopwordFolder);
+        setStopWords(stopWords);
         return this;
     }
 }
