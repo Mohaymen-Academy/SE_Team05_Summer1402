@@ -76,7 +76,7 @@ public class QueryHandler {
         HashSet<String> unionPlusResult = new HashSet<>();
         for (String q : queries) {
             HashSet<String> searchResult = find(dictionary, q);
-            unionPlusResult = Util.union(unionPlusResult, searchResult);
+            unionPlusResult.addAll(searchResult);
         }
         return unionPlusResult;
     }

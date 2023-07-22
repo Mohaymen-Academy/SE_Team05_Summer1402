@@ -11,11 +11,4 @@ public class Util {
     public static <T> List<T> toArrayList(T[] array) {
         return Arrays.asList(array);
     }
-
-    public static HashSet<String> union(HashSet<String> A, HashSet<String> B) {
-        HashSet<String> result = new HashSet<>();
-        result.addAll(A);
-        result.addAll(B);
-        return result;
-    }
 }
