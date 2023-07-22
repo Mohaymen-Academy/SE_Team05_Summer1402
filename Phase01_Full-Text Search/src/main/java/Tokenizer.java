@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public interface Tokenizer {
-    String[] tokenize(String text);
+    ArrayList<String> tokenize(String text);
 }

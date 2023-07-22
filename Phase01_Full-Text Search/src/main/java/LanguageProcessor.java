@@ -32,7 +32,7 @@ public class LanguageProcessor {
         this.stopWords = stopWords;
     }
 
-    public ArrayList<String> filterTokens(String[] tokens) {
+    public ArrayList<String> filterTokens(ArrayList<String> tokens) {
         ArrayList<String> filteredTokens = new ArrayList<>();
         String stopWordsPattern = "^[" + String.join("", stopWords) + "]$";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
@@ -44,7 +44,7 @@ public class LanguageProcessor {
         }
         return filteredTokens;
     }
-    public String[] tokenize(String content) {
+    public ArrayList<String> tokenize(String content) {
         return getTokenizer().tokenize(content);
     }
     public ArrayList<String> normalize(ArrayList<String> words) {

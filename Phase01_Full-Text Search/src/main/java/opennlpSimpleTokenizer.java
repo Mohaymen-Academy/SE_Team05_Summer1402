@@ -1,8 +1,10 @@
 import opennlp.tools.tokenize.SimpleTokenizer;
 
+import java.util.ArrayList;
+
 public class opennlpSimpleTokenizer implements Tokenizer {
-    public String[] tokenize(String text) {
+    public ArrayList<String> tokenize(String text) {
         SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
-        return tokenizer.tokenize(text);
+        return new ArrayList<>(Util.toArrayList(tokenizer.tokenize(text)));
     }
 }
