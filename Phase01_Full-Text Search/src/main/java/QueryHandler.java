@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -18,7 +19,7 @@ public class QueryHandler {
             }
         };
 
-        String[] parts = query.split("\\s+");
+        String[] parts = query.trim().split("\\s+");
         normalizeQueries(parts, queries);
         return queries;
     }
@@ -28,6 +29,8 @@ public class QueryHandler {
     }
 
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
+        // check if query is blank (query is trimmed, so only first object needs to be checked)
+        if (queries[0].length() == 0) return;
         for (String query : queries) {
             switch (query.charAt(0)) {
                 case '+' -> {
