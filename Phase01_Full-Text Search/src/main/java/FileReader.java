@@ -25,25 +25,11 @@ public class FileReader {
         return fileText;
     }
 
-    public String[] getStopWords(String path) {
-        ArrayList<String> stopWords = new ArrayList<>();
-        try {
-            FileInputStream fis = new FileInputStream(path);
-            Scanner scanner = new Scanner(fis);
-            while (scanner.hasNextLine())
-                stopWords.add(scanner.nextLine());
-            scanner.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stopWords.toArray(String[]::new);
-    }
-
     private String getFileName(Path path) {
         return path.getFileName().toString().split("\\.")[0];
     }
 
-    private String getFileContent(Path path) {
+    public String getFileContent(Path path) {
         File file = new File(path.toUri());
         String fileContent = null;
         try {
