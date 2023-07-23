@@ -18,10 +18,10 @@ attributes:
 
 1. Create an object from the Application class
 2. Configure the parameters or leave them as default:
-    1. Set your normalizer/tokenizer by creating a class implementing its interface and set the object in setNormalizer
-       method.
-    2. Set your stopWords by reading a file or set it as an array.
-    3. Set your dataset folder path by the addByFolder method (Set your folder path after setting attributes).
+   1. Set your normalizer/tokenizer by creating a class implementing its interface and set the object in setNormalizer
+      method.
+   2. Set your stopWords by reading a file or set it as an array.
+   3. Set your dataset folder path by the addByFolder method (Set your folder path after setting attributes).
 3. Use the search method to search your query in the data set.
 
    Sample query:
@@ -33,29 +33,33 @@ attributes:
 # Example
 
 ```java
+import ir.ShelmosSearch.Application;
+import ir.ShelmosSearch.Language.Normalizer;
+import ir.ShelmosSearch.Language.Tokenizer;
+
 public class Main {
-    public static void main(String[] args) {
-        new Application()
-                .setNormalizer(new MyNormalizer())
-                .setTokenizer(new MyTokenizer())
-                .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .addDocsByFolder("./src/main/resources/Software Books Dataset/")
-                .addDoc("Ali", "goal have get compile")
-                .runInConsole();
-    }
+   public static void main(String[] args) {
+      new Application()
+              .setNormalizer(new MyNormalizer())
+              .setTokenizer(new MyTokenizer())
+              .setStopWordsByFile("./src/main/resources/stopWords.txt")
+              .addDocsByFolder("./src/main/resources/Software Books Dataset/")
+              .addDoc("Ali", "goal have get compile")
+              .runInConsole();
+   }
 }
 
 class MyNormalizer implements Normalizer {
-    @Override
-    public String normalize(String token) {
-        return token.toUpperCase();
-    }
+   @Override
+   public String normalize(String token) {
+      return token.toUpperCase();
+   }
 }
 
 class MyTokenizer implements Tokenizer {
-    @Override
-    public String[] tokenize(String text) {
-        return text.split("\\s+");
-    }
+   @Override
+   public String[] tokenize(String text) {
+      return text.split("\\s+");
+   }
 }
 ```

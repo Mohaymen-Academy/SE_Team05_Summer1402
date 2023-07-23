@@ -1,3 +1,6 @@
+package ir.ShelmosSearch.Language;
+
+import ir.ShelmosSearch.Util;
 import opennlp.tools.tokenize.SimpleTokenizer;
 
 import java.util.ArrayList;

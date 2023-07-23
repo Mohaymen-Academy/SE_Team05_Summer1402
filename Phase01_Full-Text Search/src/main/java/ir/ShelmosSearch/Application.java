@@ -1,7 +1,19 @@
+package ir.ShelmosSearch;
+
+import ir.ShelmosSearch.File.FileReader;
+import ir.ShelmosSearch.File.TXTFileReader;
+import ir.ShelmosSearch.Language.InvertedIndex;
+import ir.ShelmosSearch.Language.Normalizer;
+import ir.ShelmosSearch.Language.Tokenizer;
+import ir.ShelmosSearch.Models.Document;
+import ir.ShelmosSearch.Query.QueryHandler;
+
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
+
 
 public class Application {
     private final InvertedIndex invertedIndex;
@@ -39,7 +51,7 @@ public class Application {
 
     public Application setNormalizer(Normalizer newNormalizer) {
         invertedIndex.getLanguageProcessor().setNormalizer(newNormalizer);
-        // TODO: 7/22/2023  
+        // TODO: 7/22/2023
         queryHandler.setNormalizer(newNormalizer);
         return this;
     }

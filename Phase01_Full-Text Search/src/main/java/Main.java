@@ -1,3 +1,4 @@
+import ir.ShelmosSearch.Application;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.text.MessageFormat;

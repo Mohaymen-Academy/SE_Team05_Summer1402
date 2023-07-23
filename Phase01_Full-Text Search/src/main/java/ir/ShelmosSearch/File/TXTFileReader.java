@@ -1,3 +1,5 @@
+package ir.ShelmosSearch.File;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,15 +15,14 @@ public class TXTFileReader implements FileReader {
     public HashMap<String, String> getFiles(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
-            paths.filter(Files::isRegularFile).forEach(p -> {
-                fileText.put(getFileName(p), getFileContent(p));
-            });
+            paths.filter(Files::isRegularFile).forEach(p -> fileText.put(getFileName(p), getFileContent(p)));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return fileText;
     }
+
     @Override
     public String getFileContent(Path path) {
         File file = new File(path.toUri());

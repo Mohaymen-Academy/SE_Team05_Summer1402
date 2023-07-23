@@ -1,3 +1,8 @@
+package ir.ShelmosSearch.Query;
+
+import ir.ShelmosSearch.Language.InvertedIndex;
+import ir.ShelmosSearch.Language.Normalizer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;

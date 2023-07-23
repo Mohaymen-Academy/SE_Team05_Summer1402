@@ -1,3 +1,5 @@
+package ir.ShelmosSearch.Language;
+
 import opennlp.tools.stemmer.PorterStemmer;
 
 public class PorterStemmerNormalizer implements Normalizer {

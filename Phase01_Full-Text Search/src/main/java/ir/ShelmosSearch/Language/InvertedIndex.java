@@ -1,3 +1,7 @@
+package ir.ShelmosSearch.Language;
+
+import ir.ShelmosSearch.Models.Document;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
