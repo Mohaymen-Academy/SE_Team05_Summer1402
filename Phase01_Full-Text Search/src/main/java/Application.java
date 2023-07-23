@@ -6,10 +6,12 @@ import java.util.HashSet;
 public class Application {
     private final InvertedIndex invertedIndex;
     private final QueryHandler queryHandler;
+    private final FileReader fileReader;
 
     public Application() {
         invertedIndex = new InvertedIndex();
         queryHandler = new QueryHandler(invertedIndex.getLanguageProcessor().getNormalizer());
+        fileReader = new TXTFileReader();
     }
 
     public ArrayList<String> search(String query) {
@@ -24,7 +26,7 @@ public class Application {
     }
 
     public Application addDocsByFolder(String newDataPathFolder) {
-        HashMap<String, String> docs = new FileReader().getFiles(newDataPathFolder);
+        HashMap<String, String> docs = fileReader.getFiles(newDataPathFolder);
         for (String title : docs.keySet())
             this.addDoc(title, docs.get(title));
         return this;
@@ -48,7 +50,7 @@ public class Application {
     }
 
     public Application setStopWordsByFile(String stopWordsFolder) {
-        String stopWords = new FileReader().getFileContent(Paths.get(stopWordsFolder));
+        String stopWords = fileReader.getFileContent(Paths.get(stopWordsFolder));
         setStopWords(stopWords.split("\\n+"));
         return this;
     }
