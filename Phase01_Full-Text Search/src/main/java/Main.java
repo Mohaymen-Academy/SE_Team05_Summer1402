@@ -1,4 +1,5 @@
 import ir.ShelmosSearch.Application;
+import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.text.MessageFormat;
@@ -8,27 +9,29 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Application application = new Application()
-                .setStopWords(new String[]{",", "."})
+                .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(application);
     }
 
     private static void runInConsole(Application application) {
+
+        @Cleanup
         Scanner scanner = new Scanner(System.in);
         StopWatch watch = new StopWatch();
         while (true) {
             System.out.println("Type \"!\" if you want to exit the program.");
             System.out.print("Search: ");
             String query = scanner.nextLine();
-            if (query.equals("!")) break;
+            if (query.equals("!"))
+                break;
             watch.start();
             ArrayList<String> result = application.search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();
         }
-        scanner.close();
     }
 
     private static void printQueryResult(ArrayList<String> result, long duration) {

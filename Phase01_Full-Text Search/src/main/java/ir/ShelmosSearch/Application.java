@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
-
 public class Application {
     private final InvertedIndex invertedIndex;
     private final QueryHandler queryHandler;
@@ -22,7 +20,10 @@ public class Application {
 
     public Application() {
         invertedIndex = new InvertedIndex();
-        queryHandler = new QueryHandler(invertedIndex.getLanguageProcessor().getNormalizer());
+        queryHandler = QueryHandler
+                .builder()
+                .normalizer(invertedIndex.getLanguageProcessor().getNormalizer())
+                .build();
         fileReader = new TXTFileReader();
     }
 

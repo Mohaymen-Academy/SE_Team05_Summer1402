@@ -2,6 +2,7 @@ package ir.ShelmosSearch.Query;
 
 import ir.ShelmosSearch.Language.InvertedIndex;
 import ir.ShelmosSearch.Language.Normalizer;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+@Builder
 public class QueryHandler {
     private @Getter @Setter Normalizer normalizer;
-
-    public QueryHandler(Normalizer normalizer) {
-        this.normalizer = normalizer;
-    }
 
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {
