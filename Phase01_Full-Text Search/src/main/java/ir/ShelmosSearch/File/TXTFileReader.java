@@ -10,12 +10,15 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import lombok.Cleanup;
+
 public class TXTFileReader implements FileReader {
     @Override
     public HashMap<String, String> getFiles(String path) {
         HashMap<String, String> fileText = new HashMap<>();
         try (Stream<Path> paths = Files.walk(Paths.get(path))) {
-            paths.filter(Files::isRegularFile).forEach(p -> fileText.put(getFileName(p), getFileContent(p)));
+            paths.filter(Files::isRegularFile)
+                    .forEach(p -> fileText.put(getFileName(p), getFileContent(p)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,9 +31,9 @@ public class TXTFileReader implements FileReader {
         File file = new File(path.toUri());
         String fileContent = null;
         try {
+            @Cleanup
             Scanner scanner = new Scanner(file);
             fileContent = scanner.useDelimiter("\\Z").next();
-            scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

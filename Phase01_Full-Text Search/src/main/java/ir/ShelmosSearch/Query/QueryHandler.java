@@ -31,7 +31,7 @@ public class QueryHandler {
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
         // check if query is blank (query is trimmed, so only first object needs to be
         // checked)
-        if (queries[0].length() == 0)
+        if (queries[0].isBlank())
             return;
         for (String query : queries) {
             switch (query.charAt(0)) {
