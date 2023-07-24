@@ -18,17 +18,11 @@ public class LanguageProcessor {
         stopWords = new String[] { ",", "." };
     }
 
-    public ArrayList<String> filterTokens(ArrayList<String> tokens) {
-        ArrayList<String> filteredTokens = new ArrayList<>();
-        String stopWordsPattern = "^[" + String.join("", getStopWords()) + "]$";
+    public String filterText(String text) {
+        String stopWordsPattern = "[" + String.join("", getStopWords()) + "]";
         Pattern pattern = Pattern.compile(stopWordsPattern, Pattern.CASE_INSENSITIVE);
-        for (String token : tokens) {
-            Matcher matcher = pattern.matcher(token);
-            String filtered = matcher.replaceAll("");
-            if (!filtered.isBlank())
-                filteredTokens.add(filtered);
-        }
-        return filteredTokens;
+        Matcher matcher = pattern.matcher(text);
+        return matcher.replaceAll(" ");
     }
 
     public ArrayList<String> tokenize(String content) {

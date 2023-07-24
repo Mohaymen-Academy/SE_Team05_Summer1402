@@ -1,4 +1,5 @@
 import ir.ShelmosSearch.Application;
+import ir.ShelmosSearch.Language.EdgeGramTokenizer;
 import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -11,6 +12,11 @@ public class Main {
         Application application = new Application()
                 .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
+                .setTokenizer(EdgeGramTokenizer
+                        .builder()
+                        .min(2)
+                        .max(5)
+                        .build())
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(application);
     }

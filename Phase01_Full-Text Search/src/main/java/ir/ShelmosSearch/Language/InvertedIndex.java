@@ -17,9 +17,9 @@ public class InvertedIndex {
     }
 
     public void addDoc(Document document) {
-        ArrayList<String> tokenizedWords = languageProcessor.tokenize(document.content());
-        ArrayList<String> filteredWords = languageProcessor.filterTokens(tokenizedWords);
-        ArrayList<String> normalizedWords = languageProcessor.normalize(filteredWords);
+        String filteredContent = languageProcessor.filterText(document.content());
+        ArrayList<String> tokenizedWords = languageProcessor.tokenize(filteredContent);
+        ArrayList<String> normalizedWords = languageProcessor.normalize(tokenizedWords);
         insertProcessedWords(normalizedWords, document.title());
     }
 
