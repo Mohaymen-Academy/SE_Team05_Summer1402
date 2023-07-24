@@ -4,7 +4,6 @@ import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Builder
 public class EdgeGramTokenizer implements Tokenizer {
@@ -13,10 +12,10 @@ public class EdgeGramTokenizer implements Tokenizer {
     public ArrayList<String> tokenize(String text) {
         var spaceSeprated = text.split("\\s+");
         ArrayList<String> result = new ArrayList<>(List.of(spaceSeprated));
-        Stream.of(spaceSeprated)
-                .forEach(t -> {
-                    result.addAll(makeSlugs(t));
-                });
+        for (String t : spaceSeprated) {
+            result.addAll(makeSlugs(t));
+        }
+
         return result;
     }
 
