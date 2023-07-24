@@ -1,14 +1,15 @@
 package ir.ShelmosSearch.Language;
 
 import ir.ShelmosSearch.Models.Document;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class InvertedIndex {
-    private final LanguageProcessor languageProcessor;
-    private final HashMap<String, HashSet<String>> dictionary;
+    private @Getter final LanguageProcessor languageProcessor;
+    private @Getter final HashMap<String, HashSet<String>> dictionary;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
@@ -20,14 +21,6 @@ public class InvertedIndex {
         ArrayList<String> filteredWords = languageProcessor.filterTokens(tokenizedWords);
         ArrayList<String> normalizedWords = languageProcessor.normalize(filteredWords);
         insertProcessedWords(normalizedWords, document.title());
-    }
-
-    public LanguageProcessor getLanguageProcessor() {
-        return languageProcessor;
-    }
-
-    public HashMap<String, HashSet<String>> getDictionary() {
-        return dictionary;
     }
 
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {

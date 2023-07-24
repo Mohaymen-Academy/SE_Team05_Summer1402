@@ -2,24 +2,18 @@ package ir.ShelmosSearch.Query;
 
 import ir.ShelmosSearch.Language.InvertedIndex;
 import ir.ShelmosSearch.Language.Normalizer;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class QueryHandler {
-    private Normalizer normalizer;
+    private @Getter @Setter Normalizer normalizer;
 
     public QueryHandler(Normalizer normalizer) {
         this.normalizer = normalizer;
-    }
-
-    public void setNormalizer(Normalizer normalizer) {
-        this.normalizer = normalizer;
-    }
-
-    private Normalizer getNormalizer() {
-        return normalizer;
     }
 
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
@@ -36,10 +30,11 @@ public class QueryHandler {
         return queries;
     }
 
-
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
-        // check if query is blank (query is trimmed, so only first object needs to be checked)
-        if (queries[0].length() == 0) return;
+        // check if query is blank (query is trimmed, so only first object needs to be
+        // checked)
+        if (queries[0].length() == 0)
+            return;
         for (String query : queries) {
             switch (query.charAt(0)) {
                 case '+' -> {
@@ -62,8 +57,10 @@ public class QueryHandler {
         HashSet<String> result = getANDQueries(queries.get("AND"), invertedIndex);
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), invertedIndex);
-        if (queries.get("AND").isEmpty()) result = unionPlusResult;
-        else if (!queries.get("OR").isEmpty()) result.retainAll(unionPlusResult);
+        if (queries.get("AND").isEmpty())
+            result = unionPlusResult;
+        else if (!queries.get("OR").isEmpty())
+            result.retainAll(unionPlusResult);
 
         result.removeAll(getNOTQueries(queries.get("NOT"), invertedIndex));
 
@@ -103,7 +100,8 @@ public class QueryHandler {
 
     private HashSet<String> find(InvertedIndex invertedIndex, String q) {
         HashSet<String> search = invertedIndex.getDictionary().get(q);
-        if (search == null) return new HashSet<>();
+        if (search == null)
+            return new HashSet<>();
         return new HashSet<>(search);
     }
 }

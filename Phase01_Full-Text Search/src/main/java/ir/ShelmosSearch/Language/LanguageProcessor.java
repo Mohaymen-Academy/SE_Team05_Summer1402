@@ -4,39 +4,18 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class LanguageProcessor {
-    private Normalizer normalizer;
-    private Tokenizer tokenizer;
-    private String[] stopWords;
+    private @Getter @Setter Normalizer normalizer;
+    private @Getter @Setter Tokenizer tokenizer;
+    private @Getter @Setter String[] stopWords;
 
     public LanguageProcessor() {
         normalizer = new PorterStemmerNormalizer();
-        tokenizer = new opennlpSimpleTokenizer();
-        stopWords = new String[]{",", "."};
-    }
-
-    public Normalizer getNormalizer() {
-        return normalizer;
-    }
-
-    public void setNormalizer(Normalizer normalizer) {
-        this.normalizer = normalizer;
-    }
-
-    public Tokenizer getTokenizer() {
-        return tokenizer;
-    }
-
-    public void setTokenizer(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
-    }
-
-    public void setStopWords(String[] stopWords) {
-        this.stopWords = stopWords;
-    }
-
-    public String[] getStopWords() {
-        return stopWords;
+        tokenizer = new OpennlpSimpleTokenizer();
+        stopWords = new String[] { ",", "." };
     }
 
     public ArrayList<String> filterTokens(ArrayList<String> tokens) {
