@@ -33,9 +33,9 @@ attributes:
 # Example
 
 ```java
-import ir.ShelmosSearch.Application;
-import ir.ShelmosSearch.Language.Normalizer;
-import ir.ShelmosSearch.Language.Tokenizer;
+import ir.shelmos_search.Application;
+import ir.shelmos_search.language.Normalizer;
+import ir.shelmos_search.language.Tokenizer;
 
 public class Main {
    public static void main(String[] args) {

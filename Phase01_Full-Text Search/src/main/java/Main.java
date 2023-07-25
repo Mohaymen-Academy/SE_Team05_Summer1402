@@ -1,5 +1,5 @@
-import ir.ShelmosSearch.Application;
-import ir.ShelmosSearch.Language.EdgeGramTokenizer;
+import ir.shelmos_search.Application;
+import ir.shelmos_search.language.EdgeGramTokenizer;
 import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 

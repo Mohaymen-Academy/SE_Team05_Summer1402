@@ -1,12 +1,12 @@
-package ir.ShelmosSearch;
+package ir.shelmos_search;
 
-import ir.ShelmosSearch.File.FileReader;
-import ir.ShelmosSearch.File.TXTFileReader;
-import ir.ShelmosSearch.Language.InvertedIndex;
-import ir.ShelmosSearch.Language.Normalizer;
-import ir.ShelmosSearch.Language.Tokenizer;
-import ir.ShelmosSearch.Models.Document;
-import ir.ShelmosSearch.Query.QueryHandler;
+import ir.shelmos_search.file.FileReader;
+import ir.shelmos_search.file.TXTFileReader;
+import ir.shelmos_search.language.InvertedIndex;
+import ir.shelmos_search.language.Normalizer;
+import ir.shelmos_search.language.Tokenizer;
+import ir.shelmos_search.model.Document;
+import ir.shelmos_search.query.QueryHandler;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;

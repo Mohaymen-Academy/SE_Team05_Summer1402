@@ -1,4 +1,4 @@
-package ir.ShelmosSearch.Language;
+package ir.shelmos_search.language;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
