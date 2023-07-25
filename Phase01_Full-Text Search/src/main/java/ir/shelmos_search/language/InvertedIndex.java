@@ -1,6 +1,6 @@
-package ir.ShelmosSearch.Language;
+package ir.shelmos_search.language;
 
-import ir.ShelmosSearch.Models.Document;
+import ir.shelmos_search.model.Document;
 import lombok.Getter;
 
 import java.util.ArrayList;

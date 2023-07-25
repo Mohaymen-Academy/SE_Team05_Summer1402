@@ -1,4 +1,4 @@
-package ir.ShelmosSearch.Language;
+package ir.shelmos_search.language;
 
 import opennlp.tools.stemmer.PorterStemmer;
 

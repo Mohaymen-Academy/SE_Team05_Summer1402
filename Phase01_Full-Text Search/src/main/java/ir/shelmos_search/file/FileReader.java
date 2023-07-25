@@ -1,4 +1,4 @@
-package ir.ShelmosSearch.File;
+package ir.shelmos_search.file;
 
 import java.nio.file.Path;
 import java.util.HashMap;

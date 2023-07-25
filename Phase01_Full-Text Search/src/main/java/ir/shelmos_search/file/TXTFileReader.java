@@ -1,4 +1,4 @@
-package ir.ShelmosSearch.File;
+package ir.shelmos_search.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;

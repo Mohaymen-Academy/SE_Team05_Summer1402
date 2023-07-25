@@ -1,7 +1,7 @@
-package ir.ShelmosSearch.Query;
+package ir.shelmos_search.query;
 
-import ir.ShelmosSearch.Language.InvertedIndex;
-import ir.ShelmosSearch.Language.Normalizer;
+import ir.shelmos_search.language.InvertedIndex;
+import ir.shelmos_search.language.Normalizer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

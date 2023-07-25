@@ -1,4 +1,4 @@
-package ir.ShelmosSearch;
+package ir.shelmos_search;
 
 import java.util.ArrayList;
 import java.util.Arrays;

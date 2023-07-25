@@ -1,5 +1,5 @@
-import ir.ShelmosSearch.Application;
-import ir.ShelmosSearch.Language.EdgeGramTokenizer;
+import ir.shelmos_search.ShelmosSearch;
+import ir.shelmos_search.language.EdgeGramTokenizer;
 import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Application application = new Application()
+        ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
                 .setTokenizer(EdgeGramTokenizer
@@ -18,10 +18,10 @@ public class Main {
                         .max(5)
                         .build())
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
-        runInConsole(application);
+        runInConsole(shelmosSearch);
     }
 
-    private static void runInConsole(Application application) {
+    private static void runInConsole(ShelmosSearch shelmosSearch) {
 
         @Cleanup
         Scanner scanner = new Scanner(System.in);
@@ -33,7 +33,7 @@ public class Main {
             if (query.equals("!"))
                 break;
             watch.start();
-            ArrayList<String> result = application.search(query);
+            ArrayList<String> result = shelmosSearch.search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();
