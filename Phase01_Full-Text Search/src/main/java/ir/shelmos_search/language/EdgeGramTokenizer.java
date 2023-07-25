@@ -3,6 +3,7 @@ package ir.shelmos_search.language;
 import lombok.Builder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Builder
@@ -20,16 +21,16 @@ public class EdgeGramTokenizer implements Tokenizer {
     }
 
     private ArrayList<String> makeSlugs(String token) {
-        ArrayList<String> result = new ArrayList<>();
+        HashSet<String> result = new HashSet<>();
         for (int i = 0; i < token.length(); i++) {
             for (int j = min; j <= max; j++) {
-                if (i + j >= token.length()) {
+                if (i + j > token.length()) {
                     break;
                 }
-                String slug = token.substring(i, i + j + 1);
+                String slug = token.substring(i, i + j);
                 result.add(slug);
             }
         }
-        return result;
+        return new ArrayList<>(result);
     }
 }

@@ -30,7 +30,7 @@ public class ShelmosSearch {
     public ArrayList<String> search(String query) {
         HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
         HashSet<String> result = queryHandler.runQueries(queries, invertedIndex);
-        return Util.toArrayList(result);
+        return new ArrayList<>(result);
     }
 
     public ShelmosSearch addDoc(String title, String content) {
