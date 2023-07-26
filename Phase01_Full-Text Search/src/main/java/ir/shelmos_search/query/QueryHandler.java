@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Builder
 public class QueryHandler {
@@ -52,7 +50,8 @@ public class QueryHandler {
     }
 
     public List<String> runQueries(HashMap<String, ArrayList<String>> queries, InvertedIndex invertedIndex) {
-        if (isSingleQuery(queries)) return runSignleQuery(queries.get("AND").get(0),invertedIndex);
+        if (isSingleQuery(queries))
+            return runSignleQuery(queries.get("AND").get(0), invertedIndex);
         HashSet<String> result = getANDQueries(queries.get("AND"), invertedIndex);
 
         HashSet<String> unionPlusResult = getORQueries(queries.get("OR"), invertedIndex);
@@ -101,19 +100,22 @@ public class QueryHandler {
         Set<String> search = invertedIndex.getDictionary().get(q).keySet();
         return new HashSet<>(search);
     }
-    private HashMap<String,Integer> findWithCount(InvertedIndex invertedIndex, String q) {
-        Map<String,Integer> search = invertedIndex.getDictionary().get(q);
+
+    private HashMap<String, Integer> findWithCount(InvertedIndex invertedIndex, String q) {
+        Map<String, Integer> search = invertedIndex.getDictionary().get(q);
         return new HashMap<>(search);
     }
-    private boolean isSingleQuery(HashMap<String, ArrayList<String>> queries){
-        return queries.get("AND").size()==1 && queries.get("OR").isEmpty() && queries.get("NOT").isEmpty();
+
+    private boolean isSingleQuery(HashMap<String, ArrayList<String>> queries) {
+        return queries.get("AND").size() == 1 && queries.get("OR").isEmpty() && queries.get("NOT").isEmpty();
     }
-    private List<String> runSignleQuery(String query, InvertedIndex invertedIndex){
-        var queryResult=findWithCount(invertedIndex,query);
+
+    private List<String> runSignleQuery(String query, InvertedIndex invertedIndex) {
+        var queryResult = findWithCount(invertedIndex, query);
         return queryResult
                 .entrySet()
                 .stream()
-                .sorted((d1,d2)->d2.getValue().compareTo(d1.getValue()))
+                .sorted((d1, d2) -> d2.getValue().compareTo(d1.getValue()))
                 .map(Map.Entry::getKey)
                 .toList();
     }
