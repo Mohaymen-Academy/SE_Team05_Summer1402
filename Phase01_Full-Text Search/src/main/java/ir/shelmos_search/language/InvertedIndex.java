@@ -23,20 +23,31 @@ public class InvertedIndex {
     }
 
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
-        if (processedWords.isEmpty()) return;
-        double incrementFraction=1d/processedWords.size();
+        if (processedWords.isEmpty())
+            return;
+        double incrementFraction = 1d / processedWords.size();
+        var tokenizedTitle = languageProcessor.tokenize(title);
+        var normalizedTitle = languageProcessor.normalize(tokenizedTitle);
         for (String word : processedWords) {
             if (!dictionary.containsKey(word)) {
                 HashMap<String, Double> docList = new HashMap<>();
-                docList.put(title, incrementFraction);
+                if (normalizedTitle.contains(word)) {
+                    // big score for when document title includes the word
+                    docList.put(title, 1 + incrementFraction);
+                } else {
+                    docList.put(title, incrementFraction);
+                }
                 dictionary.put(word, docList);
             } else {
                 HashMap<String, Double> docList = dictionary.get(word);
-                if (docList.containsKey(title)){
+                if (docList.containsKey(title)) {
                     docList.put(title, docList.get(title) + incrementFraction);
-                }
-                else {
+                } else {
                     docList.put(title, incrementFraction);
+                }
+                if (normalizedTitle.contains(word)) {
+                    // big score for when document title includes the word
+                    docList.put(title, 1 + docList.get(title));
                 }
             }
         }

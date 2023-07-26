@@ -95,7 +95,7 @@ class QueryHandlerTest {
                 .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
                         invertedIndex)
                 .toArray();
-        Assertions.assertTrue(actual.length == 0);
+        Assertions.assertEquals(0, actual.length);
     }
 
     @Test
@@ -117,6 +117,16 @@ class QueryHandlerTest {
                         invertedIndex)
                 .toArray();
         var expected = new String[] { "E", "B", "C", "A" };
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    void runQueries_singleANDWhichIsPartOfTitle_resultShouldBeSortedByCount() {
+        String text = "clean";
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
+        var expected = new String[] { "Clean Code", "Clean Architecture", "Daisy Diary"};
         Assertions.assertArrayEquals(expected, actual);
     }
 
@@ -162,6 +172,13 @@ class QueryHandlerTest {
                 put("A", 0.2);
                 put("B", 0.5);
                 put("C", 0.3);
+            }
+        });
+        mockDictionary.put("clean", new HashMap<String, Double>() {
+            {
+                put("Clean Architecture", 0.5);
+                put("Clean Code", 1.2);
+                put("Daisy Diary", 0.3);
             }
         });
         return mockDictionary;
