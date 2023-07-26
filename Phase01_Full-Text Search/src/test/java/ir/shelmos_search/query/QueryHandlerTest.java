@@ -2,7 +2,6 @@ package ir.shelmos_search.query;
 
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.LanguageProcessor;
-import ir.shelmos_search.language.Normalizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,49 +19,7 @@ class QueryHandlerTest {
     void setUp() {
         queryHandler = new QueryHandler();
         invertedIndex = Mockito.mock(InvertedIndex.class);
-
-        HashMap<String, HashMap<String, Double>> mockDictionary = new HashMap<>();
-        mockDictionary.put("ali", new HashMap<String, Double>() {
-            {
-                put("A", 0.1);
-                put("B", 0.2);
-                put("C", 0.2);
-                put("E", 0.5);
-            }
-        });
-        mockDictionary.put("hassan", new HashMap<String, Double>() {
-            {
-                put("B", 0.1);
-                put("C", 0.3);
-                put("E", 0.6);
-            }
-        });
-        mockDictionary.put("hossein", new HashMap<String, Double>() {
-            {
-                put("C", 0.6);
-                put("D", 0.1);
-                put("E", 0.3);
-            }
-        });
-        mockDictionary.put("mohammad", new HashMap<String, Double>() {
-            {
-                put("A", 0.5);
-                put("B", 0.1);
-                put("C", 0.4);
-            }
-        });
-        mockDictionary.put("abba", new HashMap<String, Double>() {
-            {
-                put("C", 1.0);
-            }
-        });
-        mockDictionary.put("sadegh", new HashMap<String, Double>() {
-            {
-                put("A", 0.2);
-                put("B", 0.5);
-                put("C", 0.3);
-            }
-        });
+        HashMap<String, HashMap<String, Double>> mockDictionary = createFakeData();
         Mockito.when(invertedIndex.getDictionary()).thenReturn(mockDictionary);
         Mockito.when(invertedIndex.getLanguageProcessor()).thenReturn(new LanguageProcessor());
     }
@@ -163,18 +120,50 @@ class QueryHandlerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
-    // @Test
-    // void setNormalizer_textContainsComma_resultShouldNotContainComma() {
-    // var token = "Goals";
-    // queryHandler.setNormalizer(String::toLowerCase);
-    // var actual = queryHandler.getNormalizer().normalize(token);
-    // var expected = "goals";
-    // Assertions.assertEquals(expected, actual);
-    // }
+    private HashMap<String, HashMap<String, Double>> createFakeData() {
 
-    @Test
-    void getNormalizer_defaultNormalizer_resultShouldBeInstanceOfNormalizer() {
-        var actual = invertedIndex.getLanguageProcessor().getNormalizer();
-        Assertions.assertInstanceOf(Normalizer.class, actual);
+        HashMap<String, HashMap<String, Double>> mockDictionary = new HashMap<>();
+        mockDictionary.put("ali", new HashMap<String, Double>() {
+            {
+                put("A", 0.1);
+                put("B", 0.2);
+                put("C", 0.2);
+                put("E", 0.5);
+            }
+        });
+        mockDictionary.put("hassan", new HashMap<String, Double>() {
+            {
+                put("B", 0.1);
+                put("C", 0.3);
+                put("E", 0.6);
+            }
+        });
+        mockDictionary.put("hossein", new HashMap<String, Double>() {
+            {
+                put("C", 0.6);
+                put("D", 0.1);
+                put("E", 0.3);
+            }
+        });
+        mockDictionary.put("mohammad", new HashMap<String, Double>() {
+            {
+                put("A", 0.5);
+                put("B", 0.1);
+                put("C", 0.4);
+            }
+        });
+        mockDictionary.put("abba", new HashMap<String, Double>() {
+            {
+                put("C", 1.0);
+            }
+        });
+        mockDictionary.put("sadegh", new HashMap<String, Double>() {
+            {
+                put("A", 0.2);
+                put("B", 0.5);
+                put("C", 0.3);
+            }
+        });
+        return mockDictionary;
     }
 }
