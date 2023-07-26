@@ -1,12 +1,12 @@
 package ir.shelmos_search.language;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Builder
+@AllArgsConstructor
 public class EdgeGramTokenizer implements Tokenizer {
     private int min, max;
 

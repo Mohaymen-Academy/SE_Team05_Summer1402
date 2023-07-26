@@ -9,11 +9,7 @@ class EdgeGramTokenizerTest {
 
     @BeforeEach
     void setUp() {
-        edgeGramTokenizer = EdgeGramTokenizer
-                .builder()
-                .min(2)
-                .max(4)
-                .build();
+        edgeGramTokenizer = new EdgeGramTokenizer(2,4);
     }
 
     @Test

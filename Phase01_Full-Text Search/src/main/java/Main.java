@@ -12,11 +12,7 @@ public class Main {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .setTokenizer(EdgeGramTokenizer
-                        .builder()
-                        .min(2)
-                        .max(5)
-                        .build())
+                .setTokenizer(new EdgeGramTokenizer(2,5))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(shelmosSearch);
     }
