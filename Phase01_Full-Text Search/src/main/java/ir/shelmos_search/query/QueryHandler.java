@@ -36,12 +36,12 @@ public class QueryHandler {
         }
     }
 
-    public HashSet<String> runQueries(ArrayList<Query> queries, InvertedIndex invertedIndex) {
+    public List<String> runQueries(ArrayList<Query> queries, InvertedIndex invertedIndex) {
         HashSet<String> result = new HashSet<>();
         for (Query query : queries)
             result = query.processQueryResult(result, invertedIndex);
 
-        return result;
+        return List.of(result.toArray(String[]::new));
     }
 
     public static HashSet<String> find(InvertedIndex invertedIndex, String q) {

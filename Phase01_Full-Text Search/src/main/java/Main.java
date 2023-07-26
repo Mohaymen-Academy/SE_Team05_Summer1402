@@ -4,7 +4,7 @@ import ir.shelmos_search.ShelmosSearch;
 import ir.shelmos_search.language.EdgeGramTokenizer;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -30,14 +30,14 @@ public class Main {
             String query = scanner.nextLine();
             if (query.equals("!")) break;
             watch.start();
-            ArrayList<String> result = shelmosSearch.search(query);
+            List<String> result = shelmosSearch.search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();
         }
     }
 
-    private static void printQueryResult(ArrayList<String> result, long duration) {
+    private static void printQueryResult(List<String> result, long duration) {
         System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
         System.out.println(result);
     }

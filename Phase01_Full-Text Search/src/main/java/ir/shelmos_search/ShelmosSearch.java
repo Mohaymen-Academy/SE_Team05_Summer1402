@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class ShelmosSearch {
     private final InvertedIndex invertedIndex;
@@ -28,10 +29,9 @@ public class ShelmosSearch {
         fileReader = new TXTFileReader();
     }
 
-    public ArrayList<String> search(String query) {
+    public List<String> search(String query) {
         ArrayList<Query> queries = queryHandler.parseQueriesByType(query);
-        HashSet<String> result = queryHandler.runQueries(queries, invertedIndex);
-        return Util.toArrayList(result);
+        return queryHandler.runQueries(queries, invertedIndex);
     }
 
     public ShelmosSearch addDoc(String title, String content) {
