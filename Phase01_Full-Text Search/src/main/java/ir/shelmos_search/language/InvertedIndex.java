@@ -5,11 +5,10 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class InvertedIndex {
     private @Getter final LanguageProcessor languageProcessor;
-    private @Getter final HashMap<String, HashSet<String>> dictionary;
+    private @Getter final HashMap<String, HashMap<String, Integer>> dictionary;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
@@ -26,12 +25,17 @@ public class InvertedIndex {
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
         for (String word : processedWords) {
             if (!dictionary.containsKey(word)) {
-                HashSet<String> fileList = new HashSet<>();
-                fileList.add(title);
-                dictionary.put(word, fileList);
+                HashMap<String, Integer> docList = new HashMap<>();
+                docList.put(title, 1);
+                dictionary.put(word, docList);
             } else {
-                HashSet<String> bookList = dictionary.get(word);
-                bookList.add(title);
+                HashMap<String, Integer> docList = dictionary.get(word);
+                if (docList.containsKey(title)){
+                    docList.put(title, docList.get(title) + 1);
+                }
+                else {
+                    docList.put(title, 1);
+                }
             }
         }
 

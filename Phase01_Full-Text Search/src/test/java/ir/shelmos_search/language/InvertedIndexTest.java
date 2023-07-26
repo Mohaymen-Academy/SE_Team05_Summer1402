@@ -22,9 +22,10 @@ class InvertedIndexTest {
         String title = "Design by MSP";
         String content = "Design is Good!\nIt's all about engineering";
         invertedIndex.addDoc(new Document(title, content));
-        boolean assertion = invertedIndex.getDictionary().get("about").contains(title);
+        boolean assertion = invertedIndex.getDictionary().get("about").containsKey(title);
         Assertions.assertTrue(assertion);
     }
+
     @Test
     void addDoc_addTwoDocument_shouldAppearInDictionary() {
         String title1 = "Design by MSP";
@@ -34,7 +35,7 @@ class InvertedIndexTest {
         invertedIndex.addDoc(new Document(title1, content1));
         invertedIndex.addDoc(new Document(title2, content2));
         var search = invertedIndex.getDictionary().get("code");
-        Assertions.assertTrue(search.containsAll(List.of(new String[]{title1, title2})));
+        Assertions.assertTrue(search.keySet().containsAll(List.of(new String[] { title1, title2 })));
     }
 
     @Test

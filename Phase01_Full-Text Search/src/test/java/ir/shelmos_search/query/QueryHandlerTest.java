@@ -18,13 +18,48 @@ class QueryHandlerTest {
     void setUp() {
         queryHandler = QueryHandler.builder().normalizer(new PorterStemmerNormalizer()).build();
         invertedIndex = Mockito.mock(InvertedIndex.class);
-        HashMap<String, HashSet<String>> mockDictionary = new HashMap<>();
-        mockDictionary.put("ali", new HashSet<>(List.of(new String[] { "A", "B", "C", "E" })));
-        mockDictionary.put("hassan", new HashSet<>(List.of(new String[] { "B", "C", "E" })));
-        mockDictionary.put("hossein", new HashSet<>(List.of(new String[] { "C", "D", "E" })));
-        mockDictionary.put("mohammad", new HashSet<>(List.of(new String[] { "A", "B", "C" })));
-        mockDictionary.put("abba", new HashSet<>(List.of(new String[] { "C" })));
-        mockDictionary.put("sadegh", new HashSet<>(List.of(new String[] { "A", "B", "C" })));
+        HashMap<String, HashMap<String, Integer>> mockDictionary = new HashMap<>();
+        mockDictionary.put("ali", new HashMap<String, Integer>() {
+            {
+                put("A", 2);
+                put("B", 3);
+                put("C", 3);
+                put("E", 10);
+            }
+        });
+        mockDictionary.put("hassan", new HashMap<String, Integer>() {
+            {
+                put("B", 1);
+                put("C", 3);
+                put("E", 10);
+            }
+        });
+        mockDictionary.put("hossein", new HashMap<String, Integer>() {
+            {
+                put("C", 20);
+                put("D", 4);
+                put("E", 10);
+            }
+        });
+        mockDictionary.put("mohammad", new HashMap<String, Integer>() {
+            {
+                put("A", 5);
+                put("B", 2);
+                put("C", 4);
+            }
+        });
+        mockDictionary.put("abba", new HashMap<String, Integer>() {
+            {
+                put("C", 30);
+            }
+        });
+        mockDictionary.put("sadegh", new HashMap<String, Integer>() {
+            {
+                put("A", 2);
+                put("B", 20);
+                put("C", 3);
+            }
+        });
         Mockito.when(invertedIndex.getDictionary()).thenReturn(mockDictionary);
     }
 
@@ -100,7 +135,13 @@ class QueryHandlerTest {
         var expected = new String[] { "E" };
         Assertions.assertArrayEquals(expected, actual);
     }
-
+    @Test
+    void runQueries_singleAND_resultShouldBeSortedByCount() {
+        String text = "Ali";
+        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text), invertedIndex).toArray();
+        var expected = new String[] { "E","B","C","A" };
+        Assertions.assertArrayEquals(expected, actual);
+    }
     @Test
     void setNormalizer_textContainsComma_resultShouldNotContainComma() {
         var token = "Goals";
