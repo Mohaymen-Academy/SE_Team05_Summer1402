@@ -101,9 +101,12 @@ public class QueryHandler {
         return new HashSet<>(search);
     }
 
-    private HashMap<String, Integer> findWithCount(InvertedIndex invertedIndex, String q) {
-        Map<String, Integer> search = invertedIndex.getDictionary().get(q);
-        return new HashMap<>(search);
+    private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
+        HashMap<String, Double> search = invertedIndex.getDictionary().get(q);
+        if (search == null) {
+            return new HashMap<>();
+        }
+        return search;
     }
 
     private boolean isSingleQuery(HashMap<String, ArrayList<String>> queries) {
