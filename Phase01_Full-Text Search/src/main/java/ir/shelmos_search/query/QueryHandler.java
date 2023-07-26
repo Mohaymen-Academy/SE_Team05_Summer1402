@@ -10,28 +10,23 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Builder
 public class QueryHandler {
-    @Getter
-    @Setter
-    private Normalizer normalizer;
-
-    public ArrayList<Query> parseQueriesByType(String query) {
+    public ArrayList<Query> parseQueriesByType(String query, Normalizer normalizer) {
         ArrayList<Query> queries = new ArrayList<>(List.of(new AndQuery(), new OrQuery(), new NotQuery()));
 
         String[] parts = query.trim().split("\\s+");
-        normalizeQueries(parts, queries);
+        normalizeQueries(parts, queries, normalizer);
         return queries;
     }
 
-    private void normalizeQueries(String[] queries, ArrayList<Query> queryList) {
+    private void normalizeQueries(String[] queries, ArrayList<Query> queryList, Normalizer normalizer) {
         // check if query is blank (query is trimmed, so only first object needs to be checked)
         if (queries[0].isBlank()) return;
         for (String query : queries) {
             switch (query.charAt(0)) {
-                case '+' -> queryList.get(1).addQuery(getNormalizer().normalize(query.substring(1)));
-                case '-' -> queryList.get(2).addQuery(getNormalizer().normalize(query.substring(1)));
-                default -> queryList.get(0).addQuery(getNormalizer().normalize(query));
+                case '+' -> queryList.get(1).addQuery(normalizer.normalize(query.substring(1)));
+                case '-' -> queryList.get(2).addQuery(normalizer.normalize(query.substring(1)));
+                default -> queryList.get(0).addQuery(normalizer.normalize(query));
             }
         }
     }
@@ -44,7 +39,7 @@ public class QueryHandler {
         return List.of(result.toArray(String[]::new));
     }
 
-    public static HashSet<String> find(InvertedIndex invertedIndex, String q) {
+    static HashSet<String> find(InvertedIndex invertedIndex, String q) {
         HashSet<String> search = invertedIndex.getDictionary().get(q);
         if (search == null)
             return new HashSet<>();

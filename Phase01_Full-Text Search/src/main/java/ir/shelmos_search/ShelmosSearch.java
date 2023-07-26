@@ -12,7 +12,6 @@ import ir.shelmos_search.query.QueryHandler;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class ShelmosSearch {
@@ -22,15 +21,12 @@ public class ShelmosSearch {
 
     public ShelmosSearch() {
         invertedIndex = new InvertedIndex();
-        queryHandler = QueryHandler
-                .builder()
-                .normalizer(invertedIndex.getLanguageProcessor().getNormalizer())
-                .build();
+        queryHandler = new QueryHandler();
         fileReader = new TXTFileReader();
     }
 
     public List<String> search(String query) {
-        ArrayList<Query> queries = queryHandler.parseQueriesByType(query);
+        ArrayList<Query> queries = queryHandler.parseQueriesByType(query, invertedIndex.getLanguageProcessor().getNormalizer());
         return queryHandler.runQueries(queries, invertedIndex);
     }
 
@@ -53,8 +49,6 @@ public class ShelmosSearch {
 
     public ShelmosSearch setNormalizer(Normalizer newNormalizer) {
         invertedIndex.getLanguageProcessor().setNormalizer(newNormalizer);
-        // TODO: 7/22/2023
-        queryHandler.setNormalizer(newNormalizer);
         return this;
     }
 
