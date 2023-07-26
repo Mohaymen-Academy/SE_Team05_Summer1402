@@ -73,9 +73,9 @@ class QueryHandlerTest {
         String text = "Ali Hassan Hossein";
         var actual = queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer());
         var expected = new String[] { "ali", "hassan", "hossein" };
-        Assertions.assertTrue(actual.get(1).queries.isEmpty());
-        Assertions.assertTrue(actual.get(2).queries.isEmpty());
-        Assertions.assertArrayEquals(actual.get(0).queries.toArray(), expected);
+        Assertions.assertTrue(actual.get(QueryTypes.OR).getQueries().isEmpty());
+        Assertions.assertTrue(actual.get(QueryTypes.NOT).getQueries().isEmpty());
+        Assertions.assertArrayEquals(actual.get(QueryTypes.AND).getQueries().toArray(), expected);
     }
 
     @Test
@@ -83,9 +83,9 @@ class QueryHandlerTest {
         String text = "+Ali +Hassan +Hossein";
         var actual = queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer());
         var expected = new String[] { "ali", "hassan", "hossein" };
-        Assertions.assertTrue(actual.get(0).queries.isEmpty());
-        Assertions.assertTrue(actual.get(2).queries.isEmpty());
-        Assertions.assertArrayEquals(actual.get(1).queries.toArray(), expected);
+        Assertions.assertTrue(actual.get(QueryTypes.AND).getQueries().isEmpty());
+        Assertions.assertTrue(actual.get(QueryTypes.NOT).getQueries().isEmpty());
+        Assertions.assertArrayEquals(actual.get(QueryTypes.OR).getQueries().toArray(), expected);
     }
 
     @Test
@@ -93,9 +93,9 @@ class QueryHandlerTest {
         String text = "-Ali -Hassan -Hossein";
         var actual = queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer());
         var expected = new String[] { "ali", "hassan", "hossein" };
-        Assertions.assertTrue(actual.get(0).queries.isEmpty());
-        Assertions.assertTrue(actual.get(1).queries.isEmpty());
-        Assertions.assertArrayEquals(actual.get(2).queries.toArray(), expected);
+        Assertions.assertTrue(actual.get(QueryTypes.AND).getQueries().isEmpty());
+        Assertions.assertTrue(actual.get(QueryTypes.OR).getQueries().isEmpty());
+        Assertions.assertArrayEquals(actual.get(QueryTypes.NOT).getQueries().toArray(), expected);
     }
 
     @Test
@@ -105,9 +105,9 @@ class QueryHandlerTest {
         var expectedAND = new String[] { "ali", "hassan" };
         var expectedOR = new String[] { "mohammad", "hossein" };
         var expectedNOT = new String[] { "abba", "sadegh" };
-        Assertions.assertArrayEquals(actual.get(0).queries.toArray(), expectedAND);
-        Assertions.assertArrayEquals(actual.get(1).queries.toArray(), expectedOR);
-        Assertions.assertArrayEquals(actual.get(2).queries.toArray(), expectedNOT);
+        Assertions.assertArrayEquals(actual.get(QueryTypes.AND).getQueries().toArray(), expectedAND);
+        Assertions.assertArrayEquals(actual.get(QueryTypes.OR).getQueries().toArray(), expectedOR);
+        Assertions.assertArrayEquals(actual.get(QueryTypes.NOT).getQueries().toArray(), expectedNOT);
     }
 
     @Test
@@ -148,15 +148,6 @@ class QueryHandlerTest {
         var expected = new String[] { "E", "B", "C", "A" };
         Assertions.assertArrayEquals(expected, actual);
     }
-
-//    @Test
-//    void setNormalizer_textContainsComma_resultShouldNotContainComma() {
-//        var token = "Goals";
-//        queryHandler.setNormalizer(String::toLowerCase);
-//        var actual = queryHandler.getNormalizer().normalize(token);
-//        var expected = "goals";
-//        Assertions.assertEquals(expected, actual);
-//    }
 
     @Test
     void getNormalizer_defaultNormalizer_resultShouldBeInstanceOfNormalizer() {

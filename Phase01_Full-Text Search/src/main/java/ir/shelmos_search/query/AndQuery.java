@@ -16,7 +16,7 @@ public class AndQuery extends Query{
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
         HashSet<String> searchResult;
-        for (String q : queries) {
+        for (String q : getQueries()) {
             searchResult = QueryHandler.find(invertedIndex, q);
             if (firstPart) {
                 result = searchResult;

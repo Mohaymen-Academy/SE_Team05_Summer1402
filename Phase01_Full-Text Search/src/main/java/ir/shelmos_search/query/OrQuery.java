@@ -10,7 +10,7 @@ public class OrQuery extends Query{
         HashSet<String> unionPlusResult = getQueryResult(invertedIndex);
         if (priorResult.isEmpty())
             priorResult = unionPlusResult;
-        else if (!queries.isEmpty())
+        else if (!getQueries().isEmpty())
             priorResult.retainAll(unionPlusResult);
 
         return priorResult;
@@ -19,7 +19,7 @@ public class OrQuery extends Query{
     @Override
     protected HashSet<String> getQueryResult(InvertedIndex invertedIndex) {
         HashSet<String> unionPlusResult = new HashSet<>();
-        for (String q : queries) {
+        for (String q : getQueries()) {
             HashSet<String> searchResult = QueryHandler.find(invertedIndex, q);
             unionPlusResult.addAll(searchResult);
         }

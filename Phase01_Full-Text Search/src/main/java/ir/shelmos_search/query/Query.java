@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Query {
-    ArrayList<String> queries;
+    private final ArrayList<String> queries;
 
     public Query() {
         this.queries = new ArrayList<>();
+    }
+
+    public ArrayList<String> getQueries() {
+        return queries;
     }
 
     public void addQuery(String query){

@@ -6,33 +6,38 @@ import ir.shelmos_search.language.Normalizer;
 import java.util.*;
 
 public class QueryHandler {
-    public ArrayList<Query> parseQueriesByType(String query, Normalizer normalizer) {
-        ArrayList<Query> queries = new ArrayList<>(List.of(new AndQuery(), new OrQuery(), new NotQuery()));
+    public HashMap<QueryTypes, Query> parseQueriesByType(String query, Normalizer normalizer) {
+        HashMap<QueryTypes, Query> queries = new HashMap<>() {{
+            put(QueryTypes.AND, new AndQuery());
+            put(QueryTypes.OR, new OrQuery());
+            put(QueryTypes.NOT, new NotQuery());
+        }};
 
         String[] parts = query.trim().split("\\s+");
         normalizeQueries(parts, queries, normalizer);
         return queries;
     }
 
-    private void normalizeQueries(String[] queries, ArrayList<Query> queryList, Normalizer normalizer) {
+    private void normalizeQueries(String[] queries, HashMap<QueryTypes, Query> queryList, Normalizer normalizer) {
         // check if query is blank (query is trimmed, so only first object needs to be checked)
         if (queries[0].isBlank()) return;
         for (String query : queries) {
             switch (query.charAt(0)) {
-                case '+' -> queryList.get(1).addQuery(normalizer.normalize(query.substring(1)));
-                case '-' -> queryList.get(2).addQuery(normalizer.normalize(query.substring(1)));
-                default -> queryList.get(0).addQuery(normalizer.normalize(query));
+                case '+' -> queryList.get(QueryTypes.OR).addQuery(normalizer.normalize(query.substring(1)));
+                case '-' -> queryList.get(QueryTypes.NOT).addQuery(normalizer.normalize(query.substring(1)));
+                default -> queryList.get(QueryTypes.AND).addQuery(normalizer.normalize(query));
             }
         }
     }
 
-    public List<String> runQueries(ArrayList<Query> queries, InvertedIndex invertedIndex) {
+    public List<String> runQueries(HashMap<QueryTypes, Query> queries, InvertedIndex invertedIndex) {
         if (isSingleQuery(queries))
-            return runSingleQuery(queries.get(0).queries.get(0), invertedIndex);
+            return runSingleQuery(queries.get(QueryTypes.AND).getQueries().get(0), invertedIndex);
 
         HashSet<String> result = new HashSet<>();
-        for (Query query : queries)
+        for (Query query : queries.values())
             result = query.processQueryResult(result, invertedIndex);
+
         return List.of(result.toArray(String[]::new));
     }
 
@@ -49,10 +54,10 @@ public class QueryHandler {
         return search;
     }
 
-    private boolean isSingleQuery(ArrayList<Query> queries) {
-        return queries.get(0).queries.size() == 1 &&
-                queries.get(1).queries.isEmpty() &&
-                queries.get(2).queries.isEmpty();
+    private boolean isSingleQuery(HashMap<QueryTypes, Query> queries) {
+        return queries.get(QueryTypes.AND).getQueries().size() == 1 &&
+                queries.get(QueryTypes.OR).getQueries().isEmpty() &&
+                queries.get(QueryTypes.NOT).getQueries().isEmpty();
     }
 
     private List<String> runSingleQuery(String query, InvertedIndex invertedIndex) {

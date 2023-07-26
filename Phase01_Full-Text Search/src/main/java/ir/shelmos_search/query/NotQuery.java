@@ -15,7 +15,7 @@ public class NotQuery extends Query{
     @Override
     protected HashSet<String> getQueryResult(InvertedIndex invertedIndex) {
         HashSet<String> searchResult = new HashSet<>();
-        for (String q : queries)
+        for (String q : getQueries())
             searchResult.addAll(QueryHandler.find(invertedIndex, q));
         return searchResult;
     }
