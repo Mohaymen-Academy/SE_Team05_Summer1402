@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class EdgeGramTokenizer implements Tokenizer {
+public class EdgeNGramTokenizer implements Tokenizer {
     private int min, max;
 
     public ArrayList<String> tokenize(String text) {
@@ -22,8 +22,8 @@ public class EdgeGramTokenizer implements Tokenizer {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < token.length(); i++) {
             for (int j = min; j <= max; j++) {
-                if (i + j >= token.length()) break;
-                String chunk = token.substring(i, i + j + 1);
+                if (i + j > token.length()) break;
+                String chunk = token.substring(i, i + j);
                 result.add(chunk);
             }
         }

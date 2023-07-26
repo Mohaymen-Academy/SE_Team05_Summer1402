@@ -1,7 +1,7 @@
 import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 import ir.shelmos_search.ShelmosSearch;
-import ir.shelmos_search.language.EdgeGramTokenizer;
+import ir.shelmos_search.language.EdgeNGramTokenizer;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -12,7 +12,7 @@ public class Main {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[]{",", "."})
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .setTokenizer(new EdgeGramTokenizer(2, 5))
+                .setTokenizer(new EdgeNGramTokenizer(2, 5))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(shelmosSearch);
     }
