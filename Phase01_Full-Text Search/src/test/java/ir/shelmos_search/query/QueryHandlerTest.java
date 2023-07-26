@@ -3,7 +3,6 @@ package ir.shelmos_search.query;
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.LanguageProcessor;
 import ir.shelmos_search.language.Normalizer;
-import ir.shelmos_search.language.PorterStemmerNormalizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,7 +112,10 @@ class QueryHandlerTest {
     @Test
     void runQueries_justAND_resultShouldIntersectEachResult() {
         String text = "Ali Hassan Hossein";
-        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()), invertedIndex).toArray();
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
         var expected = new String[] { "C", "E" };
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -121,7 +123,10 @@ class QueryHandlerTest {
     @Test
     void runQueries_justOR_resultShouldUnionEachResult() {
         String text = "+Ali +Hassan +Hossein";
-        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()), invertedIndex).toArray();
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
         var expected = new String[] { "A", "B", "C", "D", "E" };
         Assertions.assertEquals(expected.length, actual.length);
     }
@@ -129,14 +134,20 @@ class QueryHandlerTest {
     @Test
     void runQueries_justNOT_resultShouldBeEmpty() {
         String text = "-Ali -Hassan -Hossein";
-        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()), invertedIndex).toArray();
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
         Assertions.assertTrue(actual.length == 0);
     }
 
     @Test
     void runQueries_multipleQueries_resultShouldIntersectANDandORandDeleteNOT() {
         String text = "+Mohammad -Abbas Ali Hassan +Hossein -Sadegh";
-        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()), invertedIndex).toArray();
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
         var expected = new String[] { "E" };
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -144,19 +155,22 @@ class QueryHandlerTest {
     @Test
     void runQueries_singleAND_resultShouldBeSortedByCount() {
         String text = "Ali";
-        var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()), invertedIndex).toArray();
+        var actual = queryHandler
+                .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
+                        invertedIndex)
+                .toArray();
         var expected = new String[] { "E", "B", "C", "A" };
         Assertions.assertArrayEquals(expected, actual);
     }
 
-//    @Test
-//    void setNormalizer_textContainsComma_resultShouldNotContainComma() {
-//        var token = "Goals";
-//        queryHandler.setNormalizer(String::toLowerCase);
-//        var actual = queryHandler.getNormalizer().normalize(token);
-//        var expected = "goals";
-//        Assertions.assertEquals(expected, actual);
-//    }
+    // @Test
+    // void setNormalizer_textContainsComma_resultShouldNotContainComma() {
+    // var token = "Goals";
+    // queryHandler.setNormalizer(String::toLowerCase);
+    // var actual = queryHandler.getNormalizer().normalize(token);
+    // var expected = "goals";
+    // Assertions.assertEquals(expected, actual);
+    // }
 
     @Test
     void getNormalizer_defaultNormalizer_resultShouldBeInstanceOfNormalizer() {
