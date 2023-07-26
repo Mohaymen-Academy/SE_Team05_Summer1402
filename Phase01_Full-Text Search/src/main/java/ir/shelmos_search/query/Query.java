@@ -8,10 +8,6 @@ import java.util.HashSet;
 public abstract class Query {
     ArrayList<String> queries;
 
-    public Query(ArrayList<String> queries) {
-        this.queries = queries;
-    }
-
     public Query() {
         this.queries = new ArrayList<>();
     }
