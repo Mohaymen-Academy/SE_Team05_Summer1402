@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-public class EdgeGramTokenizer implements Tokenizer {
+public class EdgeNGramTokenizer implements Tokenizer {
     private int min, max;
 
     public ArrayList<String> tokenize(String text) {

@@ -4,19 +4,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EdgeGramTokenizerTest {
-    private EdgeGramTokenizer edgeGramTokenizer;
+class EdgeNGramTokenizerTest {
+    private EdgeNGramTokenizer edgeNGramTokenizer;
 
     @BeforeEach
     void setUp() {
-        edgeGramTokenizer = new EdgeGramTokenizer(2,4);
+        edgeNGramTokenizer = new EdgeNGramTokenizer(2,4);
     }
 
     @Test
     void tokenize_parameterSizeMoreThanMax_shouldContainAPartOfRange() {
         String text = "Design";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.contains("sig");
         Assertions.assertTrue(assertion);
@@ -26,7 +26,7 @@ class EdgeGramTokenizerTest {
     void tokenize_parameterSizeMoreThanMax_shouldContainTheWholdWord() {
         String text = "Design";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.contains("Design");
         Assertions.assertTrue(assertion);
@@ -36,7 +36,7 @@ class EdgeGramTokenizerTest {
     void tokenize_parameterSizeMoreThanMax_shouldNotContainPartSmallerThanMin() {
         String text = "Design";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.contains("e");
         Assertions.assertFalse(assertion);
@@ -46,7 +46,7 @@ class EdgeGramTokenizerTest {
     void tokenize_parameterSizeMoreThanMax_shouldNotContainPartBiggerThanMax() {
         String text = "Design";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.contains("esign");
         Assertions.assertFalse(assertion);
@@ -56,7 +56,7 @@ class EdgeGramTokenizerTest {
     void tokenize_parameterSizeLessThanMin_shouldHaveOneItem() {
         String text = "D";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.size() == 1;
         Assertions.assertTrue(assertion);
@@ -66,7 +66,7 @@ class EdgeGramTokenizerTest {
     void tokenize_parameterSizeBetweenMinAndMax_shouldContainAPartInRange() {
         String text = "Des";
 
-        var actual = edgeGramTokenizer.tokenize(text);
+        var actual = edgeNGramTokenizer.tokenize(text);
 
         boolean assertion = actual.contains("es");
         Assertions.assertTrue(assertion);
