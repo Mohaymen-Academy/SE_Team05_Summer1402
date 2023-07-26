@@ -1,21 +1,28 @@
 package ir.shelmos_search.language;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import lombok.Getter;
-import lombok.Setter;
 
 public class LanguageProcessor {
-    private @Getter @Setter Normalizer normalizer;
-    private @Getter @Setter Tokenizer tokenizer;
-    private @Getter @Setter String[] stopWords;
+    @Getter
+    @Setter
+    private Normalizer normalizer;
+    @Getter
+    @Setter
+    private Tokenizer tokenizer;
+    @Getter
+    @Setter
+    private String[] stopWords;
 
     public LanguageProcessor() {
         normalizer = new PorterStemmerNormalizer();
         tokenizer = new OpennlpSimpleTokenizer();
-        stopWords = new String[] { ",", "." };
+        stopWords = new String[]{",", "."};
     }
 
     public String filterText(String text) {

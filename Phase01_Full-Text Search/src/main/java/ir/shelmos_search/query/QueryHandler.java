@@ -12,7 +12,9 @@ import java.util.HashSet;
 
 @Builder
 public class QueryHandler {
-    private @Getter @Setter Normalizer normalizer;
+    private @Getter
+    @Setter
+    Normalizer normalizer;
 
     public HashMap<String, ArrayList<String>> parseQueriesByType(String query) {
         HashMap<String, ArrayList<String>> queries = new HashMap<>() {
@@ -29,10 +31,8 @@ public class QueryHandler {
     }
 
     private void normalizeQueries(String[] queries, HashMap<String, ArrayList<String>> queryList) {
-        // check if query is blank (query is trimmed, so only first object needs to be
-        // checked)
-        if (queries[0].isBlank())
-            return;
+        // check if query is blank (query is trimmed, so only first object needs to be checked)
+        if (queries[0].isBlank()) return;
         for (String query : queries) {
             switch (query.charAt(0)) {
                 case '+' -> {

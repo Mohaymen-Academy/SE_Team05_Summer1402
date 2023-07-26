@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class InvertedIndex {
-    private @Getter final LanguageProcessor languageProcessor;
-    private @Getter final HashMap<String, HashSet<String>> dictionary;
+    @Getter
+    private final LanguageProcessor languageProcessor;
+    @Getter
+    private final HashMap<String, HashSet<String>> dictionary;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();

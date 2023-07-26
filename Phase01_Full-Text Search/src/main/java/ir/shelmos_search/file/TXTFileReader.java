@@ -1,5 +1,7 @@
 package ir.shelmos_search.file;
 
+import lombok.Cleanup;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +12,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import lombok.Cleanup;
 
 public class TXTFileReader implements FileReader {
     @Override
@@ -22,7 +23,6 @@ public class TXTFileReader implements FileReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return fileText;
     }
 
@@ -31,8 +31,7 @@ public class TXTFileReader implements FileReader {
         File file = new File(path.toUri());
         String fileContent = null;
         try {
-            @Cleanup
-            Scanner scanner = new Scanner(file);
+            @Cleanup Scanner scanner = new Scanner(file);
             fileContent = scanner.useDelimiter("\\Z").next();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
