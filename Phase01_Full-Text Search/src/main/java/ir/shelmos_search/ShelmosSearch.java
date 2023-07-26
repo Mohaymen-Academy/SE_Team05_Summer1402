@@ -27,10 +27,9 @@ public class ShelmosSearch {
         fileReader = new TXTFileReader();
     }
 
-    public ArrayList<String> search(String query) {
+    public List<String> search(String query) {
         HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
-        List<String> result = queryHandler.runQueries(queries, invertedIndex);
-        return new ArrayList<>(result);
+        return queryHandler.runQueries(queries, invertedIndex);
     }
 
     public ShelmosSearch addDoc(String title, String content) {

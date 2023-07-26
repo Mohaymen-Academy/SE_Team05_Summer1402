@@ -4,7 +4,7 @@ import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +12,7 @@ public class Main {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .setTokenizer(new EdgeGramTokenizer(2,5))
+                .setTokenizer(new EdgeGramTokenizer(2, 5))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(shelmosSearch);
     }
@@ -29,14 +29,14 @@ public class Main {
             if (query.equals("!"))
                 break;
             watch.start();
-            ArrayList<String> result = shelmosSearch.search(query);
+            List<String> result = shelmosSearch.search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();
         }
     }
 
-    private static void printQueryResult(ArrayList<String> result, long duration) {
+    private static void printQueryResult(List<String> result, long duration) {
         System.out.println(
                 MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
         System.out.println(result);
