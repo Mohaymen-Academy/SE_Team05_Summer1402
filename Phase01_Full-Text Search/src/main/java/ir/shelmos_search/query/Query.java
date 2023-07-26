@@ -20,7 +20,7 @@ public abstract class Query {
         queries.add(query);
     }
 
-    public abstract HashSet<String> processQueryResult(HashSet<String> priorResult, InvertedIndex invertedIndex);
+    public abstract HashSet<String> processQueryResult(HashSet<String> priorResult, ArrayList<HashSet<String>> searchResult);
 
-    protected abstract HashSet<String> getQueryResult(InvertedIndex invertedIndex);
+    protected abstract HashSet<String> getQueryResult(ArrayList<HashSet<String>> searchResult);
 }

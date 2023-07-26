@@ -36,16 +36,25 @@ public class QueryHandler {
 
         HashSet<String> result = new HashSet<>();
         var orderQueries = new QueryTypes[]{QueryTypes.AND, QueryTypes.OR, QueryTypes.NOT};
-        for (QueryTypes queryTypes : orderQueries)
-            result = queries.get(queryTypes).processQueryResult(result, invertedIndex);
+        for (QueryTypes queryType : orderQueries)
+            result = queries.get(queryType).processQueryResult(result, find(invertedIndex, queries.get(queryType).getQueries()));
 
 
         return List.of(result.toArray(String[]::new));
     }
 
-    static HashSet<String> find(InvertedIndex invertedIndex, String q) {
+    private HashSet<String> find(InvertedIndex invertedIndex, String q) {
         Set<String> search = invertedIndex.getDictionary().get(q).keySet();
         return new HashSet<>(search);
+    }
+
+    private ArrayList<HashSet<String>> find(InvertedIndex invertedIndex, ArrayList<String> queries) {
+        ArrayList<HashSet<String>> result = new ArrayList<>();
+        for (String query : queries) {
+            HashSet<String> search = new HashSet<>(invertedIndex.getDictionary().get(query).keySet());
+            result.add(search);
+        }
+        return result;
     }
 
     private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
