@@ -19,63 +19,53 @@ class QueryHandlerTest {
 
     @BeforeEach
     void setUp() {
-//        queryHandler = QueryHandler.builder().normalizer(new PorterStemmerNormalizer()).build();
-//        queryHandler = Mockito.mock(QueryHandler.class);
         queryHandler = new QueryHandler();
         invertedIndex = Mockito.mock(InvertedIndex.class);
 
-
-
-//        invertedIndex.getLanguageProcessor().se
-        HashMap<String, HashMap<String, Integer>> mockDictionary = new HashMap<>();
-        mockDictionary.put("ali", new HashMap<String, Integer>() {
+        HashMap<String, HashMap<String, Double>> mockDictionary = new HashMap<>();
+        mockDictionary.put("ali", new HashMap<String, Double>() {
             {
-                put("A", 2);
-                put("B", 3);
-                put("C", 3);
-                put("E", 10);
+                put("A", 0.1);
+                put("B", 0.2);
+                put("C", 0.2);
+                put("E", 0.5);
             }
         });
-        mockDictionary.put("hassan", new HashMap<String, Integer>() {
+        mockDictionary.put("hassan", new HashMap<String, Double>() {
             {
-                put("B", 1);
-                put("C", 3);
-                put("E", 10);
+                put("B", 0.1);
+                put("C", 0.3);
+                put("E", 0.6);
             }
         });
-        mockDictionary.put("hossein", new HashMap<String, Integer>() {
+        mockDictionary.put("hossein", new HashMap<String, Double>() {
             {
-                put("C", 20);
-                put("D", 4);
-                put("E", 10);
+                put("C", 0.6);
+                put("D", 0.1);
+                put("E", 0.3);
             }
         });
-        mockDictionary.put("mohammad", new HashMap<String, Integer>() {
+        mockDictionary.put("mohammad", new HashMap<String, Double>() {
             {
-                put("A", 5);
-                put("B", 2);
-                put("C", 4);
+                put("A", 0.5);
+                put("B", 0.1);
+                put("C", 0.4);
             }
         });
-        mockDictionary.put("abba", new HashMap<String, Integer>() {
+        mockDictionary.put("abba", new HashMap<String, Double>() {
             {
-                put("C", 30);
+                put("C", 1.0);
             }
         });
-        mockDictionary.put("sadegh", new HashMap<String, Integer>() {
+        mockDictionary.put("sadegh", new HashMap<String, Double>() {
             {
-                put("A", 2);
-                put("B", 20);
-                put("C", 3);
+                put("A", 0.2);
+                put("B", 0.5);
+                put("C", 0.3);
             }
         });
         Mockito.when(invertedIndex.getDictionary()).thenReturn(mockDictionary);
         Mockito.when(invertedIndex.getLanguageProcessor()).thenReturn(new LanguageProcessor());
-//        System.out.println(invertedIndex.getLanguageProcessor());
-//        System.out.println(invertedIndex.getLanguageProcessor().getNormalizer());
-//        Mockito.when(invertedIndex.getLanguageProcessor().getNormalizer()).thenReturn(new PorterStemmerNormalizer());
-//        Mockito.doReturn(new PorterStemmerNormalizer()).when(invertedIndex.getLanguageProcessor().getNormalizer());
-//        System.out.println(invertedIndex.getLanguageProcessor().getNormalizer());
     }
 
     @Test

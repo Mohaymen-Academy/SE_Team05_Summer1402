@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class InvertedIndex {
     private @Getter final LanguageProcessor languageProcessor;
-    private @Getter final HashMap<String, HashMap<String, Integer>> dictionary;
+    private @Getter final HashMap<String, HashMap<String, Double>> dictionary;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
@@ -23,18 +23,20 @@ public class InvertedIndex {
     }
 
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
+        if (processedWords.isEmpty()) return;
+        double incrementFraction=1d/processedWords.size();
         for (String word : processedWords) {
             if (!dictionary.containsKey(word)) {
-                HashMap<String, Integer> docList = new HashMap<>();
-                docList.put(title, 1);
+                HashMap<String, Double> docList = new HashMap<>();
+                docList.put(title, incrementFraction);
                 dictionary.put(word, docList);
             } else {
-                HashMap<String, Integer> docList = dictionary.get(word);
+                HashMap<String, Double> docList = dictionary.get(word);
                 if (docList.containsKey(title)){
-                    docList.put(title, docList.get(title) + 1);
+                    docList.put(title, docList.get(title) + incrementFraction);
                 }
                 else {
-                    docList.put(title, 1);
+                    docList.put(title, incrementFraction);
                 }
             }
         }
