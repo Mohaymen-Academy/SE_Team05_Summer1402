@@ -6,12 +6,14 @@ import ir.shelmos_search.language.PorterStemmerNormalizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.*;
 
 class QueryHandlerTest {
     private QueryHandler queryHandler;
+    @Mock
     private InvertedIndex invertedIndex;
 
     @BeforeEach
@@ -135,13 +137,15 @@ class QueryHandlerTest {
         var expected = new String[] { "E" };
         Assertions.assertArrayEquals(expected, actual);
     }
+
     @Test
     void runQueries_singleAND_resultShouldBeSortedByCount() {
         String text = "Ali";
         var actual = queryHandler.runQueries(queryHandler.parseQueriesByType(text), invertedIndex).toArray();
-        var expected = new String[] { "E","B","C","A" };
+        var expected = new String[] { "E", "B", "C", "A" };
         Assertions.assertArrayEquals(expected, actual);
     }
+
     @Test
     void setNormalizer_textContainsComma_resultShouldNotContainComma() {
         var token = "Goals";
