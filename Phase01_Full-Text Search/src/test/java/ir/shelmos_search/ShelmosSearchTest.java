@@ -38,7 +38,7 @@ class ShelmosSearchTest {
         String content2 = "Clean code is code that is easy to read, understand, and maintain. It is code that is well-organized, concise, and follows best practices. Clean code is important because it makes it easier for other developers to work with your code, reduces the likelihood of bugs and errors, and makes it easier to add new features and functionality.";
         shelmosSearch.addDoc(title1, content1);
         shelmosSearch.addDoc(title2, content2);
-        var search = shelmosSearch.search("code");
-        Assertions.assertTrue(search.containsAll(List.of(new String[] { title1, title2 })));
+        List<String> search = shelmosSearch.search("code");
+        Assertions.assertTrue(search.containsAll(List.of(new String[]{title1, title2})));
     }
 }

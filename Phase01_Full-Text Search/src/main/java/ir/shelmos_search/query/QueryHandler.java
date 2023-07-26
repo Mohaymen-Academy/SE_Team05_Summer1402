@@ -43,25 +43,21 @@ public class QueryHandler {
         return List.of(result.toArray(String[]::new));
     }
 
-    private HashSet<String> find(InvertedIndex invertedIndex, String q) {
-        Set<String> search = invertedIndex.getDictionary().get(q).keySet();
+    private HashSet<String> find(InvertedIndex invertedIndex, String query) {
+        Set<String> search = invertedIndex.getDictionary().get(query).keySet();
         return new HashSet<>(search);
     }
 
     private ArrayList<HashSet<String>> find(InvertedIndex invertedIndex, ArrayList<String> queries) {
         ArrayList<HashSet<String>> result = new ArrayList<>();
-        for (String query : queries) {
-            HashSet<String> search = new HashSet<>(invertedIndex.getDictionary().get(query).keySet());
-            result.add(search);
-        }
+        for (String query : queries)
+            result.add(find(invertedIndex, query));
         return result;
     }
 
     private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
         HashMap<String, Double> search = invertedIndex.getDictionary().get(q);
-        if (search == null) {
-            return new HashMap<>();
-        }
+        if (search == null) return new HashMap<>();
         return search;
     }
 

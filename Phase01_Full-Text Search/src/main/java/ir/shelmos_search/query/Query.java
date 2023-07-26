@@ -1,7 +1,5 @@
 package ir.shelmos_search.query;
 
-import ir.shelmos_search.language.InvertedIndex;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -16,7 +14,7 @@ public abstract class Query {
         return queries;
     }
 
-    public void addQuery(String query){
+    public void addQuery(String query) {
         queries.add(query);
     }
 

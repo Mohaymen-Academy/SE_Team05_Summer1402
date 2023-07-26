@@ -1,11 +1,9 @@
 package ir.shelmos_search.query;
 
-import ir.shelmos_search.language.InvertedIndex;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class OrQuery extends Query{
+public class OrQuery extends Query {
     @Override
     public HashSet<String> processQueryResult(HashSet<String> priorResult, ArrayList<HashSet<String>> searchResult) {
         HashSet<String> unionPlusResult = getQueryResult(searchResult);

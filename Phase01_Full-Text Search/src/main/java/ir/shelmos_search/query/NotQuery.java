@@ -1,7 +1,5 @@
 package ir.shelmos_search.query;
 
-import ir.shelmos_search.language.InvertedIndex;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 

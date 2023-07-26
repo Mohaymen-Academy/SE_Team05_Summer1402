@@ -15,8 +15,8 @@ class OpennlpSimpleTokenizerTest {
     @Test
     void tokenize_textWithWhiteSpaceAndNewLineAndTab_resultShouldBeTokenized() {
         String text = "Ali   \n said hi \t to Jimmy.";
-        var actual = opennlpSimpleTokenizer.tokenize(text).toArray();
-        var expected = new String[] { "Ali", "said", "hi", "to", "Jimmy", "." };
+        Object[] actual = opennlpSimpleTokenizer.tokenize(text).toArray();
+        String[] expected = new String[]{"Ali", "said", "hi", "to", "Jimmy", "."};
         Assertions.assertArrayEquals(expected, actual);
     }
 }

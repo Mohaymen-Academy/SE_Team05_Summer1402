@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InvertedIndex {
-    private @Getter final LanguageProcessor languageProcessor;
-    private @Getter final HashMap<String, HashMap<String, Double>> dictionary;
+    @Getter
+    private final LanguageProcessor languageProcessor;
+    @Getter
+    private final HashMap<String, HashMap<String, Double>> dictionary;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
