@@ -35,8 +35,10 @@ public class QueryHandler {
             return runSingleQuery(queries.get(QueryTypes.AND).getQueries().get(0), invertedIndex);
 
         HashSet<String> result = new HashSet<>();
-        for (Query query : queries.values())
-            result = query.processQueryResult(result, invertedIndex);
+        var orderQueries = new QueryTypes[]{QueryTypes.AND, QueryTypes.OR, QueryTypes.NOT};
+        for (QueryTypes queryTypes : orderQueries)
+            result = queries.get(queryTypes).processQueryResult(result, invertedIndex);
+
 
         return List.of(result.toArray(String[]::new));
     }

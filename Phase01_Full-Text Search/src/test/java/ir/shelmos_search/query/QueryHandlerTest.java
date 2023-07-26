@@ -84,7 +84,6 @@ class QueryHandlerTest {
                 .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
                         invertedIndex)
                 .toArray();
-        System.out.println(actual);
         var expected = new String[] { "A", "B", "C", "D", "E" };
         Assertions.assertEquals(expected.length, actual.length);
     }
