@@ -6,6 +6,7 @@ import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.Normalizer;
 import ir.shelmos_search.language.Tokenizer;
 import ir.shelmos_search.model.Document;
+import ir.shelmos_search.query.Query;
 import ir.shelmos_search.query.QueryHandler;
 
 import java.nio.file.Paths;
@@ -28,7 +29,7 @@ public class ShelmosSearch {
     }
 
     public ArrayList<String> search(String query) {
-        HashMap<String, ArrayList<String>> queries = queryHandler.parseQueriesByType(query);
+        ArrayList<Query> queries = queryHandler.parseQueriesByType(query);
         HashSet<String> result = queryHandler.runQueries(queries, invertedIndex);
         return Util.toArrayList(result);
     }
