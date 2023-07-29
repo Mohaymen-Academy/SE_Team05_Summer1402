@@ -33,13 +33,13 @@ attributes:
 # Example
 
 ```java
-import ir.ShelmosSearch.Application;
-import ir.ShelmosSearch.Language.Normalizer;
-import ir.ShelmosSearch.Language.Tokenizer;
+import ir.shelmos_search.ShelmosSearch;
+import ir.shelmos_search.language.Normalizer;
+import ir.shelmos_search.language.Tokenizer;
 
 public class Main {
    public static void main(String[] args) {
-      new Application()
+      new ShelmosSearch()
               .setNormalizer(new MyNormalizer())
               .setTokenizer(new MyTokenizer())
               .setStopWordsByFile("./src/main/resources/stopWords.txt")

@@ -1,21 +1,27 @@
-import ir.ShelmosSearch.Application;
+import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
-
+import ir.shelmos_search.ShelmosSearch;
+import ir.shelmos_search.language.EdgeGramTokenizer;
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Application application = new Application()
+        ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[]{",", "."})
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
+                .setTokenizer(EdgeGramTokenizer
+                        .builder()
+                        .min(2)
+                        .max(5)
+                        .build())
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
-        runInConsole(application);
+        runInConsole(shelmosSearch);
     }
 
-    private static void runInConsole(Application application) {
-        Scanner scanner = new Scanner(System.in);
+    private static void runInConsole(ShelmosSearch shelmosSearch) {
+        @Cleanup Scanner scanner = new Scanner(System.in);
         StopWatch watch = new StopWatch();
         while (true) {
             System.out.println("Type \"!\" if you want to exit the program.");
@@ -23,17 +29,15 @@ public class Main {
             String query = scanner.nextLine();
             if (query.equals("!")) break;
             watch.start();
-            ArrayList<String> result = application.search(query);
+            List<String> result = shelmosSearch.search(query);
             watch.stop();
             printQueryResult(result, watch.getNanoTime());
             watch.reset();
         }
-        scanner.close();
     }
 
-    private static void printQueryResult(ArrayList<String> result, long duration) {
-        System.out.println(
-                MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
+    private static void printQueryResult(List<String> result, long duration) {
+        System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
         System.out.println(result);
     }
 }
