@@ -20,6 +20,7 @@ jobs:
           distribution: "temurin"
 
       - name: Build with Maven
+        working-directory: ./Phase01_Full-Text Search
         run: mvn --batch-mode --update-snapshots package
 
   test:
@@ -31,8 +32,9 @@ jobs:
       - name: Set up JDK 19
         uses: actions/setup-java@v3
         with:
-          java-version: '19'
-          distribution: 'temurin'
+          java-version: "19"
+          distribution: "temurin"
 
       - name: Run the Maven verify phase
+        working-directory: ./Phase01_Full-Text Search
         run: mvn --batch-mode --update-snapshots verify
