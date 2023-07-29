@@ -2,9 +2,6 @@ package ir.shelmos_search.query;
 
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.Normalizer;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,7 +38,7 @@ public class QueryHandler {
     }
 
     static HashSet<String> find(InvertedIndex invertedIndex, String q) {
-        HashSet<String> search = invertedIndex.getDictionary().get(q);
+        HashSet<String> search = invertedIndex.getMapWordToDocs().get(q);
         if (search == null)
             return new HashSet<>();
         return new HashSet<>(search);

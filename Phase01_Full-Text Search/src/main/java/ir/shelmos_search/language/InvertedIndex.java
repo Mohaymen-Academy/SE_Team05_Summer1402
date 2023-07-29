@@ -10,11 +10,11 @@ public class InvertedIndex {
     @Getter
     private final LanguageProcessor languageProcessor;
     @Getter
-    private final HashMap<String, HashSet<String>> dictionary;
+    private final HashMap<String, HashSet<String>> mapWordToDocs;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
-        dictionary = new HashMap<>();
+        mapWordToDocs = new HashMap<>();
     }
 
     public void addDoc(Document document) {
@@ -26,12 +26,12 @@ public class InvertedIndex {
 
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
         for (String word : processedWords) {
-            if (!dictionary.containsKey(word)) {
+            if (!mapWordToDocs.containsKey(word)) {
                 HashSet<String> fileList = new HashSet<>();
                 fileList.add(title);
-                dictionary.put(word, fileList);
+                mapWordToDocs.put(word, fileList);
             } else {
-                HashSet<String> bookList = dictionary.get(word);
+                HashSet<String> bookList = mapWordToDocs.get(word);
                 bookList.add(title);
             }
         }
