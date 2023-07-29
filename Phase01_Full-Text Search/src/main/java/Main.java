@@ -1,21 +1,18 @@
 import lombok.Cleanup;
 import org.apache.commons.lang3.time.StopWatch;
 import ir.shelmos_search.ShelmosSearch;
-import ir.shelmos_search.language.EdgeGramTokenizer;
+import ir.shelmos_search.language.EdgeNGramTokenizer;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
                 .setStopWords(new String[]{",", "."})
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .setTokenizer(EdgeGramTokenizer
-                        .builder()
-                        .min(2)
-                        .max(5)
-                        .build())
+                .setTokenizer(new EdgeNGramTokenizer(2, 5))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(shelmosSearch);
     }
@@ -37,7 +34,8 @@ public class Main {
     }
 
     private static void printQueryResult(List<String> result, long duration) {
-        System.out.println(MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
+        System.out.println(
+                MessageFormat.format("{0} records found in {1}ns!", result.size(), duration));
         System.out.println(result);
     }
 }

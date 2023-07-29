@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-
 public class TXTFileReader implements FileReader {
+
     @Override
     public HashMap<String, String> getFiles(String path) {
         HashMap<String, String> fileText = new HashMap<>();
@@ -38,7 +38,8 @@ public class TXTFileReader implements FileReader {
         return fileContent;
     }
 
-    private String getFileName(Path path) {
+    @Override
+    public String getFileName(Path path) {
         int extensionIndex = path.getFileName().toString().lastIndexOf('.');
         return path.getFileName().toString().substring(0, extensionIndex);
     }

@@ -8,12 +8,13 @@ import ir.shelmos_search.language.Tokenizer;
 import ir.shelmos_search.model.Document;
 import ir.shelmos_search.query.Query;
 import ir.shelmos_search.query.QueryHandler;
+import ir.shelmos_search.query.QueryTypes;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ShelmosSearch {
+
     private final InvertedIndex invertedIndex;
     private final QueryHandler queryHandler;
     private final FileReader fileReader;
@@ -25,7 +26,8 @@ public class ShelmosSearch {
     }
 
     public List<String> search(String query) {
-        ArrayList<Query> queries = queryHandler.parseQueriesByType(query, invertedIndex.getLanguageProcessor().getNormalizer());
+        HashMap<QueryTypes, Query> queries = queryHandler.parseQueriesByType(query,
+                invertedIndex.getLanguageProcessor().getNormalizer());
         return queryHandler.runQueries(queries, invertedIndex);
     }
 

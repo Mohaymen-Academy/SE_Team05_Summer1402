@@ -1,29 +1,26 @@
 package ir.shelmos_search.query;
 
-import ir.shelmos_search.language.InvertedIndex;
-
+import java.util.ArrayList;
 import java.util.HashSet;
 
-public class AndQuery extends Query{
+public class AndQuery extends Query {
+
     @Override
-    public HashSet<String> processQueryResult(HashSet<String> priorResult, InvertedIndex invertedIndex) {
-        return getQueryResult(invertedIndex);
+    public HashSet<String> processQueryResult(HashSet<String> priorResult, ArrayList<HashSet<String>> searchResult) {
+        return getQueryResult(searchResult);
     }
 
     @Override
-    protected HashSet<String> getQueryResult(InvertedIndex invertedIndex) {
+    protected HashSet<String> getQueryResult(ArrayList<HashSet<String>> searchResult) {
         boolean firstPart = true;
         HashSet<String> result = new HashSet<>();
-        HashSet<String> searchResult;
-        for (String q : queries) {
-            searchResult = QueryHandler.find(invertedIndex, q);
+        for (HashSet<String> search : searchResult) {
             if (firstPart) {
-                result = searchResult;
+                result = search;
                 firstPart = false;
             } else
-                result.retainAll(searchResult);
+                result.retainAll(search);
         }
-
         return result;
     }
 }
