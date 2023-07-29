@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpennlpSimpleTokenizer implements Tokenizer {
-    SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
+    private final SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
 
     public ArrayList<String> tokenize(String text) {
         return new ArrayList<>(List.of(tokenizer.tokenize(text)));
