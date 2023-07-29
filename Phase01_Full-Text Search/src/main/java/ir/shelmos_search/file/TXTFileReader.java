@@ -39,6 +39,7 @@ public class TXTFileReader implements FileReader {
     }
 
     private String getFileName(Path path) {
-        return path.getFileName().toString().split("\\.")[0];
+        int extensionIndex = path.getFileName().toString().lastIndexOf('.');
+        return path.getFileName().toString().substring(0, extensionIndex);
     }
 }

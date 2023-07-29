@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class QueryHandler {
-    
+
     public ArrayList<Query> parseQueriesByType(String query, Normalizer normalizer) {
         ArrayList<Query> queries = new ArrayList<>(List.of(new AndQuery(), new OrQuery(), new NotQuery()));
 
