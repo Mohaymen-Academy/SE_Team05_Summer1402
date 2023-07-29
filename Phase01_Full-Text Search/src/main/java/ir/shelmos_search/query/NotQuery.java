@@ -2,7 +2,9 @@ package ir.shelmos_search.query;
 
 import ir.shelmos_search.language.InvertedIndex;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class NotQuery extends Query{
 
@@ -14,9 +16,9 @@ public class NotQuery extends Query{
 
     @Override
     protected HashSet<String> getQueryResult(InvertedIndex invertedIndex) {
-        HashSet<String> searchResult = new HashSet<>();
-        for (String q : queries)
-            searchResult.addAll(QueryHandler.find(invertedIndex, q));
-        return searchResult;
+        return queries.stream()
+                .map(query -> QueryHandler.find(invertedIndex, query))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toCollection(HashSet::new));
     }
 }

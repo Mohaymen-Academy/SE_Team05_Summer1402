@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -32,6 +33,8 @@ public class LanguageProcessor {
     }
 
     public ArrayList<String> normalize(ArrayList<String> words) {
-        return (ArrayList<String>) words.stream().map(word -> normalizer.normalize(word)).toList();
+        return words.stream()
+                .map(word -> normalizer.normalize(word))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
