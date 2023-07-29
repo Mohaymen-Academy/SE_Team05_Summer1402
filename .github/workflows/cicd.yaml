@@ -35,6 +35,6 @@ jobs:
           java-version: "19"
           distribution: "temurin"
 
-      - name: Run the Maven verify phase
+      - name: Run the Maven test phase
         working-directory: ./Phase01_Full-Text Search
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots  test
