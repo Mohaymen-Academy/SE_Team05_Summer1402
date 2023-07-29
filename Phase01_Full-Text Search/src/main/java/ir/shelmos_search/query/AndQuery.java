@@ -7,8 +7,7 @@ import java.util.HashSet;
 public class AndQuery extends Query{
     @Override
     public HashSet<String> processQueryResult(HashSet<String> priorResult, InvertedIndex invertedIndex) {
-        priorResult = getQueryResult(invertedIndex);
-        return priorResult;
+        return getQueryResult(invertedIndex);
     }
 
     @Override
