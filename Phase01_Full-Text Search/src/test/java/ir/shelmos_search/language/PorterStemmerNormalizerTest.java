@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PorterStemmerNormalizerTest {
+
     private PorterStemmerNormalizer normalizer;
 
     @BeforeEach
@@ -16,7 +17,6 @@ class PorterStemmerNormalizerTest {
     void normalize_Plural_shouldReturnSingular() {
         String text = "goals";
         String actual = normalizer.normalize(text);
-
         Assertions.assertEquals("goal", actual);
     }
 
@@ -24,7 +24,6 @@ class PorterStemmerNormalizerTest {
     void normalize_upperCase_shouldReturnLowerCase() {
         String text = "Goal";
         String actual = normalizer.normalize(text);
-
         Assertions.assertEquals("goal", actual);
     }
 
@@ -32,7 +31,6 @@ class PorterStemmerNormalizerTest {
     void normalize_thirdPersonSingularVerb_shouldReturnRootOfVerb() {
         String text = "takes";
         String actual = normalizer.normalize(text);
-
         Assertions.assertEquals("take", actual);
     }
 
@@ -40,7 +38,6 @@ class PorterStemmerNormalizerTest {
     void normalize_rootOfVerb_shouldReturnRootOfVerb() {
         String text = "go";
         String actual = normalizer.normalize(text);
-
         Assertions.assertEquals("go", actual);
     }
 }

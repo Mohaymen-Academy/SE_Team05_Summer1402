@@ -2,12 +2,12 @@ package ir.shelmos_search;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 
 class ShelmosSearchTest {
+
     private ShelmosSearch shelmosSearch;
 
     @BeforeEach

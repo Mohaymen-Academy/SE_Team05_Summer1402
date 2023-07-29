@@ -3,11 +3,11 @@ package ir.shelmos_search.language;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
 class LanguageProcessorTest {
+
     private LanguageProcessor languageProcessor;
 
     @BeforeEach
@@ -18,9 +18,7 @@ class LanguageProcessorTest {
     @Test
     void filterText_textContainsDot_resultShouldNotContainDot() {
         String text = "Ali said hi to Jimmy.";
-
         String actual = languageProcessor.filterText(text);
-
         Assertions.assertEquals("Ali said hi to Jimmy ", actual);
 
     }
@@ -28,9 +26,7 @@ class LanguageProcessorTest {
     @Test
     void filterText_textContainsComma_resultShouldNotContainComma() {
         String text = "Ali said hi to Jimmy,";
-
         String actual = languageProcessor.filterText(text);
-
         Assertions.assertEquals("Ali said hi to Jimmy ", actual);
     }
 

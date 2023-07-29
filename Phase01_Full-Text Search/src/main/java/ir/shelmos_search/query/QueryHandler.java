@@ -2,10 +2,11 @@ package ir.shelmos_search.query;
 
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.Normalizer;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class QueryHandler {
+
     public HashMap<QueryTypes, Query> parseQueriesByType(String query, Normalizer normalizer) {
         HashMap<QueryTypes, Query> queries = new HashMap<>() {{
             put(QueryTypes.AND, new AndQuery());
@@ -35,28 +36,26 @@ public class QueryHandler {
             return runSingleQuery(queries.get(QueryTypes.AND).getQueries().get(0), invertedIndex);
 
         HashSet<String> result = new HashSet<>();
-        var orderQueries = new QueryTypes[]{QueryTypes.AND, QueryTypes.OR, QueryTypes.NOT};
+        QueryTypes[] orderQueries = new QueryTypes[]{QueryTypes.AND, QueryTypes.OR, QueryTypes.NOT};
         for (QueryTypes queryType : orderQueries)
             result = queries.get(queryType).processQueryResult(result, find(invertedIndex, queries.get(queryType).getQueries()));
-
 
         return List.of(result.toArray(String[]::new));
     }
 
     private HashSet<String> find(InvertedIndex invertedIndex, String query) {
-        Set<String> search = invertedIndex.getDictionary().get(query).keySet();
+        Set<String> search = invertedIndex.getMapWordToDocs().get(query).keySet();
         return new HashSet<>(search);
     }
 
     private ArrayList<HashSet<String>> find(InvertedIndex invertedIndex, ArrayList<String> queries) {
-        ArrayList<HashSet<String>> result = new ArrayList<>();
-        for (String query : queries)
-            result.add(find(invertedIndex, query));
-        return result;
+        return queries.stream()
+                .map(query -> find(invertedIndex, query))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
-        HashMap<String, Double> search = invertedIndex.getDictionary().get(q);
+        HashMap<String, Double> search = invertedIndex.getMapWordToDocs().get(q);
         if (search == null) return new HashMap<>();
         return search;
     }
@@ -68,7 +67,7 @@ public class QueryHandler {
     }
 
     private List<String> runSingleQuery(String query, InvertedIndex invertedIndex) {
-        var queryResult = findWithCount(invertedIndex, query);
+        HashMap<String, Double> queryResult = findWithCount(invertedIndex, query);
         return queryResult
                 .entrySet()
                 .stream()

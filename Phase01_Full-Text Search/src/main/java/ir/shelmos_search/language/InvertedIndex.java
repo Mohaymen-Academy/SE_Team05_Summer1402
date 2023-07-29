@@ -1,20 +1,19 @@
 package ir.shelmos_search.language;
 
-import ir.shelmos_search.model.Document;
 import lombok.Getter;
-
+import ir.shelmos_search.model.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Getter
 public class InvertedIndex {
-    @Getter
+
     private final LanguageProcessor languageProcessor;
-    @Getter
-    private final HashMap<String, HashMap<String, Double>> dictionary;
+    private final HashMap<String, HashMap<String, Double>> mapWordToDocs;
 
     public InvertedIndex() {
         languageProcessor = new LanguageProcessor();
-        dictionary = new HashMap<>();
+        mapWordToDocs = new HashMap<>();
     }
 
     public void addDoc(Document document) {
@@ -25,34 +24,26 @@ public class InvertedIndex {
     }
 
     private void insertProcessedWords(ArrayList<String> processedWords, String title) {
-        if (processedWords.isEmpty())
-            return;
-        double incrementFraction = 1d / processedWords.size();
-        var tokenizedTitle = languageProcessor.tokenize(title);
-        var normalizedTitle = languageProcessor.normalize(tokenizedTitle);
-        for (String word : processedWords) {
-            if (!dictionary.containsKey(word)) {
-                HashMap<String, Double> docList = new HashMap<>();
-                if (normalizedTitle.contains(word)) {
-                    // big score for when document title includes the word
-                    docList.put(title, 1 + incrementFraction);
-                } else {
-                    docList.put(title, incrementFraction);
-                }
-                dictionary.put(word, docList);
-            } else {
-                HashMap<String, Double> docList = dictionary.get(word);
-                if (docList.containsKey(title)) {
-                    docList.put(title, docList.get(title) + incrementFraction);
-                } else {
-                    docList.put(title, incrementFraction);
-                }
-                if (normalizedTitle.contains(word)) {
-                    // big score for when document title includes the word
-                    docList.put(title, 1 + docList.get(title));
-                }
-            }
-        }
+        if (processedWords.isEmpty()) return;
 
+        double incrementFraction = 1d / processedWords.size();
+
+        ArrayList<String> tokenizedTitle = languageProcessor.tokenize(title);
+        ArrayList<String> normalizedTitle = languageProcessor.normalize(tokenizedTitle);
+
+        for (String word : processedWords) {
+            if (!mapWordToDocs.containsKey(word)) {
+                HashMap<String, Double> docList = new HashMap<>();
+                docList.put(title, incrementFraction);
+                mapWordToDocs.put(word, docList);
+            } else {
+                HashMap<String, Double> docList = mapWordToDocs.get(word);
+                if (docList.containsKey(title)) docList.put(title, docList.get(title) + incrementFraction);
+                else docList.put(title, incrementFraction);
+            }
+            // big score for when document title includes the word
+            if (normalizedTitle.contains(word))
+                mapWordToDocs.get(word).put(title, 1 + mapWordToDocs.get(word).get(title));
+        }
     }
 }

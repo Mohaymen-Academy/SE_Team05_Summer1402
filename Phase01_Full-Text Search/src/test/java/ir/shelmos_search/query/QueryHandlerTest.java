@@ -7,11 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
 import java.util.HashMap;
 
 class QueryHandlerTest {
+
     private QueryHandler queryHandler;
+
     @Mock
     private InvertedIndex invertedIndex;
 
@@ -20,7 +21,7 @@ class QueryHandlerTest {
         queryHandler = new QueryHandler();
         invertedIndex = Mockito.mock(InvertedIndex.class);
         HashMap<String, HashMap<String, Double>> mockDictionary = createFakeData();
-        Mockito.when(invertedIndex.getDictionary()).thenReturn(mockDictionary);
+        Mockito.when(invertedIndex.getMapWordToDocs()).thenReturn(mockDictionary);
         Mockito.when(invertedIndex.getLanguageProcessor()).thenReturn(new LanguageProcessor());
     }
 

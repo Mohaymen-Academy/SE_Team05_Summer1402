@@ -1,12 +1,12 @@
 package ir.shelmos_search.language;
 
 import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 public class EdgeNGramTokenizer implements Tokenizer {
+
     private int min, max;
 
     public ArrayList<String> tokenize(String text) {
@@ -14,7 +14,6 @@ public class EdgeNGramTokenizer implements Tokenizer {
         ArrayList<String> result = new ArrayList<>(List.of(spaceSeparated));
         for (String t : spaceSeparated)
             result.addAll(makeChunk(t));
-
         return result;
     }
 
@@ -27,6 +26,6 @@ public class EdgeNGramTokenizer implements Tokenizer {
                 result.add(chunk);
             }
         }
-        return new ArrayList<>(result);
+        return result;
     }
 }
