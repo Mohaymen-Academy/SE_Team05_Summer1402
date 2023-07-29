@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.HashMap;
 
 class QueryHandlerTest {
     private QueryHandler queryHandler;
