@@ -8,7 +8,6 @@ import ir.shelmos_search.language.Tokenizer;
 import ir.shelmos_search.model.Document;
 import ir.shelmos_search.query.Query;
 import ir.shelmos_search.query.QueryHandler;
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,6 @@
 package ir.shelmos_search.file;
 
 import lombok.Cleanup;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

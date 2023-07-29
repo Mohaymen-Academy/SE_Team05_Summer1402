@@ -14,7 +14,6 @@ public class EdgeGramTokenizer implements Tokenizer {
         ArrayList<String> result = new ArrayList<>(List.of(spaceSeparated));
         for (String t : spaceSeparated)
             result.addAll(makeChunk(t));
-
         return result;
     }
 

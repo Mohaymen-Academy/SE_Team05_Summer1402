@@ -2,7 +2,6 @@ package ir.shelmos_search.language;
 
 import ir.shelmos_search.model.Document;
 import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
