@@ -20,7 +20,7 @@ class QueryHandlerTest {
         queryHandler = new QueryHandler();
         invertedIndex = Mockito.mock(InvertedIndex.class);
         HashMap<String, HashMap<String, Double>> mockDictionary = createFakeData();
-        Mockito.when(invertedIndex.getDictionary()).thenReturn(mockDictionary);
+        Mockito.when(invertedIndex.getMapWordToDocs()).thenReturn(mockDictionary);
         Mockito.when(invertedIndex.getLanguageProcessor()).thenReturn(new LanguageProcessor());
     }
 

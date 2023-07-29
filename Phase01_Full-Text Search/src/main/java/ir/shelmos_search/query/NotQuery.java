@@ -1,7 +1,9 @@
 package ir.shelmos_search.query;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class NotQuery extends Query {
     @Override
@@ -12,10 +14,8 @@ public class NotQuery extends Query {
 
     @Override
     protected HashSet<String> getQueryResult(ArrayList<HashSet<String>> searchResult) {
-        HashSet<String> result = new HashSet<>();
-        for (HashSet<String> search : searchResult) {
-            result.addAll(search);
-        }
-        return result;
+        return searchResult.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toCollection(HashSet::new));
     }
 }

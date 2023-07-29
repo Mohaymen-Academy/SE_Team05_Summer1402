@@ -6,8 +6,7 @@ import java.util.HashSet;
 public class AndQuery extends Query {
     @Override
     public HashSet<String> processQueryResult(HashSet<String> priorResult, ArrayList<HashSet<String>> searchResult) {
-        priorResult = getQueryResult(searchResult);
-        return priorResult;
+        return getQueryResult(searchResult);
     }
 
     @Override

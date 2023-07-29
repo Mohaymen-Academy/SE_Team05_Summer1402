@@ -1,7 +1,6 @@
 package ir.shelmos_search.language;
 
 import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ public class EdgeNGramTokenizer implements Tokenizer {
         ArrayList<String> result = new ArrayList<>(List.of(spaceSeparated));
         for (String t : spaceSeparated)
             result.addAll(makeChunk(t));
-
         return result;
     }
 

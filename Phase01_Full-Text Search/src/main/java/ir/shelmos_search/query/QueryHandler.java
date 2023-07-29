@@ -44,7 +44,7 @@ public class QueryHandler {
     }
 
     private HashSet<String> find(InvertedIndex invertedIndex, String query) {
-        Set<String> search = invertedIndex.getDictionary().get(query).keySet();
+        Set<String> search = invertedIndex.getMapWordToDocs().get(query).keySet();
         return new HashSet<>(search);
     }
 
@@ -56,7 +56,7 @@ public class QueryHandler {
     }
 
     private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
-        HashMap<String, Double> search = invertedIndex.getDictionary().get(q);
+        HashMap<String, Double> search = invertedIndex.getMapWordToDocs().get(q);
         if (search == null) return new HashMap<>();
         return search;
     }

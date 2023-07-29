@@ -1,7 +1,6 @@
 package ir.shelmos_search.file;
 
 import lombok.Cleanup;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +39,7 @@ public class TXTFileReader implements FileReader {
     }
 
     private String getFileName(Path path) {
-        return path.getFileName().toString().split("\\.")[0];
+        int extensionIndex = path.getFileName().toString().lastIndexOf('.');
+        return path.getFileName().toString().substring(0, extensionIndex);
     }
 }
