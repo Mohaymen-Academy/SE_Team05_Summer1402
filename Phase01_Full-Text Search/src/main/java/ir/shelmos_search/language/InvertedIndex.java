@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+@Getter
 public class InvertedIndex {
-    @Getter
     private final LanguageProcessor languageProcessor;
-    @Getter
     private final HashMap<String, HashSet<String>> mapWordToDocs;
 
     public InvertedIndex() {

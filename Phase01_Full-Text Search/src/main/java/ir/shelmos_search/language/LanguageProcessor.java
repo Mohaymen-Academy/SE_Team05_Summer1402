@@ -2,21 +2,15 @@ package ir.shelmos_search.language;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@Setter
+@Getter
 public class LanguageProcessor {
-    @Getter
-    @Setter
     private Normalizer normalizer;
-    @Getter
-    @Setter
     private Tokenizer tokenizer;
-    @Getter
-    @Setter
     private String[] stopWords;
 
     public LanguageProcessor() {
