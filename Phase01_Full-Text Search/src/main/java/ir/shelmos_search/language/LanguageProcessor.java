@@ -2,6 +2,7 @@ package ir.shelmos_search.language;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,11 +32,6 @@ public class LanguageProcessor {
     }
 
     public ArrayList<String> normalize(ArrayList<String> words) {
-        ArrayList<String> normalizedWords = new ArrayList<>();
-        for (String word : words) {
-            String normalized = normalizer.normalize(word);
-            normalizedWords.add(normalized);
-        }
-        return normalizedWords;
+        return (ArrayList<String>) words.stream().map(word -> normalizer.normalize(word)).toList();
     }
 }
