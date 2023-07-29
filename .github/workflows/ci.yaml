@@ -30,8 +30,8 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Build with Maven
-        working-directory: ./Phase01_Full-Text Search
-        run: mvn -B package --file pom.xml
+        working-directory: ./Phase01_Full-Text-Search
+        run: mvn --batch-mode package
 
   test:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
           cache: maven
 
       - name: Run the Maven test phase
-        working-directory: ./Phase01_Full-Text Search
+        working-directory: ./Phase01_Full-Text-Search
         run: mvn --batch-mode --update-snapshots  verify
 
       - name: Generate JaCoCo Badge
@@ -53,7 +53,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           generate-branches-badge: true
-          jacoco-csv-file: "./Phase01_Full-Text Search/target/site/jacoco/jacoco.csv"
+          jacoco-csv-file: ./Phase01_Full-Text-Search/target/site/jacoco/jacoco.csv
 
       - name: Log coverage percentage
         run: |
@@ -71,4 +71,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: jacoco-report
-          path: "./Phase01_Full-Text Search/target/site/jacoco/"
+          path: ./Phase01_Full-Text-Search/target/site/jacoco/
