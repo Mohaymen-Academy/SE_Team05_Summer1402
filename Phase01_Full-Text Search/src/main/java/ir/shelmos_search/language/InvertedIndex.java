@@ -1,7 +1,8 @@
 package ir.shelmos_search.language;
 
-import ir.shelmos_search.model.Document;
 import lombok.Getter;
+import ir.shelmos_search.model.Document;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,24 +32,21 @@ public class InvertedIndex {
         for (String word : processedWords) {
             if (!mapWordToDocs.containsKey(word)) {
                 HashMap<String, Double> docList = new HashMap<>();
-                if (normalizedTitle.contains(word)) {
+                if (normalizedTitle.contains(word))
                     // big score for when document title includes the word
                     docList.put(title, 1 + incrementFraction);
-                } else {
+                else
                     docList.put(title, incrementFraction);
-                }
                 mapWordToDocs.put(word, docList);
             } else {
                 HashMap<String, Double> docList = mapWordToDocs.get(word);
-                if (docList.containsKey(title)) {
+                if (docList.containsKey(title))
                     docList.put(title, docList.get(title) + incrementFraction);
-                } else {
+                else
                     docList.put(title, incrementFraction);
-                }
-                if (normalizedTitle.contains(word)) {
+                if (normalizedTitle.contains(word))
                     // big score for when document title includes the word
                     docList.put(title, 1 + docList.get(title));
-                }
             }
         }
 

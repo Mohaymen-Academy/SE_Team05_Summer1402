@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class AndQuery extends Query {
+
     @Override
     public HashSet<String> processQueryResult(HashSet<String> priorResult, ArrayList<HashSet<String>> searchResult) {
         return getQueryResult(searchResult);
