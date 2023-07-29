@@ -3,10 +3,10 @@ package ir.shelmos_search.language;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 
 class EdgeNGramTokenizerTest {
+
     private EdgeNGramTokenizer edgeNGramTokenizer;
 
     @BeforeEach
@@ -17,9 +17,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeMoreThanMax_shouldContainAPartOfRange() {
         String text = "Design";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.contains("sig");
         Assertions.assertTrue(assertion);
     }
@@ -27,9 +25,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeMoreThanMax_shouldContainTheWholdWord() {
         String text = "Design";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.contains("Design");
         Assertions.assertTrue(assertion);
     }
@@ -37,9 +33,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeMoreThanMax_shouldNotContainPartSmallerThanMin() {
         String text = "Design";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.contains("e");
         Assertions.assertFalse(assertion);
     }
@@ -47,9 +41,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeMoreThanMax_shouldNotContainPartBiggerThanMax() {
         String text = "Design";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.contains("esign");
         Assertions.assertFalse(assertion);
     }
@@ -57,9 +49,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeLessThanMin_shouldHaveOneItem() {
         String text = "D";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.size() == 1;
         Assertions.assertTrue(assertion);
     }
@@ -67,9 +57,7 @@ class EdgeNGramTokenizerTest {
     @Test
     void tokenize_parameterSizeBetweenMinAndMax_shouldContainAPartInRange() {
         String text = "Des";
-
         ArrayList<String> actual = edgeNGramTokenizer.tokenize(text);
-
         boolean assertion = actual.contains("es");
         Assertions.assertTrue(assertion);
     }

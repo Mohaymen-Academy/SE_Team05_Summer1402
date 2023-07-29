@@ -6,6 +6,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class EdgeNGramTokenizer implements Tokenizer {
+
     private int min, max;
 
     public ArrayList<String> tokenize(String text) {
@@ -25,6 +26,6 @@ public class EdgeNGramTokenizer implements Tokenizer {
                 result.add(chunk);
             }
         }
-        return new ArrayList<>(result);
+        return result;
     }
 }

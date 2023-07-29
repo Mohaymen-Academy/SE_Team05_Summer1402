@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ShelmosSearch {
+
     private final InvertedIndex invertedIndex;
     private final QueryHandler queryHandler;
     private final FileReader fileReader;

@@ -21,7 +21,6 @@ public class AndQuery extends Query {
             } else
                 result.retainAll(search);
         }
-
         return result;
     }
 }

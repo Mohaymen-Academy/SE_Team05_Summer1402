@@ -1,7 +1,6 @@
 package ir.shelmos_search.file;
 
 import lombok.Cleanup;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,6 +12,7 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class TXTFileReader implements FileReader {
+
     @Override
     public HashMap<String, String> getFiles(String path) {
         HashMap<String, String> fileText = new HashMap<>();
