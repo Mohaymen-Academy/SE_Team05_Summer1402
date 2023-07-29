@@ -2,7 +2,9 @@ package ir.shelmos_search.query;
 
 import ir.shelmos_search.language.InvertedIndex;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class OrQuery extends Query{
     @Override
@@ -18,11 +20,9 @@ public class OrQuery extends Query{
 
     @Override
     protected HashSet<String> getQueryResult(InvertedIndex invertedIndex) {
-        HashSet<String> unionPlusResult = new HashSet<>();
-        for (String q : queries) {
-            HashSet<String> searchResult = QueryHandler.find(invertedIndex, q);
-            unionPlusResult.addAll(searchResult);
-        }
-        return unionPlusResult;
+        return queries.stream()
+                .map(query -> QueryHandler.find(invertedIndex, query))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toCollection(HashSet::new));
     }
 }
