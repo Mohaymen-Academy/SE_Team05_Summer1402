@@ -81,3 +81,7 @@ select count(m.id)::decimal / (select count(id) from users where deleted_at is n
 from messages m
 where m.deleted_at is null;
 
+
+--bonus
+insert into read_message (user_id, message_id, read_at)
+values ((select id from users where user_name='ali698'),1,current_timestamp);
