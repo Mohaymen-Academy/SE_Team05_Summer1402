@@ -14,7 +14,7 @@ create table users
 create table profile_images
 (
     user_id           serial primary key references users (id) on update cascade on delete cascade,
-    profile_image_url text        not null default '',--TODO:
+    profile_image_url text        not null default '',
     created_at        timestamptz not null default current_timestamp
 );
 create table chat_types(
@@ -61,7 +61,7 @@ create table messages
     deleted_at timestamptz,
     sender_id serial not null references users(id) on update cascade on delete cascade,
     chat_id serial not null references chats(id) on update cascade on delete cascade,
-    reply_id serial references messages(id) default null
+    reply_id int references messages(id)
 );
 create table read_message
 (
