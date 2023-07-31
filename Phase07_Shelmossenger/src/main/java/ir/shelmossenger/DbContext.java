@@ -169,7 +169,7 @@ public class DbContext {
         return rs.rowInserted();
     }
 
-    public boolean EditMessage(String newMessage, long messageId)
+    public boolean editMessage(String newMessage, long messageId)
             throws SQLException {
         PreparedStatement stmt = null;
         try {
@@ -193,5 +193,30 @@ public class DbContext {
             return false;
         }
         return rs.rowUpdated();
+    }
+
+    public boolean deleteMessage(long messageId)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(
+                    "delete\r\n" + //
+                            "from messages\r\n" + //
+                            "where id=?;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        stmt.setLong(1, messageId);
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (!rs.next()) {
+            return false;
+        }
+        return rs.rowDeleted();
     }
 }
