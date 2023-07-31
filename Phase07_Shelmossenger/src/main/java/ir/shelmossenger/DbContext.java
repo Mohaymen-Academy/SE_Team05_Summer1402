@@ -347,4 +347,29 @@ public class DbContext {
         return rs.getDouble(0);
     }
 
+    public long getNumberOfViewsOfMessage(long messageId)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(
+                    "select count(*)\r\n" + //
+                            "from read_message\r\n" + //
+                            "where message_id=?;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        stmt.setLong(1, messageId);
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (!rs.next()) {
+            return 0;
+        }
+        return rs.getLong(0);
+    }
+
 }
