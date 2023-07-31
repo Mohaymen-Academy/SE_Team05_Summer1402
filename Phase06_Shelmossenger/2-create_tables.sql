@@ -5,6 +5,7 @@ create table users
     id           serial primary key,
     full_name    varchar(100),
     user_name    varchar(100) not null unique,
+    password    varchar(100) not null,
     email        varchar(100) not null unique,
     phone_number varchar(20)  not null unique,
     bio          text,
