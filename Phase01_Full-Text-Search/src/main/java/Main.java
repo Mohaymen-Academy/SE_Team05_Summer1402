@@ -10,21 +10,23 @@ public class Main {
 
     public static void main(String[] args) {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
-                .setStopWords(new String[]{",", "."})
+                .setStopWords(new String[] { ",", "." })
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
-                .setTokenizer(new EdgeNGramTokenizer(2, 5))
+                .setTokenizer(new EdgeNGramTokenizer(2, 10))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");
         runInConsole(shelmosSearch);
     }
 
     private static void runInConsole(ShelmosSearch shelmosSearch) {
-        @Cleanup Scanner scanner = new Scanner(System.in);
+        @Cleanup
+        Scanner scanner = new Scanner(System.in);
         StopWatch watch = new StopWatch();
         while (true) {
             System.out.println("Type \"!\" if you want to exit the program.");
             System.out.print("Search: ");
             String query = scanner.nextLine();
-            if (query.equals("!")) break;
+            if (query.equals("!"))
+                break;
             watch.start();
             List<String> result = shelmosSearch.search(query);
             watch.stop();
