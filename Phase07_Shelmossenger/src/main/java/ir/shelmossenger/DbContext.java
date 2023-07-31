@@ -1,5 +1,7 @@
 package ir.shelmossenger;
 
+import ir.shelmossenger.model.Message;
+import ir.shelmossenger.model.MessageType;
 import ir.shelmossenger.model.User;
 
 import javax.sql.DataSource;
@@ -11,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbContext {
     private DataSource dataSource;
@@ -218,5 +223,42 @@ public class DbContext {
             return false;
         }
         return rs.rowDeleted();
+    }
+
+    public List<Message> getMessagesOfUser(String userName)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(
+                    "select m.*\r\n" + //
+                            "from messages m\r\n" + //
+                            "where m.sender_id = (select id from users where user_name = ?)\r\n" + //
+                            "  and m.deleted_at is null;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        stmt.setString(1, userName);
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        List<Message> messages = new ArrayList<>();
+        while (rs.next()) {
+            Message message = new Message();
+            message.setId(rs.getLong("id"));
+            message.setData(rs.getString("data"));
+            message.setMessageType(MessageType.getById((int) rs.getLong("message_type")));
+            message.setSentAt(rs.getTimestamp("sent_at").toInstant());
+            message.setEditedAt(rs.getTimestamp("edited_at").toInstant());
+            message.setDeletedAt(rs.getTimestamp("deleted_at").toInstant());
+            message.setSenderId(rs.getLong("sender_id"));
+            message.setChatId(rs.getLong("chat_id"));
+            message.setReplyId(rs.getLong("reply_id"));
+            messages.add(message);
+        }
+        return messages;
     }
 }
