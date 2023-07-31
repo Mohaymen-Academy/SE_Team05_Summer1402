@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -320,6 +321,30 @@ public class DbContext {
             return 0;
         }
         return rs.getLong(0);
+    }
+
+    public double getAvgNumberOfMessages()
+            throws SQLException {
+        Statement stmt = null;
+        String query = "select count(m.id)::decimal / (select count(id) from users where deleted_at is null)\n" +
+                "from messages m\n" +
+                "where m.deleted_at is null;";
+        try {
+            stmt = getConnection().createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (!rs.next()) {
+            return 0;
+        }
+        return rs.getDouble(0);
     }
 
 }
