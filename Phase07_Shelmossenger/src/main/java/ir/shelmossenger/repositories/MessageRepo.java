@@ -204,4 +204,26 @@ public class MessageRepo {
         }
         return rs.getLong(0);
     }
+
+    public boolean readMessage(String userName, long messageId)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(
+                    "insert into read_message (user_id, message_id)\r\n" + //
+                            "values ((select id from users where user_name=?),?);");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        stmt.setString(1, userName);
+        stmt.setLong(2, messageId);
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rs.rowInserted();
+    }
 }
