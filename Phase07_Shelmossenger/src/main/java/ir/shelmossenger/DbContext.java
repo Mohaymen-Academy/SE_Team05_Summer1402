@@ -261,4 +261,31 @@ public class DbContext {
         }
         return messages;
     }
+
+    public long getNumberOfMessagesOfUser(String userName)
+            throws SQLException {
+        PreparedStatement stmt = null;
+        try {
+            stmt = getConnection().prepareStatement(
+                    "select count(m.id)\r\n" + //
+                            "from messages m\r\n" + //
+                            "where m.sender_id = (select id from users where user_name = ?)\r\n" + //
+                            "  and m.deleted_at is null;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        stmt.setString(1, userName);
+        // Execute the query, and store the results in the ResultSet instance
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (!rs.next()) {
+            return 0;
+        }
+        return rs.getLong(0);
+    }
+
 }
