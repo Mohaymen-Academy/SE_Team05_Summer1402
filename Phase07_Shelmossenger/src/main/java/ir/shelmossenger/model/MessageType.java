@@ -6,7 +6,7 @@ public enum MessageType {
     VIDEO(3, "video"),
     VOICE(4, "voice"),
     FILE(5, "file"),
-    ADMIN(6, "admin");
+    NOTIFICATION(6, "notification");
 
     private final int id;
     private final String typeName;

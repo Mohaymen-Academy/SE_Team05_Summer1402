@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import ir.shelmossenger.model.Chat;
 import ir.shelmossenger.model.ChatType;
+import ir.shelmossenger.model.Permission;
+
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class ChatRepo {
@@ -31,7 +33,7 @@ public class ChatRepo {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (!rs.next()) {
+        if (!rs.rowInserted()) {
             return -1;
         }
         var keyRes = stmt.getGeneratedKeys();
@@ -39,12 +41,25 @@ public class ChatRepo {
         return keyRes.getLong(1);
     }
 
-    public boolean createPVChat(String userName1, String userName2) throws SQLException {
+    public long createPVChat(String userName1, String userName2) throws SQLException {
         var chatId = createChat(null, null, ChatType.PV);
-        if (chatId == -1) {
-            return false;
+        PermissionRepo permissionRepo = new PermissionRepo();
+        var userChatId1 = addUserToChat(userName1, chatId);
+        Permission[] permissions = new Permission[] {
+                Permission.MESSAGE,
+                Permission.IMAGE,
+                Permission.VIDEO,
+                Permission.VOICE,
+                Permission.FILE,
+        };
+        for (Permission permission : permissions) {
+            permissionRepo.addPermissionToUserChat(permission, userChatId1);
         }
-        return addUserToChat(userName1, chatId) && addUserToChat(userName2, chatId);
+        var userChatId2 = addUserToChat(userName2, chatId);
+        for (Permission permission : permissions) {
+            permissionRepo.addPermissionToUserChat(permission, userChatId2);
+        }
+        return chatId;
     }
 
     public long createChat(String title, String link, ChatType chatType) throws SQLException {
@@ -55,7 +70,7 @@ public class ChatRepo {
         return addChat(chat);
     }
 
-    public boolean addUserToChat(String userName, long chatId) throws SQLException {
+    public long addUserToChat(String userName, long chatId) throws SQLException {
         PreparedStatement stmt = null;
         try {
             stmt = getConnection()
@@ -74,7 +89,12 @@ public class ChatRepo {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return rs.rowInserted();
+        if (!rs.rowInserted()) {
+            return -1;
+        }
+        var keyRes = stmt.getGeneratedKeys();
+        keyRes.next();
+        return keyRes.getLong(1);
     }
 
 }

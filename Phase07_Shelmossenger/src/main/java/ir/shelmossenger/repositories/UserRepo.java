@@ -1,6 +1,5 @@
 package ir.shelmossenger.repositories;
 
-import ir.shelmossenger.context.DbContext;
 import ir.shelmossenger.model.User;
 
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class UserRepo {
-
 
     public boolean signup(User user) throws SQLException {
         PreparedStatement stmt = null;
