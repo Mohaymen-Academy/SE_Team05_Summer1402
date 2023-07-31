@@ -1,7 +1,7 @@
---q1: Add user (insert)
+--q1: Add user (insert) password:pass
 insert into users (full_name, user_name,password, email, phone_number, bio)
-values ('Ali Ahmadi', 'ali698','pass', 'ali.ahmadi@gmail.com', '09112552550', null),
-       ('Hossein Razi', 'hosraz','pass', 'hossein.razi@gmail.com', '09381234523', 'sth');
+values ('Ali Ahmadi', 'ali698','d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1', 'ali.ahmadi@gmail.com', '09112552550', null),
+       ('Hossein Razi', 'hosraz','d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1', 'hossein.razi@gmail.com', '09381234523', 'sth');
 
 --q2: Delete account (delete)
 update users
