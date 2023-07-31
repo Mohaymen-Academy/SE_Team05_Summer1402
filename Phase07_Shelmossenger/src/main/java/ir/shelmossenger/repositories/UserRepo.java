@@ -1,6 +1,7 @@
 package ir.shelmossenger.repositories;
 
 import ir.shelmossenger.model.User;
+import ir.shelmossenger.services.HashGenerator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class UserRepo {
         }
         stmt.setString(1, user.getFullName());
         stmt.setString(2, user.getUserName());
-        stmt.setString(3, user.getPassword());
+        stmt.setString(3, HashGenerator.Hash(user.getPassword()));
         stmt.setString(4, user.getEmail());
         stmt.setString(5, user.getPhoneNumber());
         stmt.setString(6, user.getBio());
@@ -56,7 +57,7 @@ public class UserRepo {
         if (!rs.next()) {
             return false;
         }
-        return rs.getString("password").equals(password);
+        return rs.getString("password").equals(HashGenerator.Hash(password));
     }
 
     public boolean deleteAccount(String userName) throws SQLException {
