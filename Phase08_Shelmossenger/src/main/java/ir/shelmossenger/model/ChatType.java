@@ -1,23 +1,25 @@
 package ir.shelmossenger.model;
 
-public enum ChatType {
-    PV(1, "PV"),
-    GROUP(2, "Group"),
-    CHANNEL(3, "Channel");
+import jakarta.persistence.*;
+import lombok.Data;
 
-    private final int id;
-    private final String typeName;
-
-    ChatType(int id, String typeName) {
+@Data
+@Entity
+@Table(name = "chat_types")
+public class ChatType {
+    public static ChatType PV=new ChatType(1, "PV");
+    public static ChatType GROUP=new ChatType(2, "Group");
+    public static ChatType CHANNEL=new ChatType(3, "Channel");
+    public ChatType(){}
+    ChatType(long id, String typeName) {
         this.id = id;
         this.typeName = typeName;
     }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "type_name")
+    private String typeName;
 
-    public String getTypeName() {
-        return typeName;
-    }
 }

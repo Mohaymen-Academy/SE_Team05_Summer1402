@@ -1,30 +1,46 @@
 package ir.shelmossenger.model;
 
-public enum MessageType {
-    MESSAGE(1, "message"),
-    IMAGE(2, "image"),
-    VIDEO(3, "video"),
-    VOICE(4, "voice"),
-    FILE(5, "file"),
-    NOTIFICATION(6, "notification");
+import jakarta.persistence.*;
+import lombok.Data;
 
-    private final int id;
-    private final String typeName;
+import java.util.Arrays;
 
-    MessageType(int id, String typeName) {
+@Data
+@Entity
+@Table(name = "message_types")
+public class MessageType {
+    public static MessageType MESSAGE=new MessageType(1, "message");
+    public static MessageType IMAGE=new MessageType(2, "image");
+    public static MessageType VIDEO=new MessageType(3, "video");
+    public static MessageType VOICE=new MessageType(4, "voice");
+    public static MessageType FILE=new MessageType(5, "file");
+    public static MessageType NOTIFICATION=new MessageType(6, "notification");
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "type_name")
+    private String typeName;
+    public MessageType(){}
+
+    MessageType(long id, String typeName) {
         this.id = id;
         this.typeName = typeName;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
     public static MessageType getById(int id) {
-        return values()[id];
+        return values[id];
     }
+    public static MessageType getByTitle(String title) {
+        return Arrays.stream(values).filter(m->m.typeName.equals(title)).findFirst().get();
+    }
+    private static MessageType[] values=new MessageType[]{
+            MESSAGE,
+            IMAGE,
+            VIDEO,
+            VOICE,
+            FILE,
+            NOTIFICATION,
+    };
 }

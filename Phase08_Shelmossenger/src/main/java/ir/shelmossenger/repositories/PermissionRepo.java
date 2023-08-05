@@ -4,31 +4,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ir.shelmossenger.model.Permission;
+import ir.shelmossenger.model.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import org.hibernate.Session;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class PermissionRepo {
 
-    public boolean addPermissionToUserChat(Permission permission, long userChatId) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection()
-                    .prepareStatement(
-                            "insert into user_chat_permission (user_chat_id, permission_id)\r\n" + //
-                                    "values (?, ?);");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        stmt.setLong(1, userChatId);
-        stmt.setLong(2, permission.getId());
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return rs.rowInserted();
+    public boolean addPermissionToUserChat(Permission permission, long userChatId) {
+        Session session = getConnection();
+        session.beginTransaction();
+        UserChatPermission userChatPermission=new UserChatPermission(){{
+            setPermission(permission);
+            setUserChat(new UserChat(){{setId(userChatId);}});
+        }};
+        session.persist(userChatPermission);
+        session.getTransaction().commit();
+        session.close();
+        return true;
     }
 }

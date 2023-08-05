@@ -5,47 +5,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import ir.shelmossenger.model.Chat;
-import ir.shelmossenger.model.ChatType;
-import ir.shelmossenger.model.Permission;
+import ir.shelmossenger.context.DbContext;
+import ir.shelmossenger.model.*;
+import org.hibernate.Session;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class ChatRepo {
     public long addChat(Chat chat) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection()
-                    .prepareStatement("insert into chats (title, link, chat_type, created_at, deleted_at)\r\n" + //
-                            "values (?,?,?,?,?);");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        stmt.setString(1, chat.getTitle());
-        stmt.setString(2, chat.getLink());
-        stmt.setLong(3, chat.getChatType().getId());
-        stmt.setTimestamp(4, Timestamp.from(chat.getCreatedAt()));
-        stmt.setTimestamp(5, Timestamp.from(chat.getDeletedAt()));
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.rowInserted()) {
-            return -1;
-        }
-        var keyRes = stmt.getGeneratedKeys();
-        keyRes.next();
-        return keyRes.getLong(1);
+        Session session = getConnection();
+        session.beginTransaction();
+        session.persist(chat);
+        session.getTransaction().commit();
+        session.close();
+        return chat.getId();
     }
 
     public long createPVChat(String userName1, String userName2) throws SQLException {
         var chatId = createChat(null, null, ChatType.PV);
         PermissionRepo permissionRepo = new PermissionRepo();
         var userChatId1 = addUserToChat(userName1, chatId);
-        Permission[] permissions = new Permission[] {
+        Permission[] permissions = new Permission[]{
                 Permission.MESSAGE,
                 Permission.IMAGE,
                 Permission.VIDEO,
@@ -71,30 +51,24 @@ public class ChatRepo {
     }
 
     public long addUserToChat(String userName, long chatId) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection()
-                    .prepareStatement(
-                            "insert into user_chat (user_id, chat_id)\r\n" + //
-                                    "values ((select id from users where user_name = ?), ?);");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        stmt.setString(1, userName);
-        stmt.setLong(2, chatId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.rowInserted()) {
-            return -1;
-        }
-        var keyRes = stmt.getGeneratedKeys();
-        keyRes.next();
-        return keyRes.getLong(1);
+        Session session = getConnection();
+        session.beginTransaction();
+        User user = new User() {{
+            setUsername(userName);
+        }};
+        Chat chat = new Chat() {{
+            setId(chatId);
+        }};
+        UserChat userChat = new UserChat() {
+            {
+                setUser(user);
+                setChat(chat);
+            }
+        };
+        session.persist(userChat);
+        session.getTransaction().commit();
+        session.close();
+        return userChat.getId();
     }
 
 }
