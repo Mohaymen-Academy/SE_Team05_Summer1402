@@ -107,38 +107,38 @@ public class UserRepo {
         }
     }
 
-    public long getNumberOfRelationshipsOfUser(String userName)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "with x_username as (select ?)\r\n" + //
-                            "select count(u.*) as user_count\r\n" + //
-                            "from users u\r\n" + //
-                            "         inner join user_chat uc on u.id = uc.user_id\r\n" + //
-                            "         inner join chats c on c.id = uc.chat_id\r\n" + //
-                            "where c.id in (select uxc.chat_id\r\n" + //
-                            "               from users ux\r\n" + //
-                            "                        inner join user_chat uxc on ux.id = uxc.user_id\r\n" + //
-                            "               where ux.user_name = (select * from x_username)\r\n" + //
-                            ")  and c.deleted_at is null\r\n" + //
-                            "  and u.deleted_at is null\r\n" + //
-                            "  and u.user_name <>  (select * from x_username);");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        stmt.setString(1, userName);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return 0;
-        }
-        return rs.getLong(0);
-    }
+    public long getNumberOfRelationshipsOfUser(String userName) {
+        try (Connection connection = getConnection()) {
 
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            with x_username as (select ?)\r
+                            select count(u.*) as user_count\r
+                            from users u\r
+                                     inner join user_chat uc on u.id = uc.user_id\r
+                                     inner join chats c on c.id = uc.chat_id\r
+                            where c.id in (select uxc.chat_id\r
+                                           from users ux\r
+                                                    inner join user_chat uxc on ux.id = uxc.user_id\r
+                                           where ux.user_name = (select * from x_username)\r
+                            )  and c.deleted_at is null\r
+                              and u.deleted_at is null\r
+                              and u.user_name <>  (select * from x_username);""")) {
+
+                stmt.setString(1, userName);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+
+                    if (!rs.next()) return 0;
+                    return rs.getLong(1);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

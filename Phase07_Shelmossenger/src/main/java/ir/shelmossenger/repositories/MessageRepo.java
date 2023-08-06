@@ -12,6 +12,7 @@ import static ir.shelmossenger.context.DbContext.getConnection;
 public class MessageRepo {
 
     // TODO: 8/6/2023 add messages only if user is in chat
+    // TODO: 8/6/2023 check permission before sending message
     public boolean sendMessage(Message message) {
         try (Connection connection = getConnection()) {
 
