@@ -45,10 +45,10 @@ public class MessageRepo {
         try (Connection connection = getConnection()) {
 
             try (PreparedStatement stmt = connection.prepareStatement(
-                         """
-                                 update messages\r
-                                 set (data, edited_at) = (?, current_timestamp)\r
-                                 where id=?;""")) {
+                    """
+                            update messages\r
+                            set (data, edited_at) = (?, current_timestamp)\r
+                            where id=?;""")) {
 
                 stmt.setString(1, newMessage);
                 stmt.setLong(2, messageId);
@@ -68,29 +68,25 @@ public class MessageRepo {
         }
     }
 
-    public boolean deleteMessage(long messageId)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "delete\r\n" + //
-                            "from messages\r\n" + //
-                            "where id=?;");
+    public boolean deleteMessage(long messageId) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            update messages\r
+                            set deleted_at=current_timestamp\r
+                            where id=?;""")) {
+
+                stmt.setLong(1, messageId);
+
+                int numberOfAddedRows = stmt.executeUpdate();
+                return numberOfAddedRows > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setLong(1, messageId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-        return rs.rowDeleted();
     }
 
     public List<Message> getMessagesOfUser(String userName)
