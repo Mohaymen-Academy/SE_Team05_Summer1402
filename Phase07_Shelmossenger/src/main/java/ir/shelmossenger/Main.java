@@ -15,13 +15,13 @@ public class Main {
     private static void signup(){
         UserRepo userRepo = new UserRepo();
         User user = new User();
-        user.setId(100L);
-        user.setFullName("hamed");
-        user.setUserName("ham");
-        user.setPassword("h123");
-        user.setEmail("hamed@gmail.com");
-        user.setPhoneNumber("09123457780");
-//        user.setBio("another thing");
+//        user.setId(100L);
+        user.setFullName("sara");
+        user.setUserName("sara");
+        user.setPassword("s123");
+        user.setEmail("sara@gmail.com");
+        user.setPhoneNumber("19123457780");
+        user.setBio("nothing");
 
         try {
             System.out.println(userRepo.signup(user));

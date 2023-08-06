@@ -20,6 +20,7 @@ public class UserRepo {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         stmt.setString(1, user.getFullName());
         stmt.setString(2, user.getUserName());
 //        stmt.setString(3, HashGenerator.Hash(user.getPassword()));
@@ -27,15 +28,17 @@ public class UserRepo {
         stmt.setString(4, user.getEmail());
         stmt.setString(5, user.getPhoneNumber());
         stmt.setString(6, user.getBio());
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs;
+
+        // Execute the query, and store the number of changed rows
+        int numberOfAddedRows;
         try {
-            rs = stmt.executeQuery();
+            numberOfAddedRows = stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return rs.rowInserted() || rs.rowUpdated();
+        stmt.close();
+        return numberOfAddedRows > 0;
     }
 
     public boolean login(String userName, String password) throws SQLException {
