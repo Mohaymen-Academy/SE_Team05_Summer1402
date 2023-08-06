@@ -4,6 +4,7 @@ import ir.shelmossenger.model.Message;
 import ir.shelmossenger.model.MessageType;
 
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,30 +41,31 @@ public class MessageRepo {
         }
     }
 
-    public boolean editMessage(String newMessage, long messageId)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "update messages\r\n" + //
-                            "set data = ?\r\n" + //
-                            "where id=?;");
+    public boolean editMessage(String newMessage, long messageId) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                         """
+                                 update messages\r
+                                 set (data, edited_at) = (?, current_timestamp)\r
+                                 where id=?;""")) {
+
+                stmt.setString(1, newMessage);
+                stmt.setLong(2, messageId);
+
+                int numberOfAddedRows;
+                try {
+                    numberOfAddedRows = stmt.executeUpdate();
+                    return numberOfAddedRows > 0;
+                } catch (Exception ignored) {
+                    return false;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, newMessage);
-        stmt.setLong(2, messageId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-        return rs.rowUpdated();
     }
 
     public boolean deleteMessage(long messageId)

@@ -18,7 +18,8 @@ public class Main {
 //        changeBio();
 //        createChat();
 //        addUserToChat();
-        sendMessage();
+//        sendMessage();
+        editMessage();
     }
 
     private static void signup() {
@@ -84,5 +85,13 @@ public class Main {
 
         MessageRepo messageRepo= new MessageRepo();
         System.out.println(messageRepo.sendMessage(message));
+    }
+
+    private static void editMessage(){
+        String newMessage = "hi";
+        long messageId = 6;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.editMessage(newMessage, messageId));
     }
 }
