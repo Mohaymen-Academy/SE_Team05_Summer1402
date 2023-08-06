@@ -49,6 +49,7 @@ public class ChatRepo {
         }
     }
 
+    // TODO: 8/6/2023
     public long createPVChat(String userName1, String userName2) throws SQLException {
         var chatId = createChat(null, null, ChatType.PV);
         PermissionRepo permissionRepo = new PermissionRepo();

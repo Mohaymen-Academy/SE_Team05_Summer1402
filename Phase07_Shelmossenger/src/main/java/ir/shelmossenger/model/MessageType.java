@@ -21,6 +21,10 @@ public enum MessageType {
         return typeName;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static MessageType getById(int id) {
         return values()[id];
     }

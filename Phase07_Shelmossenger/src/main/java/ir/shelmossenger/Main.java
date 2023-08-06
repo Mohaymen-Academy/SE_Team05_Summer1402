@@ -1,8 +1,11 @@
 package ir.shelmossenger;
 
 import ir.shelmossenger.model.ChatType;
+import ir.shelmossenger.model.Message;
+import ir.shelmossenger.model.MessageType;
 import ir.shelmossenger.model.User;
 import ir.shelmossenger.repositories.ChatRepo;
+import ir.shelmossenger.repositories.MessageRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
 import java.sql.SQLException;
@@ -14,7 +17,8 @@ public class Main {
 //        deleteAccount();
 //        changeBio();
 //        createChat();
-        addUserToChat();
+//        addUserToChat();
+        sendMessage();
     }
 
     private static void signup() {
@@ -64,10 +68,21 @@ public class Main {
     }
 
     private static void addUserToChat(){
-        String username = "sara";
+        String username = "hamid";
         long chatID = 3;
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.addUserToChat(username, chatID));
+    }
+
+    private static void sendMessage(){
+        Message message = new Message();
+        message.setMessageType(MessageType.FILE);
+        message.setData("error");
+        message.setSenderId(5L);
+        message.setChatId(4L);
+
+        MessageRepo messageRepo= new MessageRepo();
+        System.out.println(messageRepo.sendMessage(message));
     }
 }

@@ -3,10 +3,7 @@ package ir.shelmossenger.repositories;
 import ir.shelmossenger.model.Message;
 import ir.shelmossenger.model.MessageType;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,32 +11,33 @@ import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class MessageRepo {
 
-    public boolean sendMessage(String message, String messageType, String senderUserName, long chatId)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "insert into messages (data, message_type, sender_id, chat_id)\r\n" + //
-                            "values (?, (Select id from message_types where type_name = ?),\r\n" + //
-                            "        (select id from users where user_name = ?), ?);");
+    // TODO: 8/6/2023 add messages only if user is in chat
+    public boolean sendMessage(Message message) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            insert into messages (data, message_type, sender_id, chat_id)\r
+                            values (?, (Select id from message_types where type_name = ?), ?, ?);""")) {
+
+                stmt.setString(1, message.getData());
+                stmt.setString(2, message.getMessageType().getTypeName());
+                stmt.setLong(3, message.getSenderId());
+                stmt.setLong(4, message.getChatId());
+
+                int numberOfAddedRows;
+                try {
+                    numberOfAddedRows = stmt.executeUpdate();
+                    return numberOfAddedRows > 0;
+                } catch (Exception ignored) {
+                    return false;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, message);
-        stmt.setString(2, message);
-        stmt.setString(3, senderUserName);
-        stmt.setLong(4, chatId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-        return rs.rowInserted();
     }
 
     public boolean editMessage(String newMessage, long messageId)
