@@ -1,6 +1,8 @@
 package ir.shelmossenger;
 
+import ir.shelmossenger.model.ChatType;
 import ir.shelmossenger.model.User;
+import ir.shelmossenger.repositories.ChatRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
 import java.sql.SQLException;
@@ -10,7 +12,8 @@ public class Main {
 //        signup();
 //        login();
 //        deleteAccount();
-        changeBio();
+//        changeBio();
+        createChat();
     }
 
     private static void signup() {
@@ -48,5 +51,14 @@ public class Main {
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.changeBio(username, bio));
+    }
+
+    private static void createChat(){
+        String title = "pv_test";
+        String link = "pvt";
+        ChatType chatType = ChatType.PV;
+
+        ChatRepo chatRepo = new ChatRepo();
+        System.out.println(chatRepo.createChat(title, link, chatType));
     }
 }
