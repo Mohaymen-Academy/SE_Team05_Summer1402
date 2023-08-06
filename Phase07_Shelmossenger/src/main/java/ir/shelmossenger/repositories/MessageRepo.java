@@ -89,41 +89,45 @@ public class MessageRepo {
         }
     }
 
-    public List<Message> getMessagesOfUser(String userName)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "select m.*\r\n" + //
-                            "from messages m\r\n" + //
-                            "where m.sender_id = (select id from users where user_name = ?)\r\n" + //
-                            "  and m.deleted_at is null;");
+    public List<Message> getMessagesOfUser(String userName) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            select m.*\r
+                            from messages m\r
+                            where m.sender_id = (select id from users where user_name = ?)\r
+                              and m.deleted_at is null;""")) {
+
+                stmt.setString(1, userName);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    List<Message> messages = new ArrayList<>();
+                    while (rs.next()) {
+                        Message message = new Message();
+                        message.setId(rs.getLong("id"));
+                        message.setData(rs.getString("data"));
+                        message.setMessageType(MessageType.getById((int) rs.getLong("message_type")));
+                        if (rs.getTimestamp("sent_at") != null)
+                            message.setSentAt(rs.getTimestamp("sent_at").toInstant());
+                        if (rs.getTimestamp("edited_at") != null)
+                            message.setEditedAt(rs.getTimestamp("edited_at").toInstant());
+                        message.setDeletedAt(null);
+                        message.setSenderId(rs.getLong("sender_id"));
+                        message.setChatId(rs.getLong("chat_id"));
+                        message.setReplyId(rs.getLong("reply_id"));
+                        messages.add(message);
+                    }
+                    return messages;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, userName);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        List<Message> messages = new ArrayList<>();
-        while (rs.next()) {
-            Message message = new Message();
-            message.setId(rs.getLong("id"));
-            message.setData(rs.getString("data"));
-            message.setMessageType(MessageType.getById((int) rs.getLong("message_type")));
-            message.setSentAt(rs.getTimestamp("sent_at").toInstant());
-            message.setEditedAt(rs.getTimestamp("edited_at").toInstant());
-            message.setDeletedAt(rs.getTimestamp("deleted_at").toInstant());
-            message.setSenderId(rs.getLong("sender_id"));
-            message.setChatId(rs.getLong("chat_id"));
-            message.setReplyId(rs.getLong("reply_id"));
-            messages.add(message);
-        }
-        return messages;
     }
 
     public long getNumberOfMessagesOfUser(String userName) {

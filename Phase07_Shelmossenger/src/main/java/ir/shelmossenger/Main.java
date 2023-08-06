@@ -24,7 +24,8 @@ public class Main {
 //        averageNumberOfMessages();
 //        getNumberOfMessagesOfUSer();
 //        readMessage();
-        getNumberOfViewsOfMessage();
+//        getNumberOfViewsOfMessage();
+        getMessagesOfUser();
     }
 
     private static void signup() {
@@ -132,5 +133,12 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getNumberOfViewsOfMessage(messageId));
+    }
+
+    private static void getMessagesOfUser(){
+        String username = "sara";
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getMessagesOfUser(username));
     }
 }
