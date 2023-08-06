@@ -22,7 +22,8 @@ public class Main {
 //        editMessage();
 //        deleteMessage();
 //        averageNumberOfMessages();
-        getNumberOfMessagesOfUSer();
+//        getNumberOfMessagesOfUSer();
+        readMessage();
     }
 
     private static void signup() {
@@ -111,9 +112,17 @@ public class Main {
     }
 
     private static void getNumberOfMessagesOfUSer(){
-        String username= "hamid";
+        String username= "sara";
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getNumberOfMessagesOfUser(username));
+    }
+
+    private static void readMessage(){
+        String username = "hamid";
+        long messageId = 6;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.readMessage(username, messageId));
     }
 }

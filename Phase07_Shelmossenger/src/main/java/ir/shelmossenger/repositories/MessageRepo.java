@@ -200,25 +200,29 @@ public class MessageRepo {
         return rs.getLong(0);
     }
 
-    public boolean readMessage(String userName, long messageId)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "insert into read_message (user_id, message_id)\r\n" + //
-                            "values ((select id from users where user_name=?),?);");
+    public boolean readMessage(String userName, long messageId) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            insert into read_message (user_id, message_id)\r
+                            values ((select id from users where user_name=?),?);""")) {
+
+                stmt.setString(1, userName);
+                stmt.setLong(2, messageId);
+
+                int numberOfAddedRows;
+                try {
+                    numberOfAddedRows = stmt.executeUpdate();
+                    return numberOfAddedRows > 0;
+                } catch (Exception ignored) {
+                    return false;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, userName);
-        stmt.setLong(2, messageId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return rs.rowInserted();
     }
 }
