@@ -22,5 +22,4 @@ public class User {
     private String bio;
 
     private Instant deletedAt;
-
 }

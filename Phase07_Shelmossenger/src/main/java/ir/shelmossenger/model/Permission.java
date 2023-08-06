@@ -1,6 +1,7 @@
 package ir.shelmossenger.model;
 
 public enum Permission {
+
     MESSAGE(1, "message"),
     IMAGE(2, "image"),
     VIDEO(3, "video"),
@@ -18,9 +19,5 @@ public enum Permission {
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 }

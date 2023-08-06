@@ -12,7 +12,7 @@ import static ir.shelmossenger.context.DbContext.getConnection;
 public class UserRepo {
 
     public boolean signup(User user) throws SQLException {
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         try {
             stmt = getConnection().prepareStatement(
                     "insert into users (full_name, user_name,password, email, phone_number, bio)\n" +
@@ -22,17 +22,19 @@ public class UserRepo {
         }
         stmt.setString(1, user.getFullName());
         stmt.setString(2, user.getUserName());
-        stmt.setString(3, HashGenerator.Hash(user.getPassword()));
+//        stmt.setString(3, HashGenerator.Hash(user.getPassword()));
+        stmt.setString(3, user.getPassword());
         stmt.setString(4, user.getEmail());
         stmt.setString(5, user.getPhoneNumber());
         stmt.setString(6, user.getBio());
         // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
+        ResultSet rs;
         try {
             rs = stmt.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return rs.rowInserted() || rs.rowUpdated();
     }
 
@@ -57,7 +59,8 @@ public class UserRepo {
         if (!rs.next()) {
             return false;
         }
-        return rs.getString("password").equals(HashGenerator.Hash(password));
+//        return rs.getString("password").equals(HashGenerator.Hash(password));
+        return rs.getString("password").equals(password);
     }
 
     public boolean deleteAccount(String userName) throws SQLException {

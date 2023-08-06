@@ -12,6 +12,7 @@ import ir.shelmossenger.model.Permission;
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class ChatRepo {
+
     public long addChat(Chat chat) throws SQLException {
         PreparedStatement stmt = null;
         try {
@@ -45,7 +46,7 @@ public class ChatRepo {
         var chatId = createChat(null, null, ChatType.PV);
         PermissionRepo permissionRepo = new PermissionRepo();
         var userChatId1 = addUserToChat(userName1, chatId);
-        Permission[] permissions = new Permission[] {
+        Permission[] permissions = new Permission[]{
                 Permission.MESSAGE,
                 Permission.IMAGE,
                 Permission.VIDEO,

@@ -13,5 +13,4 @@ public class Chat {
     private ChatType chatType;
     private Instant createdAt;
     private Instant deletedAt;
-
 }

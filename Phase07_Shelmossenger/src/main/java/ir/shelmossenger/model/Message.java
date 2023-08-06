@@ -1,5 +1,4 @@
 package ir.shelmossenger.model;
-
 import java.time.Instant;
 
 import lombok.Data;
@@ -20,7 +19,8 @@ public class Message {
     private Instant deletedAt;
 
     private Long senderId;
-    private Long chatId;
-    private Long replyId;
 
+    private Long chatId;
+
+    private Long replyId;
 }

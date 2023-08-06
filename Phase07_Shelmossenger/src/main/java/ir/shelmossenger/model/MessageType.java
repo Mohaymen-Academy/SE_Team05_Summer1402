@@ -1,6 +1,7 @@
 package ir.shelmossenger.model;
 
 public enum MessageType {
+
     MESSAGE(1, "message"),
     IMAGE(2, "image"),
     VIDEO(3, "video"),
@@ -14,10 +15,6 @@ public enum MessageType {
     MessageType(int id, String typeName) {
         this.id = id;
         this.typeName = typeName;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getTypeName() {

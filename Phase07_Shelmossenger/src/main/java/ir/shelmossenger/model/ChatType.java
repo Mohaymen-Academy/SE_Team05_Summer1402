@@ -1,6 +1,7 @@
 package ir.shelmossenger.model;
 
 public enum ChatType {
+
     PV(1, "PV"),
     GROUP(2, "Group"),
     CHANNEL(3, "Channel");

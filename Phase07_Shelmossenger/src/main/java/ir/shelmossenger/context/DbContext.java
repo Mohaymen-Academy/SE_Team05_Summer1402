@@ -1,28 +1,19 @@
 package ir.shelmossenger.context;
 
-import ir.shelmossenger.model.Message;
-import ir.shelmossenger.model.MessageType;
-import ir.shelmossenger.model.User;
-
-import javax.sql.DataSource;
-
 import org.postgresql.ds.PGSimpleDataSource;
 
-import java.sql.Statement;
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DbContext {
-    private static final DataSource dataSource= createDataSource();
+
+    private static final DataSource dataSource = createDataSource();
+    private static Connection conn;
 
     public static Connection getConnection() {
-        Connection conn;
+        if (conn != null) return conn;
         try {
             conn = dataSource.getConnection();
         } catch (SQLException e) {
@@ -44,5 +35,4 @@ public class DbContext {
         dataSource.setUrl(url);
         return dataSource;
     }
-
 }
