@@ -20,7 +20,8 @@ public class Main {
 //        addUserToChat();
 //        sendMessage();
 //        editMessage();
-        deleteMessage();
+//        deleteMessage();
+        averageNumberOfMessages();
     }
 
     private static void signup() {
@@ -101,5 +102,10 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.deleteMessage(messageId));
+    }
+
+    private static void averageNumberOfMessages(){
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getAvgNumberOfMessages());
     }
 }

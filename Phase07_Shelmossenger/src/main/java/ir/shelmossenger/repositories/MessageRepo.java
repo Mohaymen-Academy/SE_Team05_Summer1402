@@ -152,28 +152,27 @@ public class MessageRepo {
         return rs.getLong(0);
     }
 
-    public double getAvgNumberOfMessages()
-            throws SQLException {
-        Statement stmt = null;
-        String query = "select count(m.id)::decimal / (select count(id) from users where deleted_at is null)\n" +
-                "from messages m\n" +
-                "where m.deleted_at is null;";
-        try {
-            stmt = getConnection().createStatement();
+    public double getAvgNumberOfMessages() {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            select count(m.id)::decimal / (select count(id) from users where deleted_at is null)\r
+                            from messages m\r
+                            where m.deleted_at is null;""")) {
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (!rs.next()) return 0;
+                    return rs.getDouble(1);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return 0;
-        }
-        return rs.getDouble(0);
     }
 
     public long getNumberOfViewsOfMessage(long messageId)
