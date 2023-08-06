@@ -3,6 +3,7 @@ package ir.shelmossenger.repositories;
 import ir.shelmossenger.model.User;
 import ir.shelmossenger.services.HashGenerator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,59 +12,58 @@ import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class UserRepo {
 
-    public boolean signup(User user) throws SQLException {
-        PreparedStatement stmt;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "insert into users (full_name, user_name,password, email, phone_number, bio)\n" +
-                            "values (?, ?,?, ?, ?, ?);");
+    public boolean signup(User user) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            insert into users (full_name, user_name,password, email, phone_number, bio)\r
+                            values (?, ?,?, ?, ?, ?)""")) {
+
+                stmt.setString(1, user.getFullName());
+                stmt.setString(2, user.getUserName());
+//                stmt.setString(3, HashGenerator.Hash(user.getPassword()));
+                stmt.setString(3, user.getPassword());
+                stmt.setString(4, user.getEmail());
+                stmt.setString(5, user.getPhoneNumber());
+                stmt.setString(6, user.getBio());
+
+                int numberOfAddedRows = stmt.executeUpdate();
+                // Execute the query, and store the number of changed rows
+                return numberOfAddedRows > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        stmt.setString(1, user.getFullName());
-        stmt.setString(2, user.getUserName());
-//        stmt.setString(3, HashGenerator.Hash(user.getPassword()));
-        stmt.setString(3, user.getPassword());
-        stmt.setString(4, user.getEmail());
-        stmt.setString(5, user.getPhoneNumber());
-        stmt.setString(6, user.getBio());
-
-        // Execute the query, and store the number of changed rows
-        int numberOfAddedRows;
-        try {
-            numberOfAddedRows = stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        stmt.close();
-        return numberOfAddedRows > 0;
     }
 
-    public boolean login(String userName, String password) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "select user_name,password\r\n" + //
-                            "from users\r\n" + //
-                            "where user_name=?;");
+    public boolean login(String userName, String password) {
+        try (Connection connection = getConnection()) {
+
+            try (
+                    PreparedStatement stmt = connection.prepareStatement(
+                            """ 
+                                    select user_name,password\r
+                                    from users\r
+                                    where user_name=?;""")) {
+
+                stmt.setString(1, userName);
+                try (ResultSet rs = stmt.executeQuery()) {
+
+                    if (!rs.next()) return false;
+//                    return rs.getString("password").equals(HashGenerator.Hash(password));
+                    return rs.getString("password").equals(password);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, userName);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-//        return rs.getString("password").equals(HashGenerator.Hash(password));
-        return rs.getString("password").equals(password);
     }
 
     public boolean deleteAccount(String userName) throws SQLException {

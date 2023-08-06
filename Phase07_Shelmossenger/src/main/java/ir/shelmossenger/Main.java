@@ -7,26 +7,29 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        signup();
-
-//        System.out.println(userRepo.login("hosraz", "pass"));
+//        signup();
+        login();
     }
 
-    private static void signup(){
+    private static void signup() {
         UserRepo userRepo = new UserRepo();
         User user = new User();
 //        user.setId(100L);
-        user.setFullName("sara");
-        user.setUserName("sara");
-        user.setPassword("s123");
-        user.setEmail("sara@gmail.com");
-        user.setPhoneNumber("19123457780");
-        user.setBio("nothing");
+        user.setFullName("hamid");
+        user.setUserName("hamid");
+        user.setPassword("h123");
+        user.setEmail("hamid@gmail.com");
+        user.setPhoneNumber("1319123457780");
+//        user.setBio("one thing");
 
-        try {
-            System.out.println(userRepo.signup(user));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        System.out.println(userRepo.signup(user));
+    }
+
+    private static void login() {
+        String username = "karen";
+        String password = "k123";
+
+        UserRepo userRepo = new UserRepo();
+        System.out.println(userRepo.login(username, password));
     }
 }

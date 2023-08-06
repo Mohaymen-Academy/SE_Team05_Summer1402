@@ -10,10 +10,9 @@ import java.text.MessageFormat;
 public class DbContext {
 
     private static final DataSource dataSource = createDataSource();
-    private static Connection conn;
 
     public static Connection getConnection() {
-        if (conn != null) return conn;
+        Connection conn;
         try {
             conn = dataSource.getConnection();
         } catch (SQLException e) {
