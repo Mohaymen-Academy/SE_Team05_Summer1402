@@ -11,7 +11,7 @@ public class PhotosServices {
     @Autowired
     private PhotosRepository photosRepository;
 
-    public Photo get(long id) {
+    public Photo get(int id) {
         return photosRepository.findById(id).orElse(null);
     }
 
@@ -20,17 +20,15 @@ public class PhotosServices {
     }
 
     public Photo create(String fileName, String fileContentType, byte[] data) {
-        Photo photo = new Photo() {
-            {
-                setFileName(fileName);
-                setContentType(fileContentType);
-                setData(data);
-            }
-        };
-        return photosRepository.save(photo);
+        var photo = new Photo();
+        photo.setData(data);
+        photo.setContentType(fileContentType);
+        photo.setFileName(fileName);
+        photosRepository.save(photo);
+        return photo;
     }
 
-    public void delete(long id) {
+    public void delete(int id) {
         photosRepository.deleteById(id);
     }
 
