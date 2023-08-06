@@ -1,10 +1,12 @@
 package ir.shelmossenger.repositories;
 
-import java.sql.*;
-
 import ir.shelmossenger.model.Chat;
 import ir.shelmossenger.model.ChatType;
 import ir.shelmossenger.model.Permission;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
 
@@ -33,13 +35,11 @@ public class ChatRepo {
                 int numberOfAddedRows = stmt.executeUpdate();
 
                 // TODO: 8/6/2023 is not returning id
-                if (numberOfAddedRows == 0)
-                    return -1;
+                if (numberOfAddedRows == 0) return -1;
+
                 try (ResultSet keyRes = stmt.getGeneratedKeys()) {
-                    if (keyRes.next())
-                        return keyRes.getLong(1);
-                    else
-                        return -1;
+                    if (keyRes.next()) return keyRes.getLong(1);
+                    else return -1;
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -50,10 +50,10 @@ public class ChatRepo {
     }
 
     // TODO: 8/6/2023
-    public long createPVChat(String userName1, String userName2) throws SQLException {
-        var chatId = createChat(null, null, ChatType.PV);
+    public long createPVChat(String userName1, String userName2) {
+        long chatId = createChat(null, null, ChatType.PV);
+
         PermissionRepo permissionRepo = new PermissionRepo();
-        var userChatId1 = addUserToChat(userName1, chatId);
         Permission[] permissions = new Permission[]{
                 Permission.MESSAGE,
                 Permission.IMAGE,
@@ -61,13 +61,13 @@ public class ChatRepo {
                 Permission.VOICE,
                 Permission.FILE,
         };
-        for (Permission permission : permissions) {
+
+        long userChatId1 = addUserToChat(userName1, chatId);
+        for (Permission permission : permissions)
             permissionRepo.addPermissionToUserChat(permission, userChatId1);
-        }
-        var userChatId2 = addUserToChat(userName2, chatId);
-        for (Permission permission : permissions) {
+        long userChatId2 = addUserToChat(userName2, chatId);
+        for (Permission permission : permissions)
             permissionRepo.addPermissionToUserChat(permission, userChatId2);
-        }
         return chatId;
     }
 

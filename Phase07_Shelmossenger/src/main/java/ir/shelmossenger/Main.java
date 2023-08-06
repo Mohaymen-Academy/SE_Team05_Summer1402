@@ -7,6 +7,7 @@ import ir.shelmossenger.repositories.PermissionRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
 public class Main {
+
     public static void main(String[] args) {
 //        signup();
 //        login();
@@ -23,7 +24,7 @@ public class Main {
 //        getNumberOfViewsOfMessage();
 //        getMessagesOfUser();
 //        addPermissionToUserChat();
-        getNumberOfRelationshipsOfUser();
+//        getNumberOfRelationshipsOfUser();
     }
 
     private static void signup() {
@@ -64,9 +65,9 @@ public class Main {
     }
 
     private static void createChat() {
-        String title = "pv_test";
-        String link = "pvt";
-        ChatType chatType = ChatType.PV;
+        String title = "channel_test";
+        String link = "cht";
+        ChatType chatType = ChatType.CHANNEL;
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.createChat(title, link, chatType));

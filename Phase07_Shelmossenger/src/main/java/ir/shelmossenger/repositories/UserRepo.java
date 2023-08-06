@@ -1,8 +1,6 @@
 package ir.shelmossenger.repositories;
 
 import ir.shelmossenger.model.User;
-import ir.shelmossenger.services.HashGenerator;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

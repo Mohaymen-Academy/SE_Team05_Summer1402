@@ -1,6 +1,6 @@
 package ir.shelmossenger.model;
-import java.time.Instant;
 
+import java.time.Instant;
 import lombok.Data;
 
 @Data

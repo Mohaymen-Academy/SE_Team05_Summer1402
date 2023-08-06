@@ -3,7 +3,6 @@ package ir.shelmossenger.repositories;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import ir.shelmossenger.model.Permission;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
