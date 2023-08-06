@@ -42,12 +42,11 @@ public class UserRepo {
     public boolean login(String userName, String password) {
         try (Connection connection = getConnection()) {
 
-            try (
-                    PreparedStatement stmt = connection.prepareStatement(
-                            """ 
-                                    select user_name,password\r
-                                    from users\r
-                                    where user_name=?;""")) {
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """ 
+                            select user_name,password\r
+                            from users\r
+                            where user_name=?;""")) {
 
                 stmt.setString(1, userName);
                 try (ResultSet rs = stmt.executeQuery()) {
@@ -66,28 +65,24 @@ public class UserRepo {
         }
     }
 
-    public boolean deleteAccount(String userName) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "update users\r\n" + //
-                            "set deleted_at=current_timestamp\r\n" + //
-                            "where user_name = ?;");
+    public boolean deleteAccount(String userName) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            update users\r
+                            set deleted_at=current_timestamp\r
+                            where user_name = ?;""")) {
+
+                stmt.setString(1, userName);
+                int numberOfDeletedRows = stmt.executeUpdate();
+                return numberOfDeletedRows > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, userName);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-        return rs.rowDeleted();
     }
 
     public boolean changeBio(String userName, String bio) throws SQLException {

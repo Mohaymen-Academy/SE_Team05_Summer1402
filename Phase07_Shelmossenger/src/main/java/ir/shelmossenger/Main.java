@@ -8,7 +8,8 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws SQLException {
 //        signup();
-        login();
+//        login();
+        deleteAccount();
     }
 
     private static void signup() {
@@ -31,5 +32,12 @@ public class Main {
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.login(username, password));
+    }
+
+    private static void deleteAccount(){
+        String username = "ham";
+
+        UserRepo userRepo = new UserRepo();
+        System.out.println(userRepo.deleteAccount(username));
     }
 }
