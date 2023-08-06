@@ -9,7 +9,8 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 //        signup();
 //        login();
-        deleteAccount();
+//        deleteAccount();
+        changeBio();
     }
 
     private static void signup() {
@@ -39,5 +40,13 @@ public class Main {
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.deleteAccount(username));
+    }
+
+    private static void changeBio(){
+        String username = "hamid";
+        String bio = "do";
+
+        UserRepo userRepo = new UserRepo();
+        System.out.println(userRepo.changeBio(username, bio));
     }
 }

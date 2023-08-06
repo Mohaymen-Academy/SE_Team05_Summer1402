@@ -85,29 +85,26 @@ public class UserRepo {
         }
     }
 
-    public boolean changeBio(String userName, String bio) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "update users\r\n" + //
-                            "set bio=?\r\n" + //
-                            "where user_name = ?;");
+    public boolean changeBio(String userName, String bio) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            update users\r
+                            set bio=?\r
+                            where user_name = ?;""")) {
+
+                stmt.setString(1, bio);
+                stmt.setString(2, userName);
+
+                int numberOfChangedRows = stmt.executeUpdate();
+                return numberOfChangedRows > 0;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setString(1, bio);
-        stmt.setString(2, userName);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return false;
-        }
-        return rs.rowUpdated();
     }
 
     public long getNumberOfRelationshipsOfUser(String userName)
