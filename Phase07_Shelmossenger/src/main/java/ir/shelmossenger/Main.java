@@ -13,7 +13,8 @@ public class Main {
 //        login();
 //        deleteAccount();
 //        changeBio();
-        createChat();
+//        createChat();
+        addUserToChat();
     }
 
     private static void signup() {
@@ -60,5 +61,13 @@ public class Main {
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.createChat(title, link, chatType));
+    }
+
+    private static void addUserToChat(){
+        String username = "sara";
+        long chatID = 3;
+
+        ChatRepo chatRepo = new ChatRepo();
+        System.out.println(chatRepo.addUserToChat(username, chatID));
     }
 }

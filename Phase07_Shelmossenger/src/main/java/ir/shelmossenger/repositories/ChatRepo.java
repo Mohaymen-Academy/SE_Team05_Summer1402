@@ -32,7 +32,7 @@ public class ChatRepo {
 
                 int numberOfAddedRows = stmt.executeUpdate();
 
-                // TODO: 8/6/2023 is not returning id 
+                // TODO: 8/6/2023 is not returning id
                 if (numberOfAddedRows == 0)
                     return -1;
                 try (ResultSet keyRes = stmt.getGeneratedKeys()) {
@@ -70,31 +70,35 @@ public class ChatRepo {
         return chatId;
     }
 
-    public long addUserToChat(String userName, long chatId) throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection()
-                    .prepareStatement(
-                            "insert into user_chat (user_id, chat_id)\r\n" + //
-                                    "values ((select id from users where user_name = ?), ?);");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        stmt.setString(1, userName);
-        stmt.setLong(2, chatId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.rowInserted()) {
-            return -1;
-        }
-        var keyRes = stmt.getGeneratedKeys();
-        keyRes.next();
-        return keyRes.getLong(1);
-    }
+    public long addUserToChat(String userName, long chatId) {
+        try (Connection connection = getConnection()) {
 
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            insert into user_chat (user_id, chat_id)\r
+                            values ((select id from users where user_name = ?), ?);""")) {
+
+                stmt.setString(1, userName);
+                stmt.setLong(2, chatId);
+
+                int numberOfAddedRows;
+                try {
+                    numberOfAddedRows = stmt.executeUpdate();
+                } catch (Exception ignored) {
+                    return -1;
+                }
+
+                // TODO: 8/6/2023 is not returning id
+                if (numberOfAddedRows == 0) return -1;
+                try (ResultSet keyRes = stmt.getGeneratedKeys()) {
+                    if (keyRes.next()) return keyRes.getLong(1);
+                    else return -1;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
