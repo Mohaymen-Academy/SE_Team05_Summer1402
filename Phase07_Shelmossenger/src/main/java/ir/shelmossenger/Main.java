@@ -23,7 +23,8 @@ public class Main {
 //        deleteMessage();
 //        averageNumberOfMessages();
 //        getNumberOfMessagesOfUSer();
-        readMessage();
+//        readMessage();
+        getNumberOfViewsOfMessage();
     }
 
     private static void signup() {
@@ -119,10 +120,17 @@ public class Main {
     }
 
     private static void readMessage(){
-        String username = "hamid";
+        String username = "karen";
         long messageId = 6;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.readMessage(username, messageId));
+    }
+
+    private static void getNumberOfViewsOfMessage(){
+        long messageId = 6;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getNumberOfViewsOfMessage(messageId));
     }
 }

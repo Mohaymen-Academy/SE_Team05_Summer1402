@@ -175,29 +175,29 @@ public class MessageRepo {
         }
     }
 
-    public long getNumberOfViewsOfMessage(long messageId)
-            throws SQLException {
-        PreparedStatement stmt = null;
-        try {
-            stmt = getConnection().prepareStatement(
-                    "select count(*)\r\n" + //
-                            "from read_message\r\n" + //
-                            "where message_id=?;");
+    public long getNumberOfViewsOfMessage(long messageId) {
+        try (Connection connection = getConnection()) {
+
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    """
+                            select count(*)\r
+                            from read_message\r
+                            where message_id=?;""")) {
+
+                stmt.setLong(1, messageId);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (!rs.next()) return 0;
+                    return rs.getLong(1);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        stmt.setLong(1, messageId);
-        // Execute the query, and store the results in the ResultSet instance
-        ResultSet rs = null;
-        try {
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!rs.next()) {
-            return 0;
-        }
-        return rs.getLong(0);
     }
 
     public boolean readMessage(String userName, long messageId) {
