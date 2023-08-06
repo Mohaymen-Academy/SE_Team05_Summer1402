@@ -1,11 +1,9 @@
 package ir.shelmossenger;
 
-import ir.shelmossenger.model.ChatType;
-import ir.shelmossenger.model.Message;
-import ir.shelmossenger.model.MessageType;
-import ir.shelmossenger.model.User;
+import ir.shelmossenger.model.*;
 import ir.shelmossenger.repositories.ChatRepo;
 import ir.shelmossenger.repositories.MessageRepo;
+import ir.shelmossenger.repositories.PermissionRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
 import java.sql.SQLException;
@@ -25,7 +23,8 @@ public class Main {
 //        getNumberOfMessagesOfUSer();
 //        readMessage();
 //        getNumberOfViewsOfMessage();
-        getMessagesOfUser();
+//        getMessagesOfUser();
+        addPermissionToUserChat();
     }
 
     private static void signup() {
@@ -140,5 +139,13 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getMessagesOfUser(username));
+    }
+
+    private static void addPermissionToUserChat(){
+        Permission permission = Permission.ADMIN;
+        long userChatId = 10;
+
+        PermissionRepo permissionRepo = new PermissionRepo();
+        System.out.println(permissionRepo.addPermissionToUserChat(permission, userChatId));
     }
 }
