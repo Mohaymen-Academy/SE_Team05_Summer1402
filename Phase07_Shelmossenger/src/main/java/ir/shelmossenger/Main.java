@@ -13,6 +13,7 @@ public class Main {
 //        login();
 //        deleteAccount();
 //        changeBio();
+        getNumberOfRelationshipsOfUser();
 //        createChat();
 //        addUserToChat();
 //        sendMessage();
@@ -24,33 +25,31 @@ public class Main {
 //        getNumberOfViewsOfMessage();
 //        getMessagesOfUser();
 //        addPermissionToUserChat();
-//        getNumberOfRelationshipsOfUser();
     }
 
     private static void signup() {
         UserRepo userRepo = new UserRepo();
         User user = new User();
-        user.setId(100L);
-        user.setFullName("hamid");
-        user.setUserName("hamid");
+        user.setFullName("hami");
+        user.setUserName("hami");
         user.setPassword("h123");
-        user.setEmail("hamid@gmail.com");
-        user.setPhoneNumber("1319123457780");
+        user.setEmail("hami@gmail.com");
+        user.setPhoneNumber("01319123457780");
 //        user.setBio("one thing");
 
         System.out.println(userRepo.signup(user));
     }
 
     private static void login() {
-        String username = "karen";
-        String password = "k123";
+        String username = "hamid";
+        String password = "h123";
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.login(username, password));
     }
 
     private static void deleteAccount() {
-        String username = "ham";
+        String username = "ali698";
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.deleteAccount(username));
@@ -64,6 +63,13 @@ public class Main {
         System.out.println(userRepo.changeBio(username, bio));
     }
 
+    private static void getNumberOfRelationshipsOfUser() {
+        String username = "hamid";
+
+        UserRepo userRepo = new UserRepo();
+        System.out.println(userRepo.getNumberOfRelationshipsOfUser(username));
+    }
+
     private static void createChat() {
         String title = "channel_test";
         String link = "cht";
@@ -74,7 +80,7 @@ public class Main {
     }
 
     private static void addUserToChat() {
-        String username = "hamid";
+        String username = "hami";
         long chatID = 1;
 
         ChatRepo chatRepo = new ChatRepo();
@@ -148,12 +154,5 @@ public class Main {
 
         PermissionRepo permissionRepo = new PermissionRepo();
         System.out.println(permissionRepo.addPermissionToUserChat(permission, userChatId));
-    }
-
-    private static void getNumberOfRelationshipsOfUser() {
-        String username = "sara";
-
-        UserRepo userRepo = new UserRepo();
-        System.out.println(userRepo.getNumberOfRelationshipsOfUser(username));
     }
 }
