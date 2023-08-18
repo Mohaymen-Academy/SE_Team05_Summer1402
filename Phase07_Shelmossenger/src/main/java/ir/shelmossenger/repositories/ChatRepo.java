@@ -3,6 +3,7 @@ package ir.shelmossenger.repositories;
 import ir.shelmossenger.model.Chat;
 import ir.shelmossenger.model.ChatType;
 import ir.shelmossenger.model.Permission;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,11 +27,11 @@ public class ChatRepo {
             try (PreparedStatement stmt = connection.prepareStatement(
                     """
                             insert into chats (title, link, chat_type)\r
-                            values (?,?,?);""")) {
+                            values (?, ?, (Select id from chat_types where type_name = ?));""")) {
 
                 stmt.setString(1, chat.getTitle());
                 stmt.setString(2, chat.getLink());
-                stmt.setLong(3, chat.getChatType().getId());
+                stmt.setString(3, chat.getChatType().getTypeName());
 
                 int numberOfAddedRows = stmt.executeUpdate();
 

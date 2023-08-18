@@ -106,7 +106,7 @@ public class MessageRepo {
                         Message message = new Message();
                         message.setId(rs.getLong("id"));
                         message.setData(rs.getString("data"));
-                        message.setMessageType(MessageType.getById((int) rs.getLong("message_type")));
+                        message.setMessageType(MessageType.getById((int) rs.getLong("message_type") - 1));
                         if (rs.getTimestamp("sent_at") != null)
                             message.setSentAt(rs.getTimestamp("sent_at").toInstant());
                         if (rs.getTimestamp("edited_at") != null)

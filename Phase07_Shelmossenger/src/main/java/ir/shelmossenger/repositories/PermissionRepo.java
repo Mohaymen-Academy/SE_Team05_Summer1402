@@ -3,6 +3,7 @@ package ir.shelmossenger.repositories;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import ir.shelmossenger.model.Permission;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
@@ -15,10 +16,10 @@ public class PermissionRepo {
             try (PreparedStatement stmt = connection.prepareStatement(
                     """
                             insert into user_chat_permission (user_chat_id, permission_id)\r
-                            values (?, ?);""")) {
+                            values (?, (Select id from permissions where title = ?));""")) {
 
                 stmt.setLong(1, userChatId);
-                stmt.setLong(2, permission.getId());
+                stmt.setString(2, permission.getTitle());
 
                 int numberOfAddedRows;
                 try {

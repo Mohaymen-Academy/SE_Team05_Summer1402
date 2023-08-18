@@ -1,9 +1,13 @@
 package ir.shelmossenger.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.Instant;
-import lombok.Data;
 
-@Data
+@NoArgsConstructor
+@Setter
+@Getter
 public class User {
 
     private Long id;

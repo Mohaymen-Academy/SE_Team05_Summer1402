@@ -30,7 +30,7 @@ public class Main {
     private static void signup() {
         UserRepo userRepo = new UserRepo();
         User user = new User();
-//        user.setId(100L);
+        user.setId(100L);
         user.setFullName("hamid");
         user.setUserName("hamid");
         user.setPassword("h123");
@@ -75,7 +75,7 @@ public class Main {
 
     private static void addUserToChat() {
         String username = "hamid";
-        long chatID = 3;
+        long chatID = 1;
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.addUserToChat(username, chatID));
@@ -85,8 +85,8 @@ public class Main {
         Message message = new Message();
         message.setMessageType(MessageType.MESSAGE);
         message.setData("hello");
-        message.setSenderId(5L);
-        message.setChatId(3L);
+        message.setSenderId(3L);
+        message.setChatId(1L);
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.sendMessage(message));
@@ -135,10 +135,11 @@ public class Main {
     }
 
     private static void getMessagesOfUser() {
-        String username = "sara";
+        String username = "hamid";
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getMessagesOfUser(username));
+        System.out.println(messageRepo.getMessagesOfUser(username).get(0).getMessageType());
     }
 
     private static void addPermissionToUserChat() {

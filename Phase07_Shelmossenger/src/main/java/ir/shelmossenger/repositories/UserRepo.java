@@ -1,6 +1,8 @@
 package ir.shelmossenger.repositories;
 
 import ir.shelmossenger.model.User;
+import ir.shelmossenger.services.HashGenerator;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +22,13 @@ public class UserRepo {
 
                 stmt.setString(1, user.getFullName());
                 stmt.setString(2, user.getUserName());
-//                stmt.setString(3, HashGenerator.Hash(user.getPassword()));
-                stmt.setString(3, user.getPassword());
+                stmt.setString(3, HashGenerator.Hash(user.getPassword()));
+//                stmt.setString(3, user.getPassword());
                 stmt.setString(4, user.getEmail());
                 stmt.setString(5, user.getPhoneNumber());
                 stmt.setString(6, user.getBio());
 
                 int numberOfAddedRows = stmt.executeUpdate();
-                // Execute the query, and store the number of changed rows
                 return numberOfAddedRows > 0;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
