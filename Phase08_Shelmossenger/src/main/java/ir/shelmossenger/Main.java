@@ -2,8 +2,10 @@ package ir.shelmossenger;
 
 import ir.shelmossenger.model.Chat;
 import ir.shelmossenger.model.ChatType;
+import ir.shelmossenger.model.Permission;
 import ir.shelmossenger.model.User;
 import ir.shelmossenger.repositories.ChatRepo;
+import ir.shelmossenger.repositories.PermissionRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
 public class Main {
@@ -14,7 +16,8 @@ public class Main {
 //        deleteAccount();
 //        changeBio();
 //        addChat();
-        addUserToChat();
+//        addUserToChat();
+        addPermissionToUserChat();
     }
 
     private static void signup() {
@@ -69,5 +72,13 @@ public class Main {
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.addUserToChat(username, chatId));
+    }
+
+    private static void addPermissionToUserChat() {
+        Permission permission = Permission.MESSAGE;
+        long userChatId = 2;
+
+        PermissionRepo permissionRepo = new PermissionRepo();
+        System.out.println(permissionRepo.addPermissionToUserChat(permission, userChatId));
     }
 }

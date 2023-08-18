@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user_chat_permission")
+@Table(name = "user_chat_permission", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_chat_id", "permission"})})
 @NoArgsConstructor
 @Setter
 @Getter
