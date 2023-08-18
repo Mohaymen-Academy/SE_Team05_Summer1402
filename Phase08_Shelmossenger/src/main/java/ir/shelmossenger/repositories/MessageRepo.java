@@ -1,44 +1,45 @@
 package ir.shelmossenger.repositories;
 
+import ir.shelmossenger.context.DbContext;
 import ir.shelmossenger.model.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
 
 public class MessageRepo {
 
-    public boolean sendMessage(String messageContent, String messageType, String senderUserName, long chatId)
-            throws SQLException {
-        Chat chat = new Chat() {{
-            setId(chatId);
-        }};
-        User user = new User() {{
-            setUsername(senderUserName);
-        }};
-        Message message = new Message() {{
-            setMessageType(MessageType.getByTitle(messageType));
-            setData(messageContent);
-            setChat(chat);
-            setSender(user);
-        }};
-        Session session = getConnection();
-        session.beginTransaction();
-        session.persist(message);
-        session.getTransaction().commit();
-        session.close();
-        return message.getId() != 0;
+    public boolean sendMessage(String messageContent, MessageType messageType, String senderUserName, long chatId) {
+        try (Session session = DbContext.getConnection()) {
+            Transaction transaction = session.beginTransaction();
+
+            CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, senderUserName);
+            User user = session.createQuery(userByUsernameQuery).getSingleResult();
+
+            CriteriaQuery<UserChat> userChatByUerIdAndChatId = getUserChatByUerIdAndChatId(session, user.getId(), chatId);
+            UserChat userChat = session.createQuery(userChatByUerIdAndChatId).getSingleResult();
+
+            Chat chat = userChat.getChat();
+
+            Message message = new Message();
+            message.setChat(chat);
+            message.setSender(user);
+            message.setData(messageContent);
+            message.setMessageType(messageType);
+
+            session.persist(message);
+            transaction.commit();
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
     public void editMessage(String newMessage, long messageId)
@@ -168,5 +169,20 @@ public class MessageRepo {
         session.close();
 
         return true;
+    }
+
+    private CriteriaQuery<UserChat> getUserChatByUerIdAndChatId(Session session, long userId, long chatId) {
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<UserChat> subQuery = cb.createQuery(UserChat.class);
+        Root<UserChat> userChatRoot = subQuery.from(UserChat.class);
+        subQuery.select(userChatRoot)
+                .where(cb.equal(userChatRoot.get("user"), new User() {{
+                    setId(userId);
+                }}))
+                .where(cb.equal(userChatRoot.get("chat"), new Chat() {{
+                    setId(chatId);
+                }}));
+
+        return subQuery;
     }
 }

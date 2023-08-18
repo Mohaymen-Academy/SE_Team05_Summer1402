@@ -1,10 +1,8 @@
 package ir.shelmossenger;
 
-import ir.shelmossenger.model.Chat;
-import ir.shelmossenger.model.ChatType;
-import ir.shelmossenger.model.Permission;
-import ir.shelmossenger.model.User;
+import ir.shelmossenger.model.*;
 import ir.shelmossenger.repositories.ChatRepo;
+import ir.shelmossenger.repositories.MessageRepo;
 import ir.shelmossenger.repositories.PermissionRepo;
 import ir.shelmossenger.repositories.UserRepo;
 
@@ -17,7 +15,8 @@ public class Main {
 //        changeBio();
 //        addChat();
 //        addUserToChat();
-        addPermissionToUserChat();
+//        addPermissionToUserChat();
+        sendMessage();
     }
 
     private static void signup() {
@@ -80,5 +79,16 @@ public class Main {
 
         PermissionRepo permissionRepo = new PermissionRepo();
         System.out.println(permissionRepo.addPermissionToUserChat(permission, userChatId));
+    }
+
+    private static void sendMessage() {
+        String data = "hello";
+        MessageType messageType = MessageType.MESSAGE;
+        String senderUsername = "hamid2";
+        long chatId = 5;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.sendMessage(data, messageType, senderUsername, chatId));
+
     }
 }
