@@ -20,7 +20,8 @@ public class Main {
 //        editMessage();
 //        deleteMessage();
 //        getMessagesOfUser();
-        getNumberOfMessagesOfUser();
+//        getNumberOfMessagesOfUser();
+        getAvgNumberOfMessages();
     }
 
     private static void signup() {
@@ -89,7 +90,7 @@ public class Main {
         String data = "howdy";
         MessageType messageType = MessageType.MESSAGE;
         String senderUsername = "hamid2";
-        long chatId = 1;
+        long chatId = 3;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.sendMessage(data, messageType, senderUsername, chatId));
@@ -122,5 +123,10 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getNumberOfMessagesOfUser(username));
+    }
+
+    private static void getAvgNumberOfMessages(){
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getAvgNumberOfMessages());
     }
 }

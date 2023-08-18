@@ -111,25 +111,26 @@ public class MessageRepo {
         }
     }
 
-    public double getAvgNumberOfMessages()
-            throws SQLException {
-        Session session = getConnection();
+    public double getAvgNumberOfMessages() {
+        try (Session session = DbContext.getConnection()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
 
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Long> subquery = cb.createQuery(Long.class);
-        Root<User> userRoot = subquery.from(User.class);
-        subquery.select(cb.count(userRoot))
-                .where(cb.isNull(userRoot.get("deletedAt")));
-        Long countUsers = session.createQuery(subquery).getSingleResult();
+            CriteriaQuery<Long> subQueryUserCount = cb.createQuery(Long.class);
+            Root<User> userRoot = subQueryUserCount.from(User.class);
+            subQueryUserCount.select(cb.count(userRoot))
+                    .where(cb.isNull(userRoot.get("deletedAt")));
+            Long countUsers = session.createQuery(subQueryUserCount).getSingleResult();
 
-        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
-        Root<Message> messageRoot = criteria.from(Message.class);
-        criteria.select(cb.count(messageRoot))
-                .where(cb.isNull(messageRoot.get("deletedAt")));
+            CriteriaQuery<Long> subQueryMessageCount = cb.createQuery(Long.class);
+            Root<Message> messageRoot = subQueryMessageCount.from(Message.class);
+            subQueryMessageCount.select(cb.count(messageRoot))
+                    .where(cb.isNull(messageRoot.get("deletedAt")));
+            Long countMessages = session.createQuery(subQueryMessageCount).getSingleResult();
 
-        Long countMessages = session.createQuery(criteria).getSingleResult();
-        session.close();
-        return (double) countMessages / countUsers;
+            return (double) countMessages / countUsers;
+        } catch (Exception ignored) {
+            return -1;
+        }
     }
 
     public long getNumberOfViewsOfMessage(long messageId)
