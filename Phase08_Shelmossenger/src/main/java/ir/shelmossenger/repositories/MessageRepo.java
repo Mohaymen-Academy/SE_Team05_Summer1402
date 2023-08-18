@@ -59,7 +59,6 @@ public class MessageRepo {
         }
     }
 
-    // TODO: 8/18/2023
     public boolean deleteMessage(long messageId) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();

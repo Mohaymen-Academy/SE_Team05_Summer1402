@@ -18,7 +18,8 @@ public class Main {
 //        addPermissionToUserChat();
 //        sendMessage();
 //        editMessage();
-        getMessagesOfUser();
+//        deleteMessage();
+//        getMessagesOfUser();
     }
 
     private static void signup() {
@@ -99,6 +100,13 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.editMessage(newMessage, messageId));
+    }
+
+    private static void deleteMessage(){
+        long messageId = 2;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.deleteMessage(messageId));
     }
 
     private static void getMessagesOfUser(){
