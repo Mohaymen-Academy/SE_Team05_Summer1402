@@ -42,15 +42,20 @@ public class MessageRepo {
         }
     }
 
-    public void editMessage(String newMessage, long messageId)
-            throws SQLException {
-        Session session = getConnection();
-        session.beginTransaction();
-        var message = session.get(Message.class, messageId);
-        message.setData(newMessage);
-        session.persist(message);
-        session.getTransaction().commit();
-        session.close();
+    public boolean editMessage(String newMessage, long messageId) {
+        try (Session session = DbContext.getConnection()) {
+            Transaction transaction = session.beginTransaction();
+
+            Message message = session.get(Message.class, messageId);
+            message.setData(newMessage);
+            message.setEditedAt(Instant.now());
+
+            session.persist(message);
+            transaction.commit();
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
     public void deleteMessage(long messageId)
