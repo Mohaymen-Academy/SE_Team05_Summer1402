@@ -19,7 +19,7 @@ public class Main {
 //        addPermissionToUserChat();
 //        sendMessage();
 //        editMessage();
-        deleteMessage();
+//        deleteMessage();
 //        getMessagesOfUser();
 //        getNumberOfMessagesOfUSer();
 //        averageNumberOfMessages();
