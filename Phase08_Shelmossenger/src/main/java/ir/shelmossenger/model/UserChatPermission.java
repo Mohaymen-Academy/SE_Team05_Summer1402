@@ -20,7 +20,6 @@ public class UserChatPermission {
     @JoinColumn(name = "user_chat_id", nullable = false)
     private UserChat userChat;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "permission_id")
+    @Enumerated(EnumType.ORDINAL)
     private Permission permission;
 }

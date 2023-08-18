@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.Instant;
 
 @Entity
@@ -21,6 +23,7 @@ public class ProfileImage {
     @Column(name = "profile_image_url", nullable = false)
     private String profileImageUrl;
 
-    @Column(name = "created_at", columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    @CreationTimestamp
     private Instant createdAt;
 }

@@ -6,8 +6,8 @@ import ir.shelmossenger.repositories.UserRepo;
 public class Main {
 
     public static void main(String[] args) {
-//        signup();
-        login();
+        signup();
+//        login();
 //        deleteAccount();
 //        changeBio();
     }
@@ -26,7 +26,7 @@ public class Main {
     }
 
     private static void login(){
-        String username = "amir12";
+        String username = "amir123";
         String password = "a123";
 
         UserRepo userRepo = new UserRepo();

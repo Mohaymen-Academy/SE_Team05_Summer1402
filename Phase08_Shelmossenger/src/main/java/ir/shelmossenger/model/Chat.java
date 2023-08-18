@@ -3,7 +3,10 @@ package ir.shelmossenger.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.Instant;
 
 @Entity
@@ -21,9 +24,11 @@ public class Chat {
 
     private String link;
 
+    @Enumerated(EnumType.ORDINAL)
     private ChatType chatType;
 
-    @Column(name = "created_at", columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
+    @CreationTimestamp
     private Instant createdAt;
 
     @Column(name = "deleted_at")

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.Instant;
 
 @Entity
@@ -19,9 +21,11 @@ public class Message {
 
     private String data;
 
+    @Enumerated(EnumType.ORDINAL)
     private MessageType messageType;
 
-    @Column(name = "sent_at", columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "sent_at")
+    @CreationTimestamp
     private Instant sentAt;
 
     @Column(name = "edited_at")
