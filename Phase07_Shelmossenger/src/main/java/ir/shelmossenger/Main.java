@@ -13,7 +13,7 @@ public class Main {
 //        login();
 //        deleteAccount();
 //        changeBio();
-        getNumberOfRelationshipsOfUser();
+//        getNumberOfRelationshipsOfUser();
 //        createChat();
 //        addUserToChat();
 //        sendMessage();
@@ -72,7 +72,7 @@ public class Main {
 
     private static void createChat() {
         String title = "channel_test";
-        String link = "cht";
+        String link = "chnt";
         ChatType chatType = ChatType.CHANNEL;
 
         ChatRepo chatRepo = new ChatRepo();
@@ -80,7 +80,7 @@ public class Main {
     }
 
     private static void addUserToChat() {
-        String username = "hami";
+        String username = "sara";
         long chatID = 1;
 
         ChatRepo chatRepo = new ChatRepo();
