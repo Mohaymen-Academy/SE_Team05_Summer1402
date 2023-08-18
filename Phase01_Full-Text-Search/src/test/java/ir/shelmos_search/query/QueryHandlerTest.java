@@ -1,7 +1,10 @@
-package ir.shelmos_search.query;
+package query;
 
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.LanguageProcessor;
+import ir.shelmos_search.query.Query;
+import ir.shelmos_search.query.QueryHandler;
+import ir.shelmos_search.query.QueryTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

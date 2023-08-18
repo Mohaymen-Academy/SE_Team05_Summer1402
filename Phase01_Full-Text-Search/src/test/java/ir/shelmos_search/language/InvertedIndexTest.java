@@ -1,5 +1,7 @@
-package ir.shelmos_search.language;
+package language;
 
+import ir.shelmos_search.language.InvertedIndex;
+import ir.shelmos_search.language.LanguageProcessor;
 import ir.shelmos_search.model.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
