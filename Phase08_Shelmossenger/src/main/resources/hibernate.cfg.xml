@@ -22,12 +22,12 @@
 <!--        <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="ir.shelmossenger.model.User"/>
-        <mapping class="ir.shelmossenger.model.Permission"/>
-        <mapping class="ir.shelmossenger.model.ChatType"/>
+<!--        <mapping class="ir.shelmossenger.model.Permission"/>-->
+<!--        <mapping class="ir.shelmossenger.model.ChatType"/>-->
         <mapping class="ir.shelmossenger.model.Chat"/>
         <mapping class="ir.shelmossenger.model.UserChat"/>
         <mapping class="ir.shelmossenger.model.UserChatPermission"/>
-        <mapping class="ir.shelmossenger.model.MessageType"/>
+<!--        <mapping class="ir.shelmossenger.model.MessageType"/>-->
         <mapping class="ir.shelmossenger.model.Message"/>
         <mapping class="ir.shelmossenger.model.ReadMessage"/>
         <mapping class="ir.shelmossenger.model.ProfileImage"/>

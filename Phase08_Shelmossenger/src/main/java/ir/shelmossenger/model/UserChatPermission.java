@@ -1,11 +1,15 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @Entity
 @Table(name = "user_chat_permission")
+@NoArgsConstructor
+@Setter
+@Getter
 public class UserChatPermission {
 
     @Id
@@ -13,7 +17,7 @@ public class UserChatPermission {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_chat_id")
+    @JoinColumn(name = "user_chat_id", nullable = false)
     private UserChat userChat;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

@@ -1,11 +1,16 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @Entity
-@Table(name = "user_chat")
+@Table(name = "user_chat", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "chat_id"})})
+@NoArgsConstructor
+@Setter
+@Getter
 public class UserChat {
 
     @Id
@@ -13,11 +18,10 @@ public class UserChat {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
-
 }

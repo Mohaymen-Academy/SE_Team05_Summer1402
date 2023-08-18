@@ -1,13 +1,16 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.Instant;
 
-@Data
 @Entity
 @Table(name = "read_message")
+@NoArgsConstructor
+@Setter
+@Getter
 public class ReadMessage {
 
     @Id
@@ -15,15 +18,13 @@ public class ReadMessage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "message_id")
+    @JoinColumn(name = "message_id", unique = true)
     private Message message;
 
-    @Column(name = "read_at")
+    @Column(name = "read_at", nullable = false)
     private Instant readAt;
-
-    // getters and setters
 }

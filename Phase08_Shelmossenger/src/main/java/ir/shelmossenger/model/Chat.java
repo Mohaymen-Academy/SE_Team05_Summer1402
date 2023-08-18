@@ -21,11 +21,9 @@ public class Chat {
 
     private String link;
 
-    @ManyToOne
-    @JoinColumn(name = "chat_type")
     private ChatType chatType;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
     private Instant createdAt;
 
     @Column(name = "deleted_at")

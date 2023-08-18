@@ -1,14 +1,16 @@
 package ir.shelmossenger.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.Instant;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NonNull;
-
-@Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@Setter
+@Getter
 public class User {
 
     @Id
@@ -24,10 +26,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
     private String bio;
