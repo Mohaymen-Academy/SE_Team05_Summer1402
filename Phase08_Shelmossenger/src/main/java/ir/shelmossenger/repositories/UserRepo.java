@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import java.time.Instant;
 
 public class UserRepo {
@@ -66,26 +67,27 @@ public class UserRepo {
     }
 
     public long getNumberOfRelationshipsOfUser(String userName) {
-        Session session = DbContext.getConnection();
-        session.beginTransaction();
-        String sql = "with x_username as (select :userName)\r\n" + //
-                "select count(u.*) as user_count\r\n" + //
-                "from users u\r\n" + //
-                "         inner join user_chat uc on u.id = uc.user_id\r\n" + //
-                "         inner join chats c on c.id = uc.chat_id\r\n" + //
-                "where c.id in (select uxc.chat_id\r\n" + //
-                "               from users ux\r\n" + //
-                "                        inner join user_chat uxc on ux.id = uxc.user_id\r\n" + //
-                "               where ux.user_name = (select * from x_username)\r\n" + //
-                ")  and c.deleted_at is null\r\n" + //
-                "  and u.deleted_at is null\r\n" + //
-                "  and u.user_name <>  (select * from x_username);";
-        var query = session.createNativeQuery(sql);
-        query.setParameter("userName", userName);
-        long count = (long) query.getSingleResult();
-        session.getTransaction().commit();
-        session.close();
-        return count;
+        try (Session session = DbContext.getConnection()) {
+            String sql = """
+                    WITH x_username AS (SELECT :userName)
+                    SELECT COUNT(u.*) AS user_count
+                    FROM users u
+                             INNER JOIN user_chat uc ON u.id = uc.user_id
+                             INNER JOIN chats c ON c.id = uc.chat_id
+                    WHERE c.id IN (SELECT uxc.chat_id
+                                   FROM users ux
+                                            INNER JOIN user_chat uxc ON ux.id = uxc.user_id
+                                   WHERE ux.user_name = (SELECT * FROM x_username))
+                    AND c.deleted_at IS NULL
+                    AND u.deleted_at IS NULL
+                    AND u.user_name <> (SELECT * FROM x_username);""";
+
+            NativeQuery<Long> nativeQuery = session.createNativeQuery(sql, Long.class);
+            nativeQuery.setParameter("userName", userName);
+            return nativeQuery.getSingleResult();
+        } catch (Exception ignored) {
+            return -1;
+        }
     }
 
     static CriteriaQuery<User> getUserByUsernameQuery(Session session, String userName) {

@@ -13,6 +13,7 @@ public class Main {
 //        login();
 //        deleteAccount();
 //        changeBio();
+//        getNumberOfRelationshipsOfUser();
 //        addChat();
 //        addUserToChat();
 //        addPermissionToUserChat();
@@ -23,7 +24,7 @@ public class Main {
 //        getNumberOfMessagesOfUser();
 //        getAvgNumberOfMessages();
 //        readMessage();
-        getNumberOfViewsOfMessage();
+//        getNumberOfViewsOfMessage();
     }
 
     private static void signup() {
@@ -60,6 +61,13 @@ public class Main {
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.changeBio(username, bio));
+    }
+
+    private static void getNumberOfRelationshipsOfUser() {
+        String username = "hamid2";
+
+        UserRepo userRepo = new UserRepo();
+        System.out.println(userRepo.getNumberOfRelationshipsOfUser(username));
     }
 
     private static void addChat() {
