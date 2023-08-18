@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.Instant;
 
 @Entity
@@ -27,7 +26,7 @@ public class ReadMessage {
     @JoinColumn(name = "message_id", nullable = false)
     private Message message;
 
-    @Column(name = "read_at", nullable = false)
+    @Column(name = "read_at")
     @CreationTimestamp
     private Instant readAt;
 }
