@@ -2,21 +2,11 @@ package ir.shelmossenger.repositories;
 
 import ir.shelmossenger.context.DbContext;
 import ir.shelmossenger.model.Chat;
-import ir.shelmossenger.model.ChatType;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ChatRepo {
-
-    public boolean createChat(String title, String link, ChatType chatType) {
-        Chat chat = new Chat();
-        chat.setTitle(title);
-        chat.setLink(link);
-        chat.setChatType(chatType);
-        return addChat(chat);
-    }
 
     public boolean addChat(Chat chat) {
         try (Connection connection = DbContext.getConnection()) {

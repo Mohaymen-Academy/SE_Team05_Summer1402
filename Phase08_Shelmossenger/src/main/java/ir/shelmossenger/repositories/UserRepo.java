@@ -88,7 +88,7 @@ public class UserRepo {
         return count;
     }
 
-    private CriteriaQuery<User> getUserByUsernameQuery(Session session, String userName) {
+    static CriteriaQuery<User> getUserByUsernameQuery(Session session, String userName) {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<User> subQuery = cb.createQuery(User.class);
         Root<User> userRoot = subQuery.from(User.class);

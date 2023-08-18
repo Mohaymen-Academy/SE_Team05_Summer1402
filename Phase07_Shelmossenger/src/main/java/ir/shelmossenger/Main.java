@@ -71,12 +71,13 @@ public class Main {
     }
 
     private static void createChat() {
-        String title = "channel_test";
-        String link = "chnt";
-        ChatType chatType = ChatType.CHANNEL;
+        Chat chat = new Chat();
+        chat.setTitle("channel_test");
+        chat.setLink("chnt");
+        chat.setChatType(ChatType.CHANNEL);
 
         ChatRepo chatRepo = new ChatRepo();
-        System.out.println(chatRepo.createChat(title, link, chatType));
+        System.out.println(chatRepo.addChat(chat));
     }
 
     private static void addUserToChat() {
