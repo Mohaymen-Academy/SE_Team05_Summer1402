@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         ShelmosSearch shelmosSearch = new ShelmosSearch()
-                .setStopWords(new String[] { ",", "." })
+                .setStopWords(new String[]{",", "."})
                 .setStopWordsByFile("./src/main/resources/stopWords.txt")
                 .setTokenizer(new EdgeNGramTokenizer(2, 10))
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/");

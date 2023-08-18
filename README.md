@@ -6,3 +6,5 @@
 ### [Phase 01-05: Full-Text Search](https://github.com/Mohaymen-Academy/SE_Team05_Summer1402/tree/main/Phase01_Full-Text-Search)
 
 ### [Phase 06: Shelmossenger](https://github.com/Mohaymen-Academy/SE_Team05_Summer1402/tree/main/Phase06_Shelmossenger)
+
+### [Phase 07: Shelmossenger](https://github.com/Mohaymen-Academy/SE_Team05_Summer1402/tree/main/Phase07_Shelmossenger)

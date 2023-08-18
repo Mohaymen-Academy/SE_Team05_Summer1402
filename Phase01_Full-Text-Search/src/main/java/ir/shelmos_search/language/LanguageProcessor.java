@@ -7,8 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Setter @Getter
+@Setter
+@Getter
 public class LanguageProcessor {
+
     private Normalizer normalizer;
     private Tokenizer tokenizer;
     private String[] stopWords;

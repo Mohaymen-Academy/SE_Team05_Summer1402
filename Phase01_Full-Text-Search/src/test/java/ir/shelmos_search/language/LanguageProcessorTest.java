@@ -1,5 +1,8 @@
-package ir.shelmos_search.language;
+package language;
 
+import ir.shelmos_search.language.LanguageProcessor;
+import ir.shelmos_search.language.Normalizer;
+import ir.shelmos_search.language.Tokenizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,11 +50,10 @@ class LanguageProcessorTest {
     }
 
     @Test
-    void setStopwords_textContainsI_resultShouldNotContainI() {
+    void setStopWords_textContainsI_resultShouldNotContainI() {
         String text = "Ali said hi to Jimmy.";
         languageProcessor.setStopWords(new String[]{"i"});
         String actual = languageProcessor.filterText(text);
-
         Assertions.assertEquals("Al  sa d h  to J mmy.", actual);
     }
 

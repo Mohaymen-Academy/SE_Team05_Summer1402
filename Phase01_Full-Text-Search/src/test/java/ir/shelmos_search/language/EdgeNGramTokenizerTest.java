@@ -1,5 +1,6 @@
-package ir.shelmos_search.language;
+package language;
 
+import ir.shelmos_search.language.EdgeNGramTokenizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
