@@ -1,20 +1,24 @@
 # About
 
-This project is a database for a messenger application
+This project is a database for a messenger application with some of its useful methods using pure SQL (Phase06), JDBC (Phase07), or Hibernate (Phase08).
 
 # Features
 
-- users with profile images
-- chats include PV, group and channel
-- read message datetime per person
+- Users with profile images and bios
+- The ability to delete account
+- Chats include PV, group and channel
+- Different permissions for sending messages
+- The ability to edit and delete messages
+- Read message datetime per person
 
 # Usage
 
-1. run 1-create_database.sql script for creating database
-2. run 2-create_tables.sql script for creating tables
-3. run 3-populate_database.sql script for populating types tables
-4. you can see some sample queries in 4-queries.sql file
+You can jump to step 4 in phase08.
+1. Run `1-create_database.sql` script for creating database.
+2. Run `2-create_tables.sql` script for creating tables.
+3. Run `3-populate_database.sql` script for populating types tables.
+4. You can use methods ready in Main class for changing the data in database.
 
-# Diagram
+# Schema
 
 ![Shelmossenger diagram](./shelmossenger_diagram.png)

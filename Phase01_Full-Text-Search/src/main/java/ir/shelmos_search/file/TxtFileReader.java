@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-public class TXTFileReader implements FileReader {
+public class TxtFileReader implements FileReader {
 
     @Override
     public HashMap<String, String> getFiles(String path) {

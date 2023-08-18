@@ -5,10 +5,9 @@
 
 <hibernate-configuration>
     <session-factory>
-
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/shelmossenger</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Shelmossenger</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">1234</property>
 
@@ -19,17 +18,13 @@
         <property name="show_sql">true</property>
 
         <!-- Update database on startup -->
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-        <mapping class="ir.shelmossenger.model.Permission" />
-        <mapping class="ir.shelmossenger.model.User" />
-        <mapping class="ir.shelmossenger.model.ChatType" />
-        <mapping class="ir.shelmossenger.model.Chat" />
-        <mapping class="ir.shelmossenger.model.UserChat" />
-        <mapping class="ir.shelmossenger.model.UserChatPermission" />
-        <mapping class="ir.shelmossenger.model.MessageType" />
-        <mapping class="ir.shelmossenger.model.Message" />
-        <mapping class="ir.shelmossenger.model.ReadMessage" />
-        <mapping class="ir.shelmossenger.model.ProfileImage" />
-
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <mapping class="ir.shelmossenger.model.User"/>
+        <mapping class="ir.shelmossenger.model.Chat"/>
+        <mapping class="ir.shelmossenger.model.UserChat"/>
+        <mapping class="ir.shelmossenger.model.UserChatPermission"/>
+        <mapping class="ir.shelmossenger.model.Message"/>
+        <mapping class="ir.shelmossenger.model.ReadMessage"/>
+        <mapping class="ir.shelmossenger.model.ProfileImage"/>
     </session-factory>
 </hibernate-configuration>

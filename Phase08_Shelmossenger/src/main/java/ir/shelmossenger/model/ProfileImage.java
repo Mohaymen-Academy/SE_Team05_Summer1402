@@ -1,25 +1,29 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
-@Data
 @Entity
 @Table(name = "profile_images")
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProfileImage {
 
     @Id
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "profile_image_url")
+    @Column(name = "profile_image_url", nullable = false)
     private String profileImageUrl;
 
     @Column(name = "created_at")
+    @CreationTimestamp
     private Instant createdAt;
-
-    // getters and setters
 }

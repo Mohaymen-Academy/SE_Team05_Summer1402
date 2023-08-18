@@ -1,13 +1,17 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import java.time.Instant;
 
-@Data
 @Entity
 @Table(name = "read_message")
+@NoArgsConstructor
+@Setter
+@Getter
 public class ReadMessage {
 
     @Id
@@ -15,15 +19,14 @@ public class ReadMessage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "message_id")
+    @JoinColumn(name = "message_id", nullable = false)
     private Message message;
 
     @Column(name = "read_at")
+    @CreationTimestamp
     private Instant readAt;
-
-    // getters and setters
 }

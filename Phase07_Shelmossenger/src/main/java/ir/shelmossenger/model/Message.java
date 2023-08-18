@@ -1,10 +1,13 @@
 package ir.shelmossenger.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.Instant;
 
-import lombok.Data;
-
-@Data
+@NoArgsConstructor
+@Setter
+@Getter
 public class Message {
 
     private Long id;
@@ -20,7 +23,8 @@ public class Message {
     private Instant deletedAt;
 
     private Long senderId;
-    private Long chatId;
-    private Long replyId;
 
+    private Long chatId;
+
+    private Long replyId;
 }

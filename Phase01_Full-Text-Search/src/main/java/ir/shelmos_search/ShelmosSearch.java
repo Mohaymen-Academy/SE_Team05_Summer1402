@@ -1,7 +1,7 @@
 package ir.shelmos_search;
 
 import ir.shelmos_search.file.FileReader;
-import ir.shelmos_search.file.TXTFileReader;
+import ir.shelmos_search.file.TxtFileReader;
 import ir.shelmos_search.language.InvertedIndex;
 import ir.shelmos_search.language.Normalizer;
 import ir.shelmos_search.language.Tokenizer;
@@ -22,7 +22,7 @@ public class ShelmosSearch {
     public ShelmosSearch() {
         invertedIndex = new InvertedIndex();
         queryHandler = new QueryHandler();
-        fileReader = new TXTFileReader();
+        fileReader = new TxtFileReader();
     }
 
     public List<String> search(String query) {

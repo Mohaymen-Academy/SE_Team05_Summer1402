@@ -1,72 +1,83 @@
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
-create table users
-(
-    id           serial primary key,
-    full_name    varchar(100),
-    user_name    varchar(100) not null unique,
-    password    varchar(100) not null,
-    email        varchar(100) not null unique,
-    phone_number varchar(20)  not null unique,
-    bio          text,
-    deleted_at timestamptz          default null
 
-);
-create table profile_images
+CREATE TABLE users
 (
-    user_id           serial primary key references users (id) on update cascade on delete cascade,
-    profile_image_url text        not null default '',
-    created_at        timestamptz not null default current_timestamp
+    id           SERIAL PRIMARY KEY,
+    full_name    VARCHAR(100),
+    user_name    VARCHAR(100) NOT NULL UNIQUE,
+    password     VARCHAR(100) NOT NULL,
+    email        VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(20)  NOT NULL UNIQUE,
+    bio          TEXT,
+    deleted_at   TIMESTAMP DEFAULT NULL
 );
-create table chat_types(
-    id    serial primary key,
-    type_name varchar(100) not null
-);
-create table chats
+
+CREATE TABLE profile_images
 (
-    id         serial primary key,
-    title text,
-    link text,
-    chat_type serial references chat_types(id),
-    created_at timestamptz not null default current_timestamp,
-    deleted_at timestamptz          default null
+    user_id           SERIAL PRIMARY KEY REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    profile_image_url TEXT        NOT NULL DEFAULT '',
+    created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-create table user_chat
+
+CREATE TABLE chat_types
 (
-    id      serial primary key,
-    user_id serial references users (id) on update cascade on delete cascade,
-    chat_id serial references chats (id) on update cascade on delete cascade
+    id        SERIAL PRIMARY KEY,
+    type_name VARCHAR(100) NOT NULL
 );
-create table permissions
+
+CREATE TABLE chats
 (
-    id    serial primary key,
-    title varchar(100) not null
+    id         SERIAL PRIMARY KEY,
+    title      TEXT,
+    link       TEXT,
+    chat_type  SERIAL REFERENCES chat_types (id),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP          DEFAULT NULL
 );
-create table user_chat_permission
+
+CREATE TABLE user_chat
 (
-    user_chat_id  serial references user_chat (id) on update cascade on delete cascade,
-    permission_id serial references permissions (id) on update cascade on delete cascade,
-    primary key (user_chat_id, permission_id)
+    id      SERIAL PRIMARY KEY,
+    user_id SERIAL REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    chat_id SERIAL REFERENCES chats (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
-create table message_types(
-    id    serial primary key,
-    type_name varchar(100) not null
-);
-create table messages
+
+CREATE TABLE permissions
 (
-    id serial primary key,
-    data       text not null,
-    message_type  serial references message_types(id) on update cascade on delete cascade,
-    sent_at  timestamptz default current_timestamp,
-    edited_at  timestamptz,
-    deleted_at timestamptz,
-    sender_id serial not null references users(id) on update cascade on delete cascade,
-    chat_id serial not null references chats(id) on update cascade on delete cascade,
-    reply_id int references messages(id)
+    id    SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL
 );
-create table read_message
+
+CREATE TABLE user_chat_permission
 (
-    user_id serial references users (id) on update cascade on delete cascade,
-    message_id serial references messages (id) on update cascade on delete cascade,
-    read_at timestamptz not null default current_timestamp
+    user_chat_id  SERIAL REFERENCES user_chat (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    permission_id SERIAL REFERENCES permissions (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (user_chat_id, permission_id)
+);
+
+CREATE TABLE message_types
+(
+    id        SERIAL PRIMARY KEY,
+    type_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE messages
+(
+    id           SERIAL PRIMARY KEY,
+    data         TEXT   NOT NULL,
+    message_type SERIAL REFERENCES message_types (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    sent_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edited_at    TIMESTAMP,
+    deleted_at   TIMESTAMP,
+    sender_id    SERIAL NOT NULL REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    chat_id      SERIAL NOT NULL REFERENCES chats (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    reply_id     int REFERENCES messages (id)
+);
+
+CREATE TABLE read_message
+(
+    user_id    SERIAL REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    message_id SERIAL REFERENCES messages (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    read_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

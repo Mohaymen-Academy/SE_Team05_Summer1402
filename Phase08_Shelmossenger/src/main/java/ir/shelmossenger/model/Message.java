@@ -1,13 +1,18 @@
 package ir.shelmossenger.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.Instant;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "messages")
+@NoArgsConstructor
+@Setter
+@Getter
 public class Message {
 
     @Id
@@ -16,11 +21,11 @@ public class Message {
 
     private String data;
 
-    @ManyToOne
-    @JoinColumn(name = "message_type")
+    @Enumerated(EnumType.ORDINAL)
     private MessageType messageType;
 
     @Column(name = "sent_at")
+    @CreationTimestamp
     private Instant sentAt;
 
     @Column(name = "edited_at")
@@ -30,16 +35,14 @@ public class Message {
     private Instant deletedAt;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
     @ManyToOne
     @JoinColumn(name = "reply_id")
     private Message repliedMessage;
-
-    // getters and setters
 }

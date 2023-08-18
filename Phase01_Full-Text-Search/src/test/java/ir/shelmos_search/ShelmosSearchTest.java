@@ -1,10 +1,8 @@
-package ir.shelmos_search;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
+import ir.shelmos_search.ShelmosSearch;
+import java.util.List;
 
 class ShelmosSearchTest {
 
