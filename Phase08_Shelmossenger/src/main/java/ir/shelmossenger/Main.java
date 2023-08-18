@@ -17,7 +17,8 @@ public class Main {
 //        addUserToChat();
 //        addPermissionToUserChat();
 //        sendMessage();
-        editMessage();
+//        editMessage();
+        getMessagesOfUser();
     }
 
     private static void signup() {
@@ -83,20 +84,27 @@ public class Main {
     }
 
     private static void sendMessage() {
-        String data = "hello";
+        String data = "howdy";
         MessageType messageType = MessageType.MESSAGE;
         String senderUsername = "hamid2";
-        long chatId = 5;
+        long chatId = 1;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.sendMessage(data, messageType, senderUsername, chatId));
     }
 
-    private static void editMessage(){
+    private static void editMessage() {
         String newMessage = "hi";
         long messageId = 1;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.editMessage(newMessage, messageId));
+    }
+
+    private static void getMessagesOfUser(){
+        String username = "hamid2";
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getMessagesOfUser(username));
     }
 }

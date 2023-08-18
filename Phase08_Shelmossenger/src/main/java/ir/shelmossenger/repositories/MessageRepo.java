@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ir.shelmossenger.context.DbContext.getConnection;
@@ -23,10 +24,10 @@ public class MessageRepo {
             CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, senderUserName);
             User user = session.createQuery(userByUsernameQuery).getSingleResult();
 
-            CriteriaQuery<UserChat> userChatByUerIdAndChatId = getUserChatByUerIdAndChatId(session, user.getId(), chatId);
-            UserChat userChat = session.createQuery(userChatByUerIdAndChatId).getSingleResult();
+            Chat chat = session.get(Chat.class, chatId);
 
-            Chat chat = userChat.getChat();
+            CriteriaQuery<UserChat> userChatByUerIdAndChatId = getUserChatByUserAndChat(session, user, chat);
+            session.createQuery(userChatByUerIdAndChatId).getSingleResult();
 
             Message message = new Message();
             message.setChat(chat);
@@ -58,39 +59,38 @@ public class MessageRepo {
         }
     }
 
-    public void deleteMessage(long messageId)
-            throws SQLException {
-        Session session = getConnection();
-        session.beginTransaction();
-        var message = session.get(Message.class, messageId);
-        message.setDeletedAt(Instant.now());
-        session.persist(message);
-        session.getTransaction().commit();
-        session.close();
+    // TODO: 8/18/2023
+    public boolean deleteMessage(long messageId) {
+        try (Session session = DbContext.getConnection()) {
+            Transaction transaction = session.beginTransaction();
+
+            Message message = session.get(Message.class, messageId);
+            message.setDeletedAt(Instant.now());
+
+            session.persist(message);
+            transaction.commit();
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
-    //TODO:
-    public List<Message> getMessagesOfUser(String userName)
-            throws SQLException {
-        Session session = getConnection();
+    public List<Message> getMessagesOfUser(String userName) {
+        try (Session session = DbContext.getConnection()) {
+            CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, userName);
+            User user = session.createQuery(userByUsernameQuery).getSingleResult();
 
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Long> subquery = cb.createQuery(Long.class);
-        Root<User> userRoot = subquery.from(User.class);
-        subquery.select(userRoot.get("id"))
-                .where(cb.equal(userRoot.get("username"), userName));
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Message> criteria = cb.createQuery(Message.class);
+            Root<Message> messageRoot = criteria.from(Message.class);
+            criteria.select(messageRoot)
+                    .where(cb.equal(messageRoot.get("sender"), user),
+                            cb.isNull(messageRoot.get("deletedAt")));
 
-        CriteriaQuery<Message> criteria = cb.createQuery(Message.class);
-        Root<Message> messageRoot = criteria.from(Message.class);
-        criteria.select(messageRoot)
-                .where(cb.and(
-                        cb.equal(messageRoot.get("senderId"), subquery),
-                        cb.isNull(messageRoot.get("deletedAt"))
-                ));
-
-        List<Message> messages = session.createQuery(criteria).getResultList();
-        session.close();
-        return messages;
+            return session.createQuery(criteria).getResultList();
+        } catch (Exception ignored) {
+            return new ArrayList<>();
+        }
     }
 
     public long getNumberOfMessagesOfUser(String userName)
@@ -176,17 +176,13 @@ public class MessageRepo {
         return true;
     }
 
-    private CriteriaQuery<UserChat> getUserChatByUerIdAndChatId(Session session, long userId, long chatId) {
+    private CriteriaQuery<UserChat> getUserChatByUserAndChat(Session session, User user, Chat chat) {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<UserChat> subQuery = cb.createQuery(UserChat.class);
         Root<UserChat> userChatRoot = subQuery.from(UserChat.class);
         subQuery.select(userChatRoot)
-                .where(cb.equal(userChatRoot.get("user"), new User() {{
-                    setId(userId);
-                }}))
-                .where(cb.equal(userChatRoot.get("chat"), new Chat() {{
-                    setId(chatId);
-                }}));
+                .where(cb.equal(userChatRoot.get("user"), user),
+                        cb.equal(userChatRoot.get("chat"), chat));
 
         return subQuery;
     }
