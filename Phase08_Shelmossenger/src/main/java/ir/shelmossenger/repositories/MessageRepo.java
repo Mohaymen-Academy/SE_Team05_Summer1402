@@ -88,31 +88,27 @@ public class MessageRepo {
 
             return session.createQuery(criteria).getResultList();
         } catch (Exception ignored) {
-            return new ArrayList<>();
+            return null;
         }
     }
 
-    public long getNumberOfMessagesOfUser(String userName)
-            throws SQLException {
-        Session session = getConnection();
+    public long getNumberOfMessagesOfUser(String userName) {
+        try (Session session = DbContext.getConnection()) {
+            CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, userName);
+            User user = session.createQuery(userByUsernameQuery).getSingleResult();
 
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Long> subquery = cb.createQuery(Long.class);
-        Root<User> userRoot = subquery.from(User.class);
-        subquery.select(userRoot.get("id"))
-                .where(cb.equal(userRoot.get("username"), userName));
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+            Root<Message> messageRoot = criteria.from(Message.class);
+            criteria.select(cb.count(messageRoot))
+                    .where(
+                            cb.equal(messageRoot.get("sender"), user),
+                            cb.isNull(messageRoot.get("deletedAt")));
 
-        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
-        Root<Message> messageRoot = criteria.from(Message.class);
-        criteria.select(cb.count(messageRoot))
-                .where(cb.and(
-                        cb.equal(messageRoot.get("senderId"), subquery),
-                        cb.isNull(messageRoot.get("deletedAt"))
-                ));
-
-        Long count = session.createQuery(criteria).getSingleResult();
-        session.close();
-        return count;
+            return session.createQuery(criteria).getSingleResult();
+        } catch (Exception ignored) {
+            return -1;
+        }
     }
 
     public double getAvgNumberOfMessages()

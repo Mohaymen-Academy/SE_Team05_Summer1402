@@ -20,16 +20,17 @@ public class Main {
 //        editMessage();
 //        deleteMessage();
 //        getMessagesOfUser();
+        getNumberOfMessagesOfUser();
     }
 
     private static void signup() {
         User user = new User();
-        user.setFullName("hamid");
-        user.setUsername("hamid2");
-        user.setPassword("h1245");
-        user.setPhoneNumber("09123456789");
-        user.setEmail("hamid@gmail.com");
-//        user.setBio("sth");
+        user.setFullName("ali");
+        user.setUsername("ali2");
+        user.setPassword("a1245");
+        user.setPhoneNumber("009123456789");
+        user.setEmail("ali@gmail.com");
+        user.setBio("sth");
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.signup(user));
@@ -114,5 +115,12 @@ public class Main {
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getMessagesOfUser(username));
+    }
+
+    private static void getNumberOfMessagesOfUser(){
+        String username = "hamid2";
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getNumberOfMessagesOfUser(username));
     }
 }
