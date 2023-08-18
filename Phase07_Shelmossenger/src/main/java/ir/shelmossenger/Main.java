@@ -16,6 +16,7 @@ public class Main {
 //        getNumberOfRelationshipsOfUser();
 //        createChat();
 //        addUserToChat();
+        addPermissionToUserChat();
 //        sendMessage();
 //        editMessage();
 //        deleteMessage();
@@ -24,7 +25,6 @@ public class Main {
 //        readMessage();
 //        getNumberOfViewsOfMessage();
 //        getMessagesOfUser();
-//        addPermissionToUserChat();
     }
 
     private static void signup() {
@@ -87,6 +87,15 @@ public class Main {
         System.out.println(chatRepo.addUserToChat(username, chatID));
     }
 
+    private static void addPermissionToUserChat() {
+        Permission permission = Permission.ADMIN;
+        long userId = 3;
+        long chatId = 1;
+
+        PermissionRepo permissionRepo = new PermissionRepo();
+        System.out.println(permissionRepo.addPermissionToUserChat(permission, userId, chatId));
+    }
+
     private static void sendMessage() {
         Message message = new Message();
         message.setMessageType(MessageType.MESSAGE);
@@ -146,13 +155,5 @@ public class Main {
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getMessagesOfUser(username));
         System.out.println(messageRepo.getMessagesOfUser(username).get(0).getMessageType());
-    }
-
-    private static void addPermissionToUserChat() {
-        Permission permission = Permission.ADMIN;
-        long userChatId = 10;
-
-        PermissionRepo permissionRepo = new PermissionRepo();
-        System.out.println(permissionRepo.addPermissionToUserChat(permission, userChatId));
     }
 }

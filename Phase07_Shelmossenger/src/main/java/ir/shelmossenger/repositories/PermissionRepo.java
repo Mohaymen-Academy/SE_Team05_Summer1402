@@ -1,25 +1,25 @@
 package ir.shelmossenger.repositories;
 
+import ir.shelmossenger.context.DbContext;
+import ir.shelmossenger.model.Permission;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import ir.shelmossenger.model.Permission;
-
-import static ir.shelmossenger.context.DbContext.getConnection;
-
 public class PermissionRepo {
 
-    public boolean addPermissionToUserChat(Permission permission, long userChatId) {
-        try (Connection connection = getConnection()) {
-
+    public boolean addPermissionToUserChat(Permission permission, long userId, long chatId) {
+        try (Connection connection = DbContext.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(
                     """
-                            insert into user_chat_permission (user_chat_id, permission_id)\r
-                            values (?, (Select id from permissions where title = ?));""")) {
+                            INSERT INTO user_chat_permission (user_chat_id, permission_id)
+                            VALUES ((SELECT id FROM user_chat WHERE user_id = ? AND chat_id = ?),
+                                    (SELECT id FROM permissions WHERE title = ?));""")) {
 
-                stmt.setLong(1, userChatId);
-                stmt.setString(2, permission.getTitle());
+                stmt.setLong(1, userId);
+                stmt.setLong(2, chatId);
+                stmt.setString(3, permission.getTitle());
 
                 int numberOfAddedRows;
                 try {

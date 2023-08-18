@@ -2,6 +2,7 @@ package ir.shelmossenger.repositories;
 
 import ir.shelmossenger.model.Message;
 import ir.shelmossenger.model.MessageType;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,8 @@ public class MessageRepo {
 
             try (PreparedStatement stmt = connection.prepareStatement(
                     """
-                            insert into messages (data, message_type, sender_id, chat_id)\r
-                            values (?, (Select id from message_types where type_name = ?), ?, ?);""")) {
+                            INSERT INTO messages (data, message_type, sender_id, chat_id)
+                            VALUES (?, (SELECT id FROM message_types WHERE type_name = ?), ?, ?);""")) {
 
                 stmt.setString(1, message.getData());
                 stmt.setString(2, message.getMessageType().getTypeName());

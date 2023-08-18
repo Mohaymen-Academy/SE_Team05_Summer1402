@@ -54,11 +54,10 @@ public class ChatRepo {
                 int numberOfAddedRows;
                 try {
                     numberOfAddedRows = stmt.executeUpdate();
+                    return numberOfAddedRows > 0;
                 } catch (SQLException ignored) {
                     return false;
                 }
-
-                return numberOfAddedRows > 0;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
