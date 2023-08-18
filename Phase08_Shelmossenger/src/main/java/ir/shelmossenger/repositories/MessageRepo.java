@@ -133,8 +133,28 @@ public class MessageRepo {
         }
     }
 
-    public long getNumberOfViewsOfMessage(long messageId)
-            throws SQLException {
+    public boolean readMessage(String userName, long messageId) {
+        try (Session session = DbContext.getConnection()) {
+            Transaction transaction = session.beginTransaction();
+
+            CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, userName);
+            User user = session.createQuery(userByUsernameQuery).getSingleResult();
+
+            Message message = session.get(Message.class, messageId);
+
+            ReadMessage readMessage = new ReadMessage();
+            readMessage.setMessage(message);
+            readMessage.setUser(user);
+
+            session.persist(readMessage);
+            transaction.commit();
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public long getNumberOfViewsOfMessage(long messageId) {
         Session session = getConnection();
         CriteriaBuilder cb = session.getCriteriaBuilder();
 
@@ -146,30 +166,6 @@ public class MessageRepo {
         Long countViews = session.createQuery(criteria).getSingleResult();
         session.close();
         return countViews;
-    }
-
-    public boolean readMessage(String userName, long messageId) {
-        Session session = getConnection();
-        session.beginTransaction();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Long> subquery = cb.createQuery(Long.class);
-        Root<User> userRoot = subquery.from(User.class);
-        subquery.select(userRoot.get("id"))
-                .where(cb.equal(userRoot.get("username"), userName));
-        long userId = session.createQuery(subquery).getSingleResult();
-        ReadMessage readMessage = new ReadMessage() {{
-            setMessage(new Message() {{
-                setId(messageId);
-            }});
-            setUser(new User() {{
-                setId(userId);
-            }});
-        }};
-        session.persist(readMessage);
-        session.getTransaction().commit();
-        session.close();
-
-        return true;
     }
 
     private CriteriaQuery<UserChat> getUserChatByUserAndChat(Session session, User user, Chat chat) {

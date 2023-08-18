@@ -21,17 +21,18 @@ public class Main {
 //        deleteMessage();
 //        getMessagesOfUser();
 //        getNumberOfMessagesOfUser();
-        getAvgNumberOfMessages();
+//        getAvgNumberOfMessages();
+        readMessage();
     }
 
     private static void signup() {
         User user = new User();
-        user.setFullName("ali");
-        user.setUsername("ali2");
-        user.setPassword("a1245");
-        user.setPhoneNumber("009123456789");
-        user.setEmail("ali@gmail.com");
-        user.setBio("sth");
+        user.setFullName("sara");
+        user.setUsername("sara1");
+        user.setPassword("s245");
+        user.setPhoneNumber("0123456789");
+        user.setEmail("sara@gmail.com");
+        user.setBio("nothing");
 
         UserRepo userRepo = new UserRepo();
         System.out.println(userRepo.signup(user));
@@ -62,8 +63,8 @@ public class Main {
 
     private static void addChat() {
         Chat chat = new Chat();
-        chat.setTitle("gpTest");
-        chat.setChatType(ChatType.GROUP);
+        chat.setTitle("chTest");
+        chat.setChatType(ChatType.CHANNEL);
         chat.setLink("test_chat");
 
         ChatRepo chatRepo = new ChatRepo();
@@ -71,8 +72,8 @@ public class Main {
     }
 
     private static void addUserToChat() {
-        String username = "sara2";
-        long chatId = 3;
+        String username = "sara1";
+        long chatId = 2;
 
         ChatRepo chatRepo = new ChatRepo();
         System.out.println(chatRepo.addUserToChat(username, chatId));
@@ -87,10 +88,10 @@ public class Main {
     }
 
     private static void sendMessage() {
-        String data = "howdy";
-        MessageType messageType = MessageType.MESSAGE;
-        String senderUsername = "hamid2";
-        long chatId = 3;
+        String data = "hello";
+        MessageType messageType = MessageType.FILE;
+        String senderUsername = "sara1";
+        long chatId = 2;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.sendMessage(data, messageType, senderUsername, chatId));
@@ -128,5 +129,13 @@ public class Main {
     private static void getAvgNumberOfMessages(){
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getAvgNumberOfMessages());
+    }
+
+    private static void readMessage(){
+        String username = "hamid2";
+        long messageId = 1;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.readMessage(username, messageId));
     }
 }
