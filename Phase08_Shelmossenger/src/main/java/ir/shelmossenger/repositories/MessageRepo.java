@@ -155,17 +155,19 @@ public class MessageRepo {
     }
 
     public long getNumberOfViewsOfMessage(long messageId) {
-        Session session = getConnection();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+        try (Session session = DbContext.getConnection()) {
+            Message message = session.get(Message.class, messageId);
 
-        CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
-        Root<ReadMessage> messageRoot = criteria.from(ReadMessage.class);
-        criteria.select(cb.count(messageRoot))
-                .where(cb.equal(messageRoot.get("messageId"), messageId));
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
+            Root<ReadMessage> messageRoot = criteria.from(ReadMessage.class);
+            criteria.select(cb.count(messageRoot))
+                    .where(cb.equal(messageRoot.get("message"), message));
 
-        Long countViews = session.createQuery(criteria).getSingleResult();
-        session.close();
-        return countViews;
+            return session.createQuery(criteria).getSingleResult();
+        } catch (Exception ignored) {
+            return -1;
+        }
     }
 
     private CriteriaQuery<UserChat> getUserChatByUserAndChat(Session session, User user, Chat chat) {

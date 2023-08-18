@@ -22,7 +22,8 @@ public class Main {
 //        getMessagesOfUser();
 //        getNumberOfMessagesOfUser();
 //        getAvgNumberOfMessages();
-        readMessage();
+//        readMessage();
+        getNumberOfViewsOfMessage();
     }
 
     private static void signup() {
@@ -105,37 +106,44 @@ public class Main {
         System.out.println(messageRepo.editMessage(newMessage, messageId));
     }
 
-    private static void deleteMessage(){
+    private static void deleteMessage() {
         long messageId = 2;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.deleteMessage(messageId));
     }
 
-    private static void getMessagesOfUser(){
+    private static void getMessagesOfUser() {
         String username = "hamid2";
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getMessagesOfUser(username));
     }
 
-    private static void getNumberOfMessagesOfUser(){
+    private static void getNumberOfMessagesOfUser() {
         String username = "hamid2";
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getNumberOfMessagesOfUser(username));
     }
 
-    private static void getAvgNumberOfMessages(){
+    private static void getAvgNumberOfMessages() {
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.getAvgNumberOfMessages());
     }
 
-    private static void readMessage(){
+    private static void readMessage() {
         String username = "hamid2";
         long messageId = 1;
 
         MessageRepo messageRepo = new MessageRepo();
         System.out.println(messageRepo.readMessage(username, messageId));
+    }
+
+    private static void getNumberOfViewsOfMessage() {
+        long messageId = 2;
+
+        MessageRepo messageRepo = new MessageRepo();
+        System.out.println(messageRepo.getNumberOfViewsOfMessage(messageId));
     }
 }
