@@ -1,19 +1,20 @@
-insert into permissions (title)
-values ('message'),
-     ('image'),
-     ('video'),
-     ('voice'),
-     ('file'),
-     ('admin');
+INSERT INTO permissions (title)
+VALUES ('message'),
+       ('image'),
+       ('video'),
+       ('voice'),
+       ('file'),
+       ('admin');
 
-insert into message_types (type_name)
-values ('message'),
-     ('image'),
-     ('video'),
-     ('voice'),
-     ('file'),
-     ('notification');
-insert into chat_types (type_name)
-values ('PV'),
-     ('Group'),
-     ('Channel');
+INSERT INTO message_types (type_name)
+VALUES ('message'),
+       ('image'),
+       ('video'),
+       ('voice'),
+       ('file'),
+       ('notification');
+
+INSERT INTO chat_types (type_name)
+VALUES ('PV'),
+       ('Group'),
+       ('Channel');

@@ -1,1 +1,1 @@
-create database Shelomessenger;
+CREATE DATABASE Shelmossenger;
