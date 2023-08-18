@@ -19,5 +19,4 @@ public class UserChatPermission {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "permission_id")
     private Permission permission;
-
 }

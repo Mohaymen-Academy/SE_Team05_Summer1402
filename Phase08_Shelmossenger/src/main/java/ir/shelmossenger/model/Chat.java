@@ -1,13 +1,16 @@
 package ir.shelmossenger.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.Instant;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "chats")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Chat {
 
     @Id
@@ -27,6 +30,4 @@ public class Chat {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
-
-    // getters and setters
 }

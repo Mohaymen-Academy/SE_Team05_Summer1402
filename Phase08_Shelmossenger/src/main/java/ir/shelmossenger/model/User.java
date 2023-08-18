@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -14,14 +15,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false, unique = true)
     private String fullName;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String email;
 
     @Column(name = "phone_number")
