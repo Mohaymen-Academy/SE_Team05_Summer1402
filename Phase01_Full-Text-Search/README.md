@@ -6,13 +6,14 @@ This project is a mini "Full-Text Search" library that receives your data and se
 
 You can search for some words through an enormous amount of files and texts in O(1) time. Also, this project supports
 using optional searches and excluding results from final search results. The project supports setting custom tokenizer,
-normalizer, and stop list. You can add all your files in a folder to be searched through. The result of the search will
-be sorted based on the relative occurrences of the query. The default processing attributes:
+normalizer, and stop list. You can add all your files to a folder to be searched through. The project supports edge
+n-gram for better search results as well. The result of the search will be sorted based on the relative occurrences of
+the query. The default processing attributes:
 
-- tokenizer: SimpleTokenizer in opennlp library
-- normalizer: PortStemmer of opennlp library
-- stop list: list of regularly-used marks
-- files Dataset: Software Books
+- Tokenizer: SimpleTokenizer in opennlp library (default), Edge n-gram Tokenizer
+- Normalizer: PortStemmer of opennlp library
+- Stop list: list of regularly used marks
+- Files Dataset: Software Books
 
 # Usage
 
@@ -20,7 +21,7 @@ be sorted based on the relative occurrences of the query. The default processing
 2. Configure the parameters or leave them as default:
     1. Set your normalizer/tokenizer by creating a class implementing its interface and set the object in setNormalizer
        method.
-    2. Set your stopWords by reading a file or set it as an array.
+    2. Set your stopWords by reading a file or setting it as an array.
     3. Set your dataset folder path by the addByFolder method (Set your folder path after setting attributes).
 3. Use the search method to search your query in the data set.
 
@@ -28,7 +29,7 @@ be sorted based on the relative occurrences of the query. The default processing
 
    `get help +illness +disease -cough`
 
-4. you can also use runInConsole to input queries from the console.
+4. You can also use runInConsole to input queries from the console.
 
 # Example
 
@@ -42,9 +43,9 @@ public class Main {
         new ShelmosSearch()
                 .setNormalizer(new MyNormalizer())
                 .setTokenizer(new MyTokenizer())
-                .setStopWordsByFile("./src/main/resources/stopWords.txt")
+                .setStopWordsByFile("./src/main/resources/Stop Words.txt")
                 .addDocsByFolder("./src/main/resources/Software Books Dataset/")
-                .addDoc("Ali", "goal have get compile")
+                .addDoc("Custom Doc", "goal have get compile")
                 .runInConsole();
     }
 }
@@ -59,7 +60,7 @@ class MyNormalizer implements Normalizer {
 class MyTokenizer implements Tokenizer {
     @Override
     public String[] tokenize(String text) {
-        return text.split("\\s+");
+        return text.split("\\s");
     }
 }
 ```

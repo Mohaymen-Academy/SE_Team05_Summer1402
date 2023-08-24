@@ -14,7 +14,7 @@ public class QueryHandler {
             put(QueryTypes.NOT, new NotQuery());
         }};
 
-        String[] parts = query.trim().split("\\s+");
+        String[] parts = query.trim().split("\\s");
         normalizeQueries(parts, queries, normalizer);
         return queries;
     }
@@ -56,8 +56,7 @@ public class QueryHandler {
 
     private HashMap<String, Double> findWithCount(InvertedIndex invertedIndex, String q) {
         HashMap<String, Double> search = invertedIndex.getMapWordToDocs().get(q);
-        if (search == null) return new HashMap<>();
-        return search;
+        return (search == null) ? new HashMap<>() : search;
     }
 
     private boolean isSingleQuery(HashMap<QueryTypes, Query> queries) {

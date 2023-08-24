@@ -84,22 +84,22 @@ class QueryHandlerTest {
     @Test
     void runQueries_justOR_resultShouldUnionEachResult() {
         String text = "+Ali +Hassan +Hossein";
-        Object[] actual = queryHandler
+        int actual = queryHandler
                 .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
                         invertedIndex)
-                .toArray();
-        String[] expected = new String[]{"A", "B", "C", "D", "E"};
-        Assertions.assertEquals(expected.length, actual.length);
+                .toArray().length;
+        int expected = new String[]{"A", "B", "C", "D", "E"}.length;
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void runQueries_justNOT_resultShouldBeEmpty() {
         String text = "-Ali -Hassan -Hossein";
-        Object[] actual = queryHandler
+        int actual = queryHandler
                 .runQueries(queryHandler.parseQueriesByType(text, invertedIndex.getLanguageProcessor().getNormalizer()),
                         invertedIndex)
-                .toArray();
-        Assertions.assertEquals(0, actual.length);
+                .toArray().length;
+        Assertions.assertEquals(0, actual);
     }
 
     @Test
@@ -138,54 +138,40 @@ class QueryHandlerTest {
     private HashMap<String, HashMap<String, Double>> createFakeData() {
 
         HashMap<String, HashMap<String, Double>> mockDictionary = new HashMap<>();
-        mockDictionary.put("ali", new HashMap<>() {
-            {
-                put("A", 0.1);
-                put("B", 0.2);
-                put("C", 0.2);
-                put("E", 0.5);
-            }
-        });
-        mockDictionary.put("hassan", new HashMap<>() {
-            {
-                put("B", 0.1);
-                put("C", 0.3);
-                put("E", 0.6);
-            }
-        });
-        mockDictionary.put("hossein", new HashMap<>() {
-            {
-                put("C", 0.6);
-                put("D", 0.1);
-                put("E", 0.3);
-            }
-        });
-        mockDictionary.put("mohammad", new HashMap<>() {
-            {
-                put("A", 0.5);
-                put("B", 0.1);
-                put("C", 0.4);
-            }
-        });
-        mockDictionary.put("abba", new HashMap<>() {
-            {
-                put("C", 1.0);
-            }
-        });
-        mockDictionary.put("sadegh", new HashMap<>() {
-            {
-                put("A", 0.2);
-                put("B", 0.5);
-                put("C", 0.3);
-            }
-        });
-        mockDictionary.put("clean", new HashMap<>() {
-            {
-                put("Clean Architecture", 0.5);
-                put("Clean Code", 1.2);
-                put("Daisy Diary", 0.3);
-            }
-        });
+        mockDictionary.put("ali", new HashMap<>() {{
+            put("A", 0.1);
+            put("B", 0.2);
+            put("C", 0.2);
+            put("E", 0.5);
+        }});
+        mockDictionary.put("hassan", new HashMap<>() {{
+            put("B", 0.1);
+            put("C", 0.3);
+            put("E", 0.6);
+        }});
+        mockDictionary.put("hossein", new HashMap<>() {{
+            put("C", 0.6);
+            put("D", 0.1);
+            put("E", 0.3);
+        }});
+        mockDictionary.put("mohammad", new HashMap<>() {{
+            put("A", 0.5);
+            put("B", 0.1);
+            put("C", 0.4);
+        }});
+        mockDictionary.put("abba", new HashMap<>() {{
+            put("C", 1.0);
+        }});
+        mockDictionary.put("sadegh", new HashMap<>() {{
+            put("A", 0.2);
+            put("B", 0.5);
+            put("C", 0.3);
+        }});
+        mockDictionary.put("clean", new HashMap<>() {{
+            put("Clean Architecture", 0.5);
+            put("Clean Code", 1.2);
+            put("Daisy Diary", 0.3);
+        }});
         return mockDictionary;
     }
 }

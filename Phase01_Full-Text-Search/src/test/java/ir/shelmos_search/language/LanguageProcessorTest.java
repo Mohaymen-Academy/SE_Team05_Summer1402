@@ -23,7 +23,6 @@ class LanguageProcessorTest {
         String text = "Ali said hi to Jimmy.";
         String actual = languageProcessor.filterText(text);
         Assertions.assertEquals("Ali said hi to Jimmy ", actual);
-
     }
 
     @Test

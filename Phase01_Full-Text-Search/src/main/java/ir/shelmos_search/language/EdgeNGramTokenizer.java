@@ -10,7 +10,7 @@ public class EdgeNGramTokenizer implements Tokenizer {
     private int min, max;
 
     public ArrayList<String> tokenize(String text) {
-        String[] spaceSeparated = text.split("\\s+");
+        String[] spaceSeparated = text.split("\\s");
         ArrayList<String> result = new ArrayList<>(List.of(spaceSeparated));
         for (String t : spaceSeparated)
             result.addAll(makeChunk(t));
