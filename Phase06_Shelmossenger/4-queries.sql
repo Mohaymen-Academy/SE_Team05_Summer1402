@@ -84,7 +84,7 @@ WHERE c.id IN (SELECT uxc.chat_id
 
 
 --q10: Average number of messages sent by a single user
-SELECT COUNT(m.id)::DECIMAL / (SELECT COUNT(id) FROM users WHERE deleted_at IS NULL)
+SELECT COUNT(m.id) ::DECIMAL / (SELECT COUNT(id) FROM users WHERE deleted_at IS NULL)
 FROM messages m
 WHERE m.deleted_at IS NULL;
 

@@ -16,7 +16,7 @@ CREATE TABLE users
 CREATE TABLE profile_images
 (
     user_id           SERIAL PRIMARY KEY REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    profile_image_url TEXT        NOT NULL DEFAULT '',
+    profile_image_url TEXT      NOT NULL DEFAULT '',
     created_at        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
