@@ -1,13 +1,13 @@
 package ir.shelmossenger.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.time.Instant;
 
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 public class Chat {
 
     private Long id;

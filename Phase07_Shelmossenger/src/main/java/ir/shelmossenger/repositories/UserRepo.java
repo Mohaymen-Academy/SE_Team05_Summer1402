@@ -10,6 +10,16 @@ import java.sql.SQLException;
 
 public class UserRepo {
 
+    private static UserRepo userRepo;
+
+    private UserRepo() {
+    }
+
+    public static UserRepo getInstance() {
+        if (userRepo == null) userRepo = new UserRepo();
+        return userRepo;
+    }
+
     public boolean signup(User user) {
         try (Connection connection = DbContext.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(
@@ -38,7 +48,7 @@ public class UserRepo {
         try (Connection connection = DbContext.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(
                     """ 
-                            SELECT user_name,password
+                            SELECT (user_name, password)
                             FROM users
                             WHERE user_name = ?;""")) {
 
@@ -106,15 +116,15 @@ public class UserRepo {
                             WITH x_username AS (SELECT ?)
                             SELECT COUNT(u.*) AS user_count
                             FROM users u
-                                     INNER JOIN user_chat uc ON u.id = uc.user_id
-                                     INNER JOIN chats c ON c.id = uc.chat_id
+                                      INNER JOIN user_chat uc ON u.id = uc.user_id
+                                      INNER JOIN chats c ON c.id = uc.chat_id
                             WHERE c.id IN (SELECT uxc.chat_id
-                                           FROM users ux
-                                                    INNER JOIN user_chat uxc ON ux.id = uxc.user_id
-                                           WHERE ux.user_name = (SELECT * FROM x_username)
-                            ) AND c.deleted_at IS NULL
-                              AND u.deleted_at IS NULL
-                              AND u.user_name <> (SELECT * FROM x_username);""")) {
+                                            FROM users ux
+                                                     INNER JOIN user_chat uxc ON ux.id = uxc.user_id
+                                            WHERE ux.user_name = (SELECT * FROM x_username))
+                            AND c.deleted_at IS NULL
+                            AND u.deleted_at IS NULL
+                            AND u.user_name <> (SELECT * FROM x_username);""")) {
 
                 stmt.setString(1, userName);
 

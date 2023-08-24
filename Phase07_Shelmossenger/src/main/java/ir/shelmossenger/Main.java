@@ -28,64 +28,57 @@ public class Main {
     }
 
     private static void signup() {
-        UserRepo userRepo = new UserRepo();
-        User user = new User();
-        user.setFullName("hami");
-        user.setUserName("hami");
-        user.setPassword("h123");
-        user.setEmail("hami@gmail.com");
-        user.setPhoneNumber("01319123457780");
-        user.setBio("one thing");
+        User user = User.builder()
+                .fullName("hami")
+                .userName("hami")
+                .password("h123")
+                .email("hami@gmail.com")
+                .phoneNumber("01319123457780")
+                .bio("one thing").build();
 
-        System.out.println(userRepo.signup(user));
+        System.out.println(UserRepo.getInstance().signup(user));
     }
 
     private static void login() {
         String username = "hamid";
         String password = "h123";
 
-        UserRepo userRepo = new UserRepo();
-        System.out.println(userRepo.login(username, password));
+        System.out.println(UserRepo.getInstance().login(username, password));
     }
 
     private static void deleteAccount() {
         String username = "ali698";
 
-        UserRepo userRepo = new UserRepo();
-        System.out.println(userRepo.deleteAccount(username));
+        System.out.println(UserRepo.getInstance().deleteAccount(username));
     }
 
     private static void changeBio() {
         String username = "hamid";
         String bio = "do";
 
-        UserRepo userRepo = new UserRepo();
-        System.out.println(userRepo.changeBio(username, bio));
+        System.out.println(UserRepo.getInstance().changeBio(username, bio));
     }
 
     private static void getNumberOfRelationshipsOfUser() {
         String username = "hamid";
 
-        UserRepo userRepo = new UserRepo();
-        System.out.println(userRepo.getNumberOfRelationshipsOfUser(username));
+        System.out.println(UserRepo.getInstance().getNumberOfRelationshipsOfUser(username));
     }
 
     private static void createChat() {
-        Chat chat = new Chat();
-        chat.setTitle("channel_test");
-        chat.setLink("chnt");
-        chat.setChatType(ChatType.CHANNEL);
+        Chat chat = Chat.builder()
+                .title("channel_test")
+                .link("chnt")
+                .chatType(ChatType.CHANNEL).build();
 
-        ChatRepo chatRepo = new ChatRepo();
-        System.out.println(chatRepo.addChat(chat));
+        System.out.println(ChatRepo.getInstance().addChat(chat));
     }
 
     private static void addUserToChat() {
         String username = "sara";
         long chatID = 1;
 
-        ChatRepo chatRepo = new ChatRepo();
-        System.out.println(chatRepo.addUserToChat(username, chatID));
+        System.out.println(ChatRepo.getInstance().addUserToChat(username, chatID));
     }
 
     private static void addPermissionToUserChat() {
@@ -93,67 +86,59 @@ public class Main {
         long userId = 3;
         long chatId = 1;
 
-        PermissionRepo permissionRepo = new PermissionRepo();
-        System.out.println(permissionRepo.addPermissionToUserChat(permission, userId, chatId));
+        System.out.println(PermissionRepo.getInstance().addPermissionToUserChat(permission, userId, chatId));
     }
 
     private static void sendMessage() {
-        Message message = new Message();
-        message.setMessageType(MessageType.MESSAGE);
-        message.setData("hello");
-        message.setSenderId(3L);
-        message.setChatId(1L);
+        Message message = Message.builder()
+                .messageType(MessageType.MESSAGE)
+                .data("hello")
+                .senderId(3L)
+                .chatId(1L)
+                .build();
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.sendMessage(message));
+        System.out.println(MessageRepo.getInstance().sendMessage(message));
     }
 
     private static void editMessage() {
         String newMessage = "hi";
         long messageId = 2;
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.editMessage(newMessage, messageId));
+        System.out.println(MessageRepo.getInstance().editMessage(newMessage, messageId));
     }
 
     private static void deleteMessage() {
         long messageId = 5;
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.deleteMessage(messageId));
+        System.out.println(MessageRepo.getInstance().deleteMessage(messageId));
     }
 
     private static void getMessagesOfUser() {
         String username = "hamid";
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.getMessagesOfUser(username));
+        System.out.println(MessageRepo.getInstance().getMessagesOfUser(username));
     }
 
     private static void getNumberOfMessagesOfUSer() {
         String username = "hamid";
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.getNumberOfMessagesOfUser(username));
+        System.out.println(MessageRepo.getInstance().getNumberOfMessagesOfUser(username));
     }
 
     private static void averageNumberOfMessages() {
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.getAvgNumberOfMessages());
+        System.out.println(MessageRepo.getInstance().getAvgNumberOfMessages());
     }
 
     private static void readMessage() {
         String username = "hami";
         long messageId = 5;
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.readMessage(username, messageId));
+        System.out.println(MessageRepo.getInstance().readMessage(username, messageId));
     }
 
     private static void getNumberOfViewsOfMessage() {
         long messageId = 5;
 
-        MessageRepo messageRepo = new MessageRepo();
-        System.out.println(messageRepo.getNumberOfViewsOfMessage(messageId));
+        System.out.println(MessageRepo.getInstance().getNumberOfViewsOfMessage(messageId));
     }
 }

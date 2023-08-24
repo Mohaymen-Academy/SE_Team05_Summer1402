@@ -8,6 +8,16 @@ import java.sql.SQLException;
 
 public class ChatRepo {
 
+    private static ChatRepo chatRepo;
+
+    private ChatRepo() {
+    }
+
+    public static ChatRepo getInstance() {
+        if (chatRepo == null) chatRepo = new ChatRepo();
+        return chatRepo;
+    }
+
     public boolean addChat(Chat chat) {
         try (Connection connection = DbContext.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(
@@ -20,7 +30,6 @@ public class ChatRepo {
                 stmt.setString(3, chat.getChatType().getTypeName());
 
                 int numberOfAddedRows = stmt.executeUpdate();
-
                 return numberOfAddedRows > 0;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -32,7 +41,6 @@ public class ChatRepo {
 
     public boolean addUserToChat(String userName, long chatId) {
         try (Connection connection = DbContext.getConnection()) {
-
             try (PreparedStatement stmt = connection.prepareStatement(
                     """
                             INSERT INTO user_chat (user_id, chat_id)
@@ -41,9 +49,8 @@ public class ChatRepo {
                 stmt.setString(1, userName);
                 stmt.setLong(2, chatId);
 
-                int numberOfAddedRows;
                 try {
-                    numberOfAddedRows = stmt.executeUpdate();
+                    int numberOfAddedRows = stmt.executeUpdate();
                     return numberOfAddedRows > 0;
                 } catch (SQLException ignored) {
                     return false;

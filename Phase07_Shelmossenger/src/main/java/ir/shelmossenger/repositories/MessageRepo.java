@@ -3,15 +3,25 @@ package ir.shelmossenger.repositories;
 import ir.shelmossenger.context.DbContext;
 import ir.shelmossenger.model.Message;
 import ir.shelmossenger.model.MessageType;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageRepo {
+
+    private static MessageRepo messageRepo;
+
+    private MessageRepo() {
+    }
+
+    public static MessageRepo getInstance() {
+        if (messageRepo == null) messageRepo = new MessageRepo();
+        return messageRepo;
+    }
 
     public boolean sendMessage(Message message) {
         try (Connection connection = DbContext.getConnection()) {
@@ -19,7 +29,7 @@ public class MessageRepo {
                     """
                             INSERT INTO messages (data, message_type, sender_id, chat_id)
                             VALUES (?, (SELECT id FROM message_types WHERE type_name = ?), ?,
-                                       (SELECT chat_id FROM user_chat WHERE user_id = ? AND chat_id = ?));""")) {
+                                    (SELECT chat_id FROM user_chat WHERE user_id = ? AND chat_id = ?));""")) {
 
                 stmt.setString(1, message.getData());
                 stmt.setString(2, message.getMessageType().getTypeName());
@@ -27,11 +37,10 @@ public class MessageRepo {
                 stmt.setLong(4, message.getSenderId());
                 stmt.setLong(5, message.getChatId());
 
-                int numberOfAddedRows;
                 try {
-                    numberOfAddedRows = stmt.executeUpdate();
+                    int numberOfAddedRows = stmt.executeUpdate();
                     return numberOfAddedRows > 0;
-                } catch (Exception ignored) {
+                } catch (SQLException ignored) {
                     return false;
                 }
             } catch (SQLException e) {
@@ -54,11 +63,10 @@ public class MessageRepo {
                 stmt.setString(1, newMessage);
                 stmt.setLong(2, messageId);
 
-                int numberOfAddedRows;
                 try {
-                    numberOfAddedRows = stmt.executeUpdate();
+                    int numberOfAddedRows = stmt.executeUpdate();
                     return numberOfAddedRows > 0;
-                } catch (Exception ignored) {
+                } catch (SQLException ignored) {
                     return false;
                 }
             } catch (SQLException e) {
@@ -104,17 +112,19 @@ public class MessageRepo {
                 try (ResultSet rs = stmt.executeQuery()) {
                     List<Message> messages = new ArrayList<>();
                     while (rs.next()) {
-                        Message message = new Message();
-                        message.setId(rs.getLong("id"));
-                        message.setData(rs.getString("data"));
-                        message.setMessageType(MessageType.getById((int) rs.getLong("message_type") - 1));
-                        message.setSentAt(rs.getTimestamp("sent_at").toInstant());
-                        if (rs.getTimestamp("edited_at") != null)
-                            message.setEditedAt(rs.getTimestamp("edited_at").toInstant());
-                        message.setDeletedAt(null);
-                        message.setSenderId(rs.getLong("sender_id"));
-                        message.setChatId(rs.getLong("chat_id"));
-                        message.setReplyId(rs.getLong("reply_id"));
+                        Instant editedAt = rs.getTimestamp("edited_at") != null
+                                ? rs.getTimestamp("edited_at").toInstant()
+                                : null;
+
+                        Message message = Message.builder()
+                                .chatId(rs.getLong("id"))
+                                .data(rs.getString("data"))
+                                .messageType(MessageType.getById((int) rs.getLong("message_type") - 1))
+                                .sentAt(rs.getTimestamp("sent_at").toInstant())
+                                .editedAt(editedAt)
+                                .senderId(rs.getLong("sender_id"))
+                                .chatId(rs.getLong("chat_id"))
+                                .replyId(rs.getLong("reply_id")).build();
                         messages.add(message);
                     }
                     return messages;
@@ -186,11 +196,10 @@ public class MessageRepo {
                 stmt.setString(1, userName);
                 stmt.setLong(2, messageId);
 
-                int numberOfAddedRows;
                 try {
-                    numberOfAddedRows = stmt.executeUpdate();
+                    int numberOfAddedRows = stmt.executeUpdate();
                     return numberOfAddedRows > 0;
-                } catch (Exception ignored) {
+                } catch (SQLException ignored) {
                     return false;
                 }
             } catch (SQLException e) {
