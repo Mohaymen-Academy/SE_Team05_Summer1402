@@ -13,9 +13,20 @@ import java.time.Instant;
 
 public class UserRepo {
 
+    private static UserRepo userRepo;
+
+    private UserRepo() {
+    }
+
+    public static UserRepo getInstance() {
+        if (userRepo == null) userRepo = new UserRepo();
+        return userRepo;
+    }
+
     public boolean signup(User user) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
+
             user.setPassword(HashGenerator.Hash(user.getPassword()));
             session.persist(user);
             transaction.commit();
@@ -39,10 +50,11 @@ public class UserRepo {
     public boolean deleteAccount(String userName) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
-            CriteriaQuery<User> userByUsernameQuery = getUserByUsernameQuery(session, userName);
 
+            CriteriaQuery<User> userByUsernameQuery = getUserByUsernameQuery(session, userName);
             User user = session.createQuery(userByUsernameQuery).getSingleResult();
             user.setDeletedAt(Instant.now());
+
             session.persist(user);
             transaction.commit();
             return true;
@@ -54,10 +66,11 @@ public class UserRepo {
     public boolean changeBio(String userName, String bio) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
-            CriteriaQuery<User> userByUsernameQuery = getUserByUsernameQuery(session, userName);
 
+            CriteriaQuery<User> userByUsernameQuery = getUserByUsernameQuery(session, userName);
             User user = session.createQuery(userByUsernameQuery).getSingleResult();
             user.setBio(bio);
+
             session.persist(user);
             transaction.commit();
             return true;

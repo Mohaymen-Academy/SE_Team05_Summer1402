@@ -1,17 +1,16 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.Instant;
 
 @Entity
 @Table(name = "read_message")
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 public class ReadMessage {
 
     @Id

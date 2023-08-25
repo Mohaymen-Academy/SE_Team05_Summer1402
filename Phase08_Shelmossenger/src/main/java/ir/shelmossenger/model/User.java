@@ -1,16 +1,16 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.Instant;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class User {
 
     @Id

@@ -1,16 +1,18 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "user_chat_permission", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_chat_id", "permission"})})
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 public class UserChatPermission {
 
     @Id

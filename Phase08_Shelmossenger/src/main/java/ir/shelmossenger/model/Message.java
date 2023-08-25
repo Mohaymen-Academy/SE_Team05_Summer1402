@@ -1,18 +1,17 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.Instant;
 
 @Entity
 @Table(name = "messages")
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Message {
 
     @Id
@@ -21,6 +20,7 @@ public class Message {
 
     private String data;
 
+    @Column(name = "message_type")
     @Enumerated(EnumType.ORDINAL)
     private MessageType messageType;
 

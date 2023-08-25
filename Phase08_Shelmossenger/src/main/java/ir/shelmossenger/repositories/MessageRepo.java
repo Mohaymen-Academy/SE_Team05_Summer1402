@@ -12,6 +12,16 @@ import java.util.List;
 
 public class MessageRepo {
 
+    private static MessageRepo messageRepo;
+
+    private MessageRepo() {
+    }
+
+    public static MessageRepo getInstance() {
+        if (messageRepo == null) messageRepo = new MessageRepo();
+        return messageRepo;
+    }
+
     public boolean sendMessage(String messageContent, MessageType messageType, String senderUserName, long chatId) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
@@ -24,11 +34,11 @@ public class MessageRepo {
             CriteriaQuery<UserChat> userChatByUerIdAndChatId = getUserChatByUserAndChat(session, user, chat);
             session.createQuery(userChatByUerIdAndChatId).getSingleResult();
 
-            Message message = new Message();
-            message.setChat(chat);
-            message.setSender(user);
-            message.setData(messageContent);
-            message.setMessageType(messageType);
+            Message message = Message.builder()
+                    .chat(chat)
+                    .sender(user)
+                    .data(messageContent)
+                    .messageType(messageType).build();
 
             session.persist(message);
             transaction.commit();
@@ -114,13 +124,13 @@ public class MessageRepo {
             Root<User> userRoot = subQueryUserCount.from(User.class);
             subQueryUserCount.select(cb.count(userRoot))
                     .where(cb.isNull(userRoot.get("deletedAt")));
-            Long countUsers = session.createQuery(subQueryUserCount).getSingleResult();
+            long countUsers = session.createQuery(subQueryUserCount).getSingleResult();
 
             CriteriaQuery<Long> subQueryMessageCount = cb.createQuery(Long.class);
             Root<Message> messageRoot = subQueryMessageCount.from(Message.class);
             subQueryMessageCount.select(cb.count(messageRoot))
                     .where(cb.isNull(messageRoot.get("deletedAt")));
-            Long countMessages = session.createQuery(subQueryMessageCount).getSingleResult();
+            long countMessages = session.createQuery(subQueryMessageCount).getSingleResult();
 
             return (double) countMessages / countUsers;
         } catch (Exception ignored) {
@@ -137,9 +147,9 @@ public class MessageRepo {
 
             Message message = session.get(Message.class, messageId);
 
-            ReadMessage readMessage = new ReadMessage();
-            readMessage.setMessage(message);
-            readMessage.setUser(user);
+            ReadMessage readMessage = ReadMessage.builder()
+                    .message(message)
+                    .user(user).build();
 
             session.persist(readMessage);
             transaction.commit();

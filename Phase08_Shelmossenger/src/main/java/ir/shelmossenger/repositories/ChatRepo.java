@@ -10,6 +10,16 @@ import org.hibernate.Transaction;
 
 public class ChatRepo {
 
+    private static ChatRepo chatRepo;
+
+    private ChatRepo() {
+    }
+
+    public static ChatRepo getInstance() {
+        if (chatRepo == null) chatRepo = new ChatRepo();
+        return chatRepo;
+    }
+
     public long addChat(Chat chat) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
@@ -28,12 +38,12 @@ public class ChatRepo {
             CriteriaQuery<User> userByUsernameQuery = UserRepo.getUserByUsernameQuery(session, userName);
             User user = session.createQuery(userByUsernameQuery).getSingleResult();
 
-            Chat chat = new Chat();
-            chat.setId(chatId);
+            Chat chat = Chat.builder()
+                    .id(chatId).build();
 
-            UserChat userChat = new UserChat();
-            userChat.setUser(user);
-            userChat.setChat(chat);
+            UserChat userChat = UserChat.builder()
+                    .user(user)
+                    .chat(chat).build();
 
             session.persist(userChat);
             transaction.commit();

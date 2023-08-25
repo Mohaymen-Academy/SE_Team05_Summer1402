@@ -1,17 +1,19 @@
 package ir.shelmossenger.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.Instant;
 
 @Entity
 @Table(name = "chats")
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Builder
 public class Chat {
 
     @Id
@@ -22,6 +24,7 @@ public class Chat {
 
     private String link;
 
+    @Column(name = "chat_type")
     @Enumerated(EnumType.ORDINAL)
     private ChatType chatType;
 

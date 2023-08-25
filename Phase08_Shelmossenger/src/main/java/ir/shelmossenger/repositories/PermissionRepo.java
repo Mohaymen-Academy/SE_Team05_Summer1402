@@ -9,15 +9,23 @@ import org.hibernate.Transaction;
 
 public class PermissionRepo {
 
+    private static PermissionRepo permissionRepo;
+
+    private PermissionRepo() {
+    }
+
+    public static PermissionRepo getInstance() {
+        if (permissionRepo == null) permissionRepo = new PermissionRepo();
+        return permissionRepo;
+    }
+
     public boolean addPermissionToUserChat(Permission permission, long userChatId) {
         try (Session session = DbContext.getConnection()) {
             Transaction transaction = session.beginTransaction();
 
-            UserChatPermission userChatPermission = new UserChatPermission();
-            userChatPermission.setPermission(permission);
-            userChatPermission.setUserChat(new UserChat() {{
-                setId(userChatId);
-            }});
+            UserChatPermission userChatPermission = UserChatPermission.builder()
+                    .permission(permission)
+                    .userChat(UserChat.builder().id(userChatId).build()).build();
 
             session.persist(userChatPermission);
             transaction.commit();
